@@ -1,0 +1,1 @@
+# scaleway-api-rs
