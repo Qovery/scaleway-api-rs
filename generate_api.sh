@@ -5,7 +5,6 @@ set -e
 
 rm -rf docs || true
 rm -rf src || true
-rm Cargo.toml || true
 rm README.md || true
 
 rm -rf .generation || true
@@ -42,28 +41,16 @@ npx openapi-merge-cli --config .generation/openapi-merge.json
 openapi-generator generate -g rust \
  -i .generation/consolidated-specs.yml \
  -o . \
- --generate-alias-as-model \
- --additional-properties=packageName=scaleway_api_rs \
- --additional-properties=packageVersion=0.1.0
-
-# do not use the generated Cargo.toml
-rm Cargo.toml
-cp templates/Cargo.toml.template Cargo.toml
-
-# use custom .gitignore
-rm .gitignore || true
-cp templates/.gitignore.template .gitignore
+ -c openapi-generator-config.yml \
 
 # adding README elements
-cat templates/README.preprend.md README.md > README.md
+cat templates/README.prepend.md README.md > README.consolidated.md
+mv README.consolidated.md README.md
 
 # remove useless objects
 rm -rf .generation
-find . -type f -name '.openapi-generator-ignore' -exec rm -rf {} +
 find . -type d -name '.openapi-generator' -exec rm -rf {} +
-find . -type f -name '.travis.yml' -exec rm -rf {} +
-find . -type f -name 'git_push.sh' -exec rm -rf {} +
 
 # cargo fmt and clippy
-cargo fmt
+cargo fmt --all
 cargo +nightly clippy --fix -Z unstable-options --allow-dirty --allow-staged
