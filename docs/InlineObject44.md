@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **String** | Certificate name | 
-**letsencrypt** | [**crate::models::LbV1RegionsRegionLbsLbIdCertificatesLetsencrypt**](_lb_v1_regions__region__lbs__lb_id__certificates_letsencrypt.md) |  | 
-**custom_certificate** | [**crate::models::LbV1RegionsRegionLbsLbIdCertificatesCustomCertificate**](_lb_v1_regions__region__lbs__lb_id__certificates_custom_certificate.md) |  | 
+**dest_dns_zone** | **String** | The destinaton DNS zone | 
+**overwrite** | Option<**bool**> | Whether or not the destination DNS zone will be overwritten | [optional]
+**project_id** | Option<**String**> | The project ID of the destination DNS zone | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## create_pool
 
-> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, inline_object78)
+> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, inline_object27)
 Create a new pool in a cluster
 
 This method allows to create a new pool in a specific Kubernetes cluster.
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster in which the pool will be created | [required] |
-**inline_object78** | [**InlineObject78**](InlineObject78.md) |  | [required] |
+**inline_object27** | [**InlineObject27**](InlineObject27.md) |  | [required] |
 
 ### Return type
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_pool
 
-> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, inline_object80)
+> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, inline_object29)
 Update a pool in a cluster
 
 This method allows to update some attributes of a specific pool such as the size, the autoscaling enablement, the tags, ...
@@ -157,7 +157,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **pool_id** | **String** | The ID of the pool to update | [required] |
-**inline_object80** | [**InlineObject80**](InlineObject80.md) |  | [required] |
+**inline_object29** | [**InlineObject29**](InlineObject29.md) |  | [required] |
 
 ### Return type
 
@@ -177,7 +177,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_pool
 
-> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, inline_object81)
+> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, inline_object30)
 Upgrade a pool in a cluster
 
 This method allows to upgrade the Kubernetes version of a specific pool. Note that this will work when the targeted version is the same than the version of the cluster.
@@ -189,7 +189,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **pool_id** | **String** | The ID of the pool to upgrade | [required] |
-**inline_object81** | [**InlineObject81**](InlineObject81.md) |  | [required] |
+**inline_object30** | [**InlineObject30**](InlineObject30.md) |  | [required] |
 
 ### Return type
 

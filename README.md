@@ -107,51 +107,8 @@ All URIs are relative to *https://api.scaleway.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*ACLApi* | [**add_instance_acl_rules**](docs/ACLApi.md#add_instance_acl_rules) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/acls | Add an ACL instance to a given instance
-*ACLApi* | [**delete_instance_acl_rules**](docs/ACLApi.md#delete_instance_acl_rules) | **delete** /rdb/v1/regions/{region}/instances/{instance_id}/acls | Delete ACL rules of a given instance
-*ACLApi* | [**list_instance_acl_rules**](docs/ACLApi.md#list_instance_acl_rules) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/acls | List ACL rules of a given instance
-*ACLApi* | [**set_instance_acl_rules**](docs/ACLApi.md#set_instance_acl_rules) | **put** /rdb/v1/regions/{region}/instances/{instance_id}/acls | Set ACL rules for a given instance
-*AclsApi* | [**create_acl**](docs/AclsApi.md#create_acl) | **post** /lb/v1/regions/{region}/frontends/{frontend_id}/acls | Create an ACL for a given frontend
-*AclsApi* | [**delete_acl**](docs/AclsApi.md#delete_acl) | **delete** /lb/v1/regions/{region}/acls/{acl_id} | Delete an ACL
-*AclsApi* | [**get_acl**](docs/AclsApi.md#get_acl) | **get** /lb/v1/regions/{region}/acls/{acl_id} | Get an ACL
-*AclsApi* | [**list_acls**](docs/AclsApi.md#list_acls) | **get** /lb/v1/regions/{region}/frontends/{frontend_id}/acls | List ACL for a given frontend
-*AclsApi* | [**update_acl**](docs/AclsApi.md#update_acl) | **put** /lb/v1/regions/{region}/acls/{acl_id} | Update an ACL
-*AlertSubscribersApi* | [**create_subscriber**](docs/AlertSubscribersApi.md#create_subscriber) | **post** /lb/v1/regions/{region}/subscribers | Create a subscriber, webhook or email
-*AlertSubscribersApi* | [**delete_subscriber**](docs/AlertSubscribersApi.md#delete_subscriber) | **delete** /lb/v1/regions/{region}/lb/subscriber/{subscriber_id} | Delete a subscriber
-*AlertSubscribersApi* | [**get_subscriber**](docs/AlertSubscribersApi.md#get_subscriber) | **get** /lb/v1/regions/{region}/subscribers/{subscriber_id} | Get a subscriber
-*AlertSubscribersApi* | [**list_subscriber**](docs/AlertSubscribersApi.md#list_subscriber) | **get** /lb/v1/regions/{region}/subscribers | List all subscriber
-*AlertSubscribersApi* | [**subscribe_to_lb**](docs/AlertSubscribersApi.md#subscribe_to_lb) | **post** /lb/v1/regions/{region}/lb/{lb_id}/subscribe | Subscribe a subscriber to a given load balancer
-*AlertSubscribersApi* | [**unsubscribe_from_lb**](docs/AlertSubscribersApi.md#unsubscribe_from_lb) | **delete** /lb/v1/regions/{region}/lb/{lb_id}/unsubscribe | Unsubscribe a subscriber from a given load balancer
-*AlertSubscribersApi* | [**update_subscriber**](docs/AlertSubscribersApi.md#update_subscriber) | **put** /lb/v1/regions/{region}/subscribers/{subscriber_id} | Update a subscriber
-*BETAPrivateNetworkApi* | [**attach_private_network**](docs/BETAPrivateNetworkApi.md#attach_private_network) | **post** /lb/v1/regions/{region}/lbs/{lb_id}/private-networks/{private_network_id}/attach | BETA - Add load balancer on instance private network
-*BETAPrivateNetworkApi* | [**detach_private_network**](docs/BETAPrivateNetworkApi.md#detach_private_network) | **post** /lb/v1/regions/{region}/lbs/{lb_id}/private-networks/{private_network_id}/detach | BETA - Remove load balancer of private network
-*BETAPrivateNetworkApi* | [**list_lb_private_networks**](docs/BETAPrivateNetworkApi.md#list_lb_private_networks) | **get** /lb/v1/regions/{region}/lbs/{lb_id}/private-networks | BETA - List attached private network of load balancer
-*BMCAccessApi* | [**get_bmc_access**](docs/BMCAccessApi.md#get_bmc_access) | **get** /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access | Get BMC (Baseboard Management Controller) access for a given baremetal server
-*BMCAccessApi* | [**start_bmc_access**](docs/BMCAccessApi.md#start_bmc_access) | **post** /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access | Start BMC (Baseboard Management Controller) access for a given baremetal server
-*BMCAccessApi* | [**stop_bmc_access**](docs/BMCAccessApi.md#stop_bmc_access) | **delete** /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access | Stop BMC (Baseboard Management Controller) access for a given baremetal server
-*BackendsApi* | [**add_backend_servers**](docs/BackendsApi.md#add_backend_servers) | **post** /lb/v1/regions/{region}/backends/{backend_id}/servers | Add a set of servers in a given backend
-*BackendsApi* | [**create_backend**](docs/BackendsApi.md#create_backend) | **post** /lb/v1/regions/{region}/lbs/{lb_id}/backends | Create a backend in a given load balancer
-*BackendsApi* | [**delete_backend**](docs/BackendsApi.md#delete_backend) | **delete** /lb/v1/regions/{region}/backends/{backend_id} | Delete a backend in a given load balancer
-*BackendsApi* | [**get_backend**](docs/BackendsApi.md#get_backend) | **get** /lb/v1/regions/{region}/backends/{backend_id} | Get a backend in a given load balancer
-*BackendsApi* | [**list_backends**](docs/BackendsApi.md#list_backends) | **get** /lb/v1/regions/{region}/lbs/{lb_id}/backends | List backends in a given load balancer
-*BackendsApi* | [**remove_backend_servers**](docs/BackendsApi.md#remove_backend_servers) | **delete** /lb/v1/regions/{region}/backends/{backend_id}/servers | Remove a set of servers for a given backend
-*BackendsApi* | [**set_backend_servers**](docs/BackendsApi.md#set_backend_servers) | **put** /lb/v1/regions/{region}/backends/{backend_id}/servers | Define all servers in a given backend
-*BackendsApi* | [**update_backend**](docs/BackendsApi.md#update_backend) | **put** /lb/v1/regions/{region}/backends/{backend_id} | Update a backend in a given load balancer
-*BackendsApi* | [**update_health_check**](docs/BackendsApi.md#update_health_check) | **put** /lb/v1/regions/{region}/backends/{backend_id}/healthcheck | Update an healthcheck for a given backend
-*BackupsApi* | [**create_database_backup**](docs/BackupsApi.md#create_database_backup) | **post** /rdb/v1/regions/{region}/backups | Create a database backup
-*BackupsApi* | [**delete_database_backup**](docs/BackupsApi.md#delete_database_backup) | **delete** /rdb/v1/regions/{region}/backups/{database_backup_id} | Delete a database backup
-*BackupsApi* | [**export_database_backup**](docs/BackupsApi.md#export_database_backup) | **post** /rdb/v1/regions/{region}/backups/{database_backup_id}/export | Export a database backup
-*BackupsApi* | [**get_database_backup**](docs/BackupsApi.md#get_database_backup) | **get** /rdb/v1/regions/{region}/backups/{database_backup_id} | Get a database backup
-*BackupsApi* | [**list_database_backups**](docs/BackupsApi.md#list_database_backups) | **get** /rdb/v1/regions/{region}/backups | List database backups
-*BackupsApi* | [**restore_database_backup**](docs/BackupsApi.md#restore_database_backup) | **post** /rdb/v1/regions/{region}/backups/{database_backup_id}/restore | Restore a database backup
-*BackupsApi* | [**update_database_backup**](docs/BackupsApi.md#update_database_backup) | **patch** /rdb/v1/regions/{region}/backups/{database_backup_id} | Update a database backup
 *BootscriptsApi* | [**get_bootscript**](docs/BootscriptsApi.md#get_bootscript) | **get** /instance/v1/zones/{zone}/bootscripts/{bootscript_id} | Get bootscripts
 *BootscriptsApi* | [**list_bootscripts**](docs/BootscriptsApi.md#list_bootscripts) | **get** /instance/v1/zones/{zone}/bootscripts | List bootscripts
-*CertificateApi* | [**create_certificate**](docs/CertificateApi.md#create_certificate) | **post** /lb/v1/regions/{region}/lbs/{lb_id}/certificates | Create a TLS certificate
-*CertificateApi* | [**delete_certificate**](docs/CertificateApi.md#delete_certificate) | **delete** /lb/v1/regions/{region}/certificates/{certificate_id} | Delete a TLS certificate
-*CertificateApi* | [**get_certificate**](docs/CertificateApi.md#get_certificate) | **get** /lb/v1/regions/{region}/certificates/{certificate_id} | Get a TLS certificate
-*CertificateApi* | [**list_certificates**](docs/CertificateApi.md#list_certificates) | **get** /lb/v1/regions/{region}/lbs/{lb_id}/certificates | List all TLS certificates on a given load balancer
-*CertificateApi* | [**update_certificate**](docs/CertificateApi.md#update_certificate) | **put** /lb/v1/regions/{region}/certificates/{certificate_id} | Update a TLS certificate
 *ClustersApi* | [**create_cluster**](docs/ClustersApi.md#create_cluster) | **post** /k8s/v1/regions/{region}/clusters | Create a new cluster
 *ClustersApi* | [**delete_cluster**](docs/ClustersApi.md#delete_cluster) | **delete** /k8s/v1/regions/{region}/clusters/{cluster_id} | Delete a cluster
 *ClustersApi* | [**get_cluster**](docs/ClustersApi.md#get_cluster) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id} | Get a cluster
@@ -173,28 +130,9 @@ Class | Method | HTTP request | Description
 *DNSZonesApi* | [**list_ssl_certificates**](docs/DNSZonesApi.md#list_ssl_certificates) | **get** /domain/v2beta1/ssl-certificates | List all user TLS certificates
 *DNSZonesApi* | [**refresh_dns_zone**](docs/DNSZonesApi.md#refresh_dns_zone) | **post** /domain/v2beta1/dns-zones/{dns_zone}/refresh | Refresh DNS zone
 *DNSZonesApi* | [**update_dns_zone**](docs/DNSZonesApi.md#update_dns_zone) | **patch** /domain/v2beta1/dns-zones/{dns_zone} | Update a DNS zone
-*DatabaseInstancesApi* | [**clone_instance**](docs/DatabaseInstancesApi.md#clone_instance) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/clone | Clone an instance
-*DatabaseInstancesApi* | [**create_instance**](docs/DatabaseInstancesApi.md#create_instance) | **post** /rdb/v1/regions/{region}/instances | Create an instance
-*DatabaseInstancesApi* | [**delete_instance**](docs/DatabaseInstancesApi.md#delete_instance) | **delete** /rdb/v1/regions/{region}/instances/{instance_id} | Delete an instance
-*DatabaseInstancesApi* | [**get_instance**](docs/DatabaseInstancesApi.md#get_instance) | **get** /rdb/v1/regions/{region}/instances/{instance_id} | Get an instance
-*DatabaseInstancesApi* | [**get_instance_certificate**](docs/DatabaseInstancesApi.md#get_instance_certificate) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/certificate | Get the TLS certificate of an instance
-*DatabaseInstancesApi* | [**get_instance_log**](docs/DatabaseInstancesApi.md#get_instance_log) | **get** /rdb/v1/regions/{region}/logs/{instance_log_id} | Get specific logs of a given instance
-*DatabaseInstancesApi* | [**get_instance_metrics**](docs/DatabaseInstancesApi.md#get_instance_metrics) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/metrics | Get instance metrics
-*DatabaseInstancesApi* | [**list_instance_logs**](docs/DatabaseInstancesApi.md#list_instance_logs) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/logs | List available logs of a given instance
-*DatabaseInstancesApi* | [**list_instances**](docs/DatabaseInstancesApi.md#list_instances) | **get** /rdb/v1/regions/{region}/instances | List instances
-*DatabaseInstancesApi* | [**prepare_instance_logs**](docs/DatabaseInstancesApi.md#prepare_instance_logs) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/prepare-logs | Prepare logs of a given instance
-*DatabaseInstancesApi* | [**update_instance**](docs/DatabaseInstancesApi.md#update_instance) | **patch** /rdb/v1/regions/{region}/instances/{instance_id} | Update an instance
-*DatabaseInstancesApi* | [**upgrade_instance**](docs/DatabaseInstancesApi.md#upgrade_instance) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/upgrade | Upgrade an instance to an higher instance type
-*DatabasesApi* | [**create_database**](docs/DatabasesApi.md#create_database) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/databases | Create a database in a given instance
-*DatabasesApi* | [**delete_database**](docs/DatabasesApi.md#delete_database) | **delete** /rdb/v1/regions/{region}/instances/{instance_id}/databases/{name} | Delete a database in a given instance
-*DatabasesApi* | [**list_databases**](docs/DatabasesApi.md#list_databases) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/databases | List all database in a given instance
 *DefaultApi* | [**get_dashboard**](docs/DefaultApi.md#get_dashboard) | **get** /instance/v1/zones/{zone}/dashboard | 
-*DefaultApi* | [**get_service_info**](docs/DefaultApi.md#get_service_info) | **get** /rdb/v1/regions/{region} | 
-*DefaultApi* | [**get_service_info1**](docs/DefaultApi.md#get_service_info1) | **get** /apple-silicon/v1alpha1/zones/{zone} | 
-*DefaultApi* | [**list_backend_stats**](docs/DefaultApi.md#list_backend_stats) | **get** /lb/v1/regions/{region}/lbs/{lb_id}/backend-stats | 
+*DefaultApi* | [**get_service_info**](docs/DefaultApi.md#get_service_info) | **get** /apple-silicon/v1alpha1/zones/{zone} | 
 *DefaultApi* | [**move_mac_addr**](docs/DefaultApi.md#move_mac_addr) | **post** /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id}/mac/move | 
-*DefaultApi* | [**renew_instance_certificate**](docs/DefaultApi.md#renew_instance_certificate) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/renew-certificate | 
-*EnginesApi* | [**list_database_engines**](docs/EnginesApi.md#list_database_engines) | **get** /rdb/v1/regions/{region}/database-engines | List available database engines
 *FlexibleIPApi* | [**attach_flexible_ip**](docs/FlexibleIPApi.md#attach_flexible_ip) | **post** /flexible-ip/v1alpha1/zones/{zone}/fips/attach | Attach a Flexible IP to a server
 *FlexibleIPApi* | [**create_flexible_ip**](docs/FlexibleIPApi.md#create_flexible_ip) | **post** /flexible-ip/v1alpha1/zones/{zone}/fips | Create a Flexible IP
 *FlexibleIPApi* | [**delete_flexible_ip**](docs/FlexibleIPApi.md#delete_flexible_ip) | **delete** /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id} | Delete a Flexible IP
@@ -205,11 +143,6 @@ Class | Method | HTTP request | Description
 *FlexibleIPApi* | [**get_flexible_ip**](docs/FlexibleIPApi.md#get_flexible_ip) | **get** /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id} | Get a Flexible IP
 *FlexibleIPApi* | [**list_flexible_ips**](docs/FlexibleIPApi.md#list_flexible_ips) | **get** /flexible-ip/v1alpha1/zones/{zone}/fips | List Flexible IPs
 *FlexibleIPApi* | [**update_flexible_ip**](docs/FlexibleIPApi.md#update_flexible_ip) | **patch** /flexible-ip/v1alpha1/zones/{zone}/fips/{fip_id} | Update a Flexible IP
-*FrontendsApi* | [**create_frontend**](docs/FrontendsApi.md#create_frontend) | **post** /lb/v1/regions/{region}/lbs/{lb_id}/frontends | Create a frontend in a given load balancer
-*FrontendsApi* | [**delete_frontend**](docs/FrontendsApi.md#delete_frontend) | **delete** /lb/v1/regions/{region}/frontends/{frontend_id} | Delete a frontend
-*FrontendsApi* | [**get_frontend**](docs/FrontendsApi.md#get_frontend) | **get** /lb/v1/regions/{region}/frontends/{frontend_id} | Get a frontend
-*FrontendsApi* | [**list_frontends**](docs/FrontendsApi.md#list_frontends) | **get** /lb/v1/regions/{region}/lbs/{lb_id}/frontends | List frontends in a given load balancer
-*FrontendsApi* | [**update_frontend**](docs/FrontendsApi.md#update_frontend) | **put** /lb/v1/regions/{region}/frontends/{frontend_id} | Update a frontend
 *IPsApi* | [**create_ip**](docs/IPsApi.md#create_ip) | **post** /instance/v1/zones/{zone}/ips | Reserve a flexible IP
 *IPsApi* | [**delete_ip**](docs/IPsApi.md#delete_ip) | **delete** /instance/v1/zones/{zone}/ips/{ip} | Delete a flexible IP
 *IPsApi* | [**get_ip**](docs/IPsApi.md#get_ip) | **get** /instance/v1/zones/{zone}/ips/{ip} | Get a flexible IP
@@ -227,67 +160,17 @@ Class | Method | HTTP request | Description
 *ImportsExportsApi* | [**export_raw_dns_zone**](docs/ImportsExportsApi.md#export_raw_dns_zone) | **get** /domain/v2beta1/dns-zones/{dns_zone}/raw | Export raw DNS zone
 *ImportsExportsApi* | [**import_provider_dns_zone**](docs/ImportsExportsApi.md#import_provider_dns_zone) | **post** /domain/v2beta1/dns-zones/{dns_zone}/import-provider | Import provider DNS zone
 *ImportsExportsApi* | [**import_raw_dns_zone**](docs/ImportsExportsApi.md#import_raw_dns_zone) | **post** /domain/v2beta1/dns-zones/{dns_zone}/raw | Import raw DNS zone
-*InstanceSettingsApi* | [**add_instance_settings**](docs/InstanceSettingsApi.md#add_instance_settings) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/settings | Add an instance setting
-*InstanceSettingsApi* | [**delete_instance_settings**](docs/InstanceSettingsApi.md#delete_instance_settings) | **delete** /rdb/v1/regions/{region}/instances/{instance_id}/settings | Delete an instance setting
-*InstanceSettingsApi* | [**set_instance_settings**](docs/InstanceSettingsApi.md#set_instance_settings) | **put** /rdb/v1/regions/{region}/instances/{instance_id}/settings | Set a given instance setting
-*IoTDevicesApi* | [**create_device**](docs/IoTDevicesApi.md#create_device) | **post** /iot/v1/regions/{region}/devices | Add a device
-*IoTDevicesApi* | [**delete_device**](docs/IoTDevicesApi.md#delete_device) | **delete** /iot/v1/regions/{region}/devices/{device_id} | Remove a device
-*IoTDevicesApi* | [**disable_device**](docs/IoTDevicesApi.md#disable_device) | **post** /iot/v1/regions/{region}/devices/{device_id}/disable | Disable a device
-*IoTDevicesApi* | [**enable_device**](docs/IoTDevicesApi.md#enable_device) | **post** /iot/v1/regions/{region}/devices/{device_id}/enable | Enable a device
-*IoTDevicesApi* | [**get_device**](docs/IoTDevicesApi.md#get_device) | **get** /iot/v1/regions/{region}/devices/{device_id} | Get a device
-*IoTDevicesApi* | [**get_device_certificate**](docs/IoTDevicesApi.md#get_device_certificate) | **get** /iot/v1/regions/{region}/devices/{device_id}/certificate | Get a device's certificate
-*IoTDevicesApi* | [**get_device_metrics**](docs/IoTDevicesApi.md#get_device_metrics) | **get** /iot/v1/regions/{region}/devices/{device_id}/metrics | Get a device's metrics
-*IoTDevicesApi* | [**list_devices**](docs/IoTDevicesApi.md#list_devices) | **get** /iot/v1/regions/{region}/devices | List devices
-*IoTDevicesApi* | [**renew_device_certificate**](docs/IoTDevicesApi.md#renew_device_certificate) | **post** /iot/v1/regions/{region}/devices/{device_id}/renew-certificate | Renew a device certificate
-*IoTDevicesApi* | [**set_device_certificate**](docs/IoTDevicesApi.md#set_device_certificate) | **put** /iot/v1/regions/{region}/devices/{device_id}/certificate | Set a custom certificate on a device
-*IoTDevicesApi* | [**update_device**](docs/IoTDevicesApi.md#update_device) | **patch** /iot/v1/regions/{region}/devices/{device_id} | Update a device
-*IoTHubsApi* | [**create_hub**](docs/IoTHubsApi.md#create_hub) | **post** /iot/v1/regions/{region}/hubs | Create a hub
-*IoTHubsApi* | [**delete_hub**](docs/IoTHubsApi.md#delete_hub) | **delete** /iot/v1/regions/{region}/hubs/{hub_id} | Delete a hub
-*IoTHubsApi* | [**disable_hub**](docs/IoTHubsApi.md#disable_hub) | **post** /iot/v1/regions/{region}/hubs/{hub_id}/disable | Disable a hub
-*IoTHubsApi* | [**enable_hub**](docs/IoTHubsApi.md#enable_hub) | **post** /iot/v1/regions/{region}/hubs/{hub_id}/enable | Enable a hub
-*IoTHubsApi* | [**get_hub**](docs/IoTHubsApi.md#get_hub) | **get** /iot/v1/regions/{region}/hubs/{hub_id} | Get a hub
-*IoTHubsApi* | [**get_hub_ca**](docs/IoTHubsApi.md#get_hub_ca) | **get** /iot/v1/regions/{region}/hubs/{hub_id}/ca | Get the certificate authority of a hub
-*IoTHubsApi* | [**get_hub_metrics**](docs/IoTHubsApi.md#get_hub_metrics) | **get** /iot/v1/regions/{region}/hubs/{hub_id}/metrics | Get a hub's metrics
-*IoTHubsApi* | [**list_hubs**](docs/IoTHubsApi.md#list_hubs) | **get** /iot/v1/regions/{region}/hubs | List hubs
-*IoTHubsApi* | [**set_hub_ca**](docs/IoTHubsApi.md#set_hub_ca) | **post** /iot/v1/regions/{region}/hubs/{hub_id}/ca | Set the certificate authority of a hub
-*IoTHubsApi* | [**update_hub**](docs/IoTHubsApi.md#update_hub) | **patch** /iot/v1/regions/{region}/hubs/{hub_id} | Update a hub
-*IoTNetworksApi* | [**create_network**](docs/IoTNetworksApi.md#create_network) | **post** /iot/v1/regions/{region}/networks | Create a new Network
-*IoTNetworksApi* | [**delete_network**](docs/IoTNetworksApi.md#delete_network) | **delete** /iot/v1/regions/{region}/networks/{network_id} | Delete a Network
-*IoTNetworksApi* | [**get_network**](docs/IoTNetworksApi.md#get_network) | **get** /iot/v1/regions/{region}/networks/{network_id} | Retrieve a specific Network
-*IoTNetworksApi* | [**list_networks**](docs/IoTNetworksApi.md#list_networks) | **get** /iot/v1/regions/{region}/networks | List the Networks
-*IoTRoutesApi* | [**create_route1**](docs/IoTRoutesApi.md#create_route1) | **post** /iot/v1/regions/{region}/routes | Create a route
-*IoTRoutesApi* | [**delete_route1**](docs/IoTRoutesApi.md#delete_route1) | **delete** /iot/v1/regions/{region}/routes/{route_id} | Delete a route
-*IoTRoutesApi* | [**get_route1**](docs/IoTRoutesApi.md#get_route1) | **get** /iot/v1/regions/{region}/routes/{route_id} | Get a route
-*IoTRoutesApi* | [**list_routes1**](docs/IoTRoutesApi.md#list_routes1) | **get** /iot/v1/regions/{region}/routes | List routes
-*IoTRoutesApi* | [**update_route1**](docs/IoTRoutesApi.md#update_route1) | **patch** /iot/v1/regions/{region}/routes/{route_id} | Update a route
-*IpsApi* | [**create_ip1**](docs/IpsApi.md#create_ip1) | **post** /lb/v1/regions/{region}/ips | Create an IP
-*IpsApi* | [**get_ip1**](docs/IpsApi.md#get_ip1) | **get** /lb/v1/regions/{region}/ips/{ip_id} | Get an IP
-*IpsApi* | [**list_ips**](docs/IpsApi.md#list_ips) | **get** /lb/v1/regions/{region}/ips | List IPs
-*IpsApi* | [**release_ip**](docs/IpsApi.md#release_ip) | **delete** /lb/v1/regions/{region}/ips/{ip_id} | Delete an IP
-*IpsApi* | [**update_ip1**](docs/IpsApi.md#update_ip1) | **patch** /lb/v1/regions/{region}/ips/{ip_id} | Update an IP
-*LoadBalancerApi* | [**create_lb**](docs/LoadBalancerApi.md#create_lb) | **post** /lb/v1/regions/{region}/lbs | Create a load balancer
-*LoadBalancerApi* | [**delete_lb**](docs/LoadBalancerApi.md#delete_lb) | **delete** /lb/v1/regions/{region}/lbs/{lb_id} | Delete a load balancer
-*LoadBalancerApi* | [**get_lb**](docs/LoadBalancerApi.md#get_lb) | **get** /lb/v1/regions/{region}/lbs/{lb_id} | Get a load balancer
-*LoadBalancerApi* | [**list_lb_types**](docs/LoadBalancerApi.md#list_lb_types) | **get** /lb/v1/regions/{region}/lb-types | List all load balancer offer type
-*LoadBalancerApi* | [**list_lbs**](docs/LoadBalancerApi.md#list_lbs) | **get** /lb/v1/regions/{region}/lbs | List load balancers
-*LoadBalancerApi* | [**migrate_lb**](docs/LoadBalancerApi.md#migrate_lb) | **post** /lb/v1/regions/{region}/lbs/{lb_id}/migrate | Migrate a load balancer
-*LoadBalancerApi* | [**update_lb**](docs/LoadBalancerApi.md#update_lb) | **put** /lb/v1/regions/{region}/lbs/{lb_id} | Update a load balancer
 *NamespacesApi* | [**create_namespace**](docs/NamespacesApi.md#create_namespace) | **post** /registry/v1/regions/{region}/namespaces | Create a new namespace
 *NamespacesApi* | [**delete_namespace**](docs/NamespacesApi.md#delete_namespace) | **delete** /registry/v1/regions/{region}/namespaces/{namespace_id} | Delete an existing namespace
 *NamespacesApi* | [**get_namespace**](docs/NamespacesApi.md#get_namespace) | **get** /registry/v1/regions/{region}/namespaces/{namespace_id} | Get a namespace
 *NamespacesApi* | [**list_namespaces**](docs/NamespacesApi.md#list_namespaces) | **get** /registry/v1/regions/{region}/namespaces | List all your namespaces
 *NamespacesApi* | [**update_namespace**](docs/NamespacesApi.md#update_namespace) | **patch** /registry/v1/regions/{region}/namespaces/{namespace_id} | Update an existing namespace
-*NodeTypesApi* | [**list_node_types**](docs/NodeTypesApi.md#list_node_types) | **get** /rdb/v1/regions/{region}/node-types | List available node types
 *NodesApi* | [**get_node**](docs/NodesApi.md#get_node) | **get** /k8s/v1/regions/{region}/nodes/{node_id} | Get a node in a cluster
 *NodesApi* | [**list_nodes**](docs/NodesApi.md#list_nodes) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id}/nodes | List all the nodes in a cluster
 *NodesApi* | [**reboot_node**](docs/NodesApi.md#reboot_node) | **post** /k8s/v1/regions/{region}/nodes/{node_id}/reboot | Reboot a node in a cluster
 *NodesApi* | [**replace_node**](docs/NodesApi.md#replace_node) | **post** /k8s/v1/regions/{region}/nodes/{node_id}/replace | Replace a node in a cluster
-*OSApi* | [**get_os**](docs/OSApi.md#get_os) | **get** /baremetal/v1/zones/{zone}/os/{os_id} | Get an OS with a given ID
-*OSApi* | [**list_os**](docs/OSApi.md#list_os) | **get** /baremetal/v1/zones/{zone}/os | List all available OS that can be install on a baremetal server
-*OffersApi* | [**get_offer**](docs/OffersApi.md#get_offer) | **get** /baremetal/v1/zones/{zone}/offers/{offer_id} | Get offer
-*OffersApi* | [**list_offers**](docs/OffersApi.md#list_offers) | **get** /baremetal/v1/zones/{zone}/offers | List offers
-*OsApi* | [**get_os1**](docs/OsApi.md#get_os1) | **get** /apple-silicon/v1alpha1/zones/{zone}/os/{os_id} | Get an Operating System (OS)
-*OsApi* | [**list_os1**](docs/OsApi.md#list_os1) | **get** /apple-silicon/v1alpha1/zones/{zone}/os | List all Operating System (OS)
+*OsApi* | [**get_os**](docs/OsApi.md#get_os) | **get** /apple-silicon/v1alpha1/zones/{zone}/os/{os_id} | Get an Operating System (OS)
+*OsApi* | [**list_os**](docs/OsApi.md#list_os) | **get** /apple-silicon/v1alpha1/zones/{zone}/os | List all Operating System (OS)
 *PlacementGroupsApi* | [**create_placement_group**](docs/PlacementGroupsApi.md#create_placement_group) | **post** /instance/v1/zones/{zone}/placement_groups | Create a placement group
 *PlacementGroupsApi* | [**delete_placement_group**](docs/PlacementGroupsApi.md#delete_placement_group) | **delete** /instance/v1/zones/{zone}/placement_groups/{placement_group_id} | Delete the given placement group
 *PlacementGroupsApi* | [**get_placement_group**](docs/PlacementGroupsApi.md#get_placement_group) | **get** /instance/v1/zones/{zone}/placement_groups/{placement_group_id} | Get a placement group
@@ -312,18 +195,11 @@ Class | Method | HTTP request | Description
 *PrivateNetworksApi* | [**get_private_network**](docs/PrivateNetworksApi.md#get_private_network) | **get** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Get a private network
 *PrivateNetworksApi* | [**list_private_networks**](docs/PrivateNetworksApi.md#list_private_networks) | **get** /vpc/v1/zones/{zone}/private-networks | List private networks
 *PrivateNetworksApi* | [**update_private_network**](docs/PrivateNetworksApi.md#update_private_network) | **patch** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Update private network
-*PrivilegesApi* | [**list_privileges**](docs/PrivilegesApi.md#list_privileges) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/privileges | List privileges of a given user for a given database on a given instance
-*PrivilegesApi* | [**set_privilege**](docs/PrivilegesApi.md#set_privilege) | **put** /rdb/v1/regions/{region}/instances/{instance_id}/privileges | Set privileges of a given user for a given database on a given instance
 *RecordsApi* | [**clear_dns_zone_records**](docs/RecordsApi.md#clear_dns_zone_records) | **delete** /domain/v2beta1/dns-zones/{dns_zone}/records | Clear DNS zone records
 *RecordsApi* | [**list_dns_zone_nameservers**](docs/RecordsApi.md#list_dns_zone_nameservers) | **get** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | List DNS zone nameservers
 *RecordsApi* | [**list_dns_zone_records**](docs/RecordsApi.md#list_dns_zone_records) | **get** /domain/v2beta1/dns-zones/{dns_zone}/records | List DNS zone records
 *RecordsApi* | [**update_dns_zone_nameservers**](docs/RecordsApi.md#update_dns_zone_nameservers) | **put** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | Update DNS zone nameservers
 *RecordsApi* | [**update_dns_zone_records**](docs/RecordsApi.md#update_dns_zone_records) | **patch** /domain/v2beta1/dns-zones/{dns_zone}/records | Update DNS zone records
-*RouteApi* | [**create_route**](docs/RouteApi.md#create_route) | **post** /lb/v1/regions/{region}/routes | Create a backend redirection
-*RouteApi* | [**delete_route**](docs/RouteApi.md#delete_route) | **delete** /lb/v1/regions/{region}/routes/{route_id} | Delete a backend redirection
-*RouteApi* | [**get_route**](docs/RouteApi.md#get_route) | **get** /lb/v1/regions/{region}/routes/{route_id} | Get single backend redirection
-*RouteApi* | [**list_routes**](docs/RouteApi.md#list_routes) | **get** /lb/v1/regions/{region}/routes | List all backend redirections
-*RouteApi* | [**update_route**](docs/RouteApi.md#update_route) | **put** /lb/v1/regions/{region}/routes/{route_id} | Edit a backend redirection
 *SecurityGroupsApi* | [**create_security_group**](docs/SecurityGroupsApi.md#create_security_group) | **post** /instance/v1/zones/{zone}/security_groups | Create a security group
 *SecurityGroupsApi* | [**create_security_group_rule**](docs/SecurityGroupsApi.md#create_security_group_rule) | **post** /instance/v1/zones/{zone}/security_groups/{security_group_id}/rules | Create rule
 *SecurityGroupsApi* | [**delete_security_group**](docs/SecurityGroupsApi.md#delete_security_group) | **delete** /instance/v1/zones/{zone}/security_groups/{security_group_id} | Delete a security group
@@ -339,43 +215,24 @@ Class | Method | HTTP request | Description
 *ServerTypesApi* | [**list_server_types**](docs/ServerTypesApi.md#list_server_types) | **get** /apple-silicon/v1alpha1/zones/{zone}/server-types | List server types
 *ServerTypesApi* | [**list_servers_types**](docs/ServerTypesApi.md#list_servers_types) | **get** /instance/v1/zones/{zone}/products/servers | List server types
 *ServersApi* | [**create_server**](docs/ServersApi.md#create_server) | **post** /instance/v1/zones/{zone}/servers | Create a server
-*ServersApi* | [**create_server1**](docs/ServersApi.md#create_server1) | **post** /baremetal/v1/zones/{zone}/servers | Create a baremetal server
-*ServersApi* | [**create_server2**](docs/ServersApi.md#create_server2) | **post** /apple-silicon/v1alpha1/zones/{zone}/servers | Create a server
+*ServersApi* | [**create_server1**](docs/ServersApi.md#create_server1) | **post** /apple-silicon/v1alpha1/zones/{zone}/servers | Create a server
 *ServersApi* | [**delete_server**](docs/ServersApi.md#delete_server) | **delete** /instance/v1/zones/{zone}/servers/{server_id} | Delete a server
-*ServersApi* | [**delete_server1**](docs/ServersApi.md#delete_server1) | **delete** /baremetal/v1/zones/{zone}/servers/{server_id} | Delete a baremetal server
-*ServersApi* | [**delete_server2**](docs/ServersApi.md#delete_server2) | **delete** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id} | Delete a server
+*ServersApi* | [**delete_server1**](docs/ServersApi.md#delete_server1) | **delete** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id} | Delete a server
 *ServersApi* | [**get_server**](docs/ServersApi.md#get_server) | **get** /instance/v1/zones/{zone}/servers/{server_id} | Get a server
-*ServersApi* | [**get_server1**](docs/ServersApi.md#get_server1) | **get** /baremetal/v1/zones/{zone}/servers/{server_id} | Get a specific baremetal server
-*ServersApi* | [**get_server2**](docs/ServersApi.md#get_server2) | **get** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id} | Get a server
-*ServersApi* | [**get_server_metrics**](docs/ServersApi.md#get_server_metrics) | **get** /baremetal/v1/zones/{zone}/servers/{server_id}/metrics | Return server metrics
-*ServersApi* | [**install_server**](docs/ServersApi.md#install_server) | **post** /baremetal/v1/zones/{zone}/servers/{server_id}/install | Install a baremetal server
+*ServersApi* | [**get_server1**](docs/ServersApi.md#get_server1) | **get** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id} | Get a server
 *ServersApi* | [**list_server_actions**](docs/ServersApi.md#list_server_actions) | **get** /instance/v1/zones/{zone}/servers/{server_id}/action | List server actions
-*ServersApi* | [**list_server_events**](docs/ServersApi.md#list_server_events) | **get** /baremetal/v1/zones/{zone}/servers/{server_id}/events | List server events
 *ServersApi* | [**list_servers**](docs/ServersApi.md#list_servers) | **get** /instance/v1/zones/{zone}/servers | List all servers
-*ServersApi* | [**list_servers1**](docs/ServersApi.md#list_servers1) | **get** /baremetal/v1/zones/{zone}/servers | List baremetal servers for organization
-*ServersApi* | [**list_servers2**](docs/ServersApi.md#list_servers2) | **get** /apple-silicon/v1alpha1/zones/{zone}/servers | List all servers
-*ServersApi* | [**reboot_server1**](docs/ServersApi.md#reboot_server1) | **post** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reboot | Reboot a server
+*ServersApi* | [**list_servers1**](docs/ServersApi.md#list_servers1) | **get** /apple-silicon/v1alpha1/zones/{zone}/servers | List all servers
+*ServersApi* | [**reboot_server**](docs/ServersApi.md#reboot_server) | **post** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reboot | Reboot a server
 *ServersApi* | [**reinstall_server**](docs/ServersApi.md#reinstall_server) | **post** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reinstall | Reinstall a server
 *ServersApi* | [**server_action**](docs/ServersApi.md#server_action) | **post** /instance/v1/zones/{zone}/servers/{server_id}/action | Perform action
-*ServersApi* | [**update_ip**](docs/ServersApi.md#update_ip) | **patch** /baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id} | Update IP
 *ServersApi* | [**update_server**](docs/ServersApi.md#update_server) | **patch** /instance/v1/zones/{zone}/servers/{server_id} | Update a server
-*ServersApi* | [**update_server1**](docs/ServersApi.md#update_server1) | **patch** /baremetal/v1/zones/{zone}/servers/{server_id} | Update a baremetal server
-*ServersApi* | [**update_server2**](docs/ServersApi.md#update_server2) | **patch** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id} | Update a server
-*ServersActionsApi* | [**reboot_server**](docs/ServersActionsApi.md#reboot_server) | **post** /baremetal/v1/zones/{zone}/servers/{server_id}/reboot | Reboot a baremetal server
-*ServersActionsApi* | [**start_server**](docs/ServersActionsApi.md#start_server) | **post** /baremetal/v1/zones/{zone}/servers/{server_id}/start | Start a baremetal server
-*ServersActionsApi* | [**stop_server**](docs/ServersActionsApi.md#stop_server) | **post** /baremetal/v1/zones/{zone}/servers/{server_id}/stop | Stop a baremetal server
-*SnapshotsApi* | [**create_instance_from_snapshot**](docs/SnapshotsApi.md#create_instance_from_snapshot) | **post** /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance | Create a new instance from a given snapshot
+*ServersApi* | [**update_server1**](docs/ServersApi.md#update_server1) | **patch** /apple-silicon/v1alpha1/zones/{zone}/servers/{server_id} | Update a server
 *SnapshotsApi* | [**create_snapshot**](docs/SnapshotsApi.md#create_snapshot) | **post** /instance/v1/zones/{zone}/snapshots | Create a snapshot from a given volume
-*SnapshotsApi* | [**create_snapshot1**](docs/SnapshotsApi.md#create_snapshot1) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/snapshots | Create an instance snapshot
 *SnapshotsApi* | [**delete_snapshot**](docs/SnapshotsApi.md#delete_snapshot) | **delete** /instance/v1/zones/{zone}/snapshots/{snapshot_id} | Delete a snapshot
-*SnapshotsApi* | [**delete_snapshot1**](docs/SnapshotsApi.md#delete_snapshot1) | **delete** /rdb/v1/regions/{region}/snapshots/{snapshot_id} | Delete an instance snapshot
 *SnapshotsApi* | [**get_snapshot**](docs/SnapshotsApi.md#get_snapshot) | **get** /instance/v1/zones/{zone}/snapshots/{snapshot_id} | Get a snapshot
-*SnapshotsApi* | [**get_snapshot1**](docs/SnapshotsApi.md#get_snapshot1) | **get** /rdb/v1/regions/{region}/snapshots/{snapshot_id} | Get an instance snapshot
 *SnapshotsApi* | [**list_snapshots**](docs/SnapshotsApi.md#list_snapshots) | **get** /instance/v1/zones/{zone}/snapshots | List snapshots
-*SnapshotsApi* | [**list_snapshots1**](docs/SnapshotsApi.md#list_snapshots1) | **get** /rdb/v1/regions/{region}/snapshots | List instance snapshots
 *SnapshotsApi* | [**set_snapshot**](docs/SnapshotsApi.md#set_snapshot) | **put** /instance/v1/zones/{zone}/snapshots/{snapshot_id} | Update snapshot
-*SnapshotsApi* | [**update_snapshot**](docs/SnapshotsApi.md#update_snapshot) | **patch** /rdb/v1/regions/{region}/snapshots/{snapshot_id} | Update an instance snapshot
-*StatsApi* | [**get_lb_stats**](docs/StatsApi.md#get_lb_stats) | **get** /lb/v1/regions/{region}/lbs/{lb_id}/stats | Get usage statistics of a given load balancer
 *TagsApi* | [**delete_tag**](docs/TagsApi.md#delete_tag) | **delete** /registry/v1/regions/{region}/tags/{tag_id} | Delete a tag
 *TagsApi* | [**get_tag**](docs/TagsApi.md#get_tag) | **get** /registry/v1/regions/{region}/tags/{tag_id} | Get a tag
 *TagsApi* | [**list_tags**](docs/TagsApi.md#list_tags) | **get** /registry/v1/regions/{region}/images/{image_id}/tags | List all your tags
@@ -383,10 +240,6 @@ Class | Method | HTTP request | Description
 *UserDataApi* | [**get_server_user_data**](docs/UserDataApi.md#get_server_user_data) | **get** /instance/v1/zones/{zone}/servers/{server_id}/user_data/{key} | Get user data
 *UserDataApi* | [**list_server_user_data**](docs/UserDataApi.md#list_server_user_data) | **get** /instance/v1/zones/{zone}/servers/{server_id}/user_data | List user data
 *UserDataApi* | [**set_server_user_data**](docs/UserDataApi.md#set_server_user_data) | **patch** /instance/v1/zones/{zone}/servers/{server_id}/user_data/{key} | Add/Set user data
-*UsersApi* | [**create_user**](docs/UsersApi.md#create_user) | **post** /rdb/v1/regions/{region}/instances/{instance_id}/users | Create a user on a given instance
-*UsersApi* | [**delete_user**](docs/UsersApi.md#delete_user) | **delete** /rdb/v1/regions/{region}/instances/{instance_id}/users/{name} | Delete a user on a given instance
-*UsersApi* | [**list_users**](docs/UsersApi.md#list_users) | **get** /rdb/v1/regions/{region}/instances/{instance_id}/users | List users of a given instance
-*UsersApi* | [**update_user**](docs/UsersApi.md#update_user) | **patch** /rdb/v1/regions/{region}/instances/{instance_id}/users/{name} | Update a user on a given instance
 *VersionsApi* | [**get_dns_zone_version_diff**](docs/VersionsApi.md#get_dns_zone_version_diff) | **get** /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff | Get DNS zone version diff
 *VersionsApi* | [**get_version**](docs/VersionsApi.md#get_version) | **get** /k8s/v1/regions/{region}/versions/{version_name} | Get details about a specific version
 *VersionsApi* | [**list_dns_zone_version_records**](docs/VersionsApi.md#list_dns_zone_version_records) | **get** /domain/v2beta1/dns-zones/version/{dns_zone_version_id} | List DNS zone version records
@@ -408,18 +261,7 @@ Class | Method | HTTP request | Description
  - [InlineObject](docs/InlineObject.md)
  - [InlineObject1](docs/InlineObject1.md)
  - [InlineObject10](docs/InlineObject10.md)
- - [InlineObject100](docs/InlineObject100.md)
- - [InlineObject101](docs/InlineObject101.md)
- - [InlineObject102](docs/InlineObject102.md)
- - [InlineObject103](docs/InlineObject103.md)
- - [InlineObject104](docs/InlineObject104.md)
- - [InlineObject105](docs/InlineObject105.md)
- - [InlineObject106](docs/InlineObject106.md)
- - [InlineObject107](docs/InlineObject107.md)
- - [InlineObject108](docs/InlineObject108.md)
- - [InlineObject109](docs/InlineObject109.md)
  - [InlineObject11](docs/InlineObject11.md)
- - [InlineObject110](docs/InlineObject110.md)
  - [InlineObject12](docs/InlineObject12.md)
  - [InlineObject13](docs/InlineObject13.md)
  - [InlineObject14](docs/InlineObject14.md)
@@ -463,70 +305,11 @@ Class | Method | HTTP request | Description
  - [InlineObject49](docs/InlineObject49.md)
  - [InlineObject5](docs/InlineObject5.md)
  - [InlineObject50](docs/InlineObject50.md)
- - [InlineObject51](docs/InlineObject51.md)
- - [InlineObject52](docs/InlineObject52.md)
- - [InlineObject53](docs/InlineObject53.md)
- - [InlineObject54](docs/InlineObject54.md)
- - [InlineObject55](docs/InlineObject55.md)
- - [InlineObject56](docs/InlineObject56.md)
- - [InlineObject57](docs/InlineObject57.md)
- - [InlineObject58](docs/InlineObject58.md)
- - [InlineObject59](docs/InlineObject59.md)
  - [InlineObject6](docs/InlineObject6.md)
- - [InlineObject60](docs/InlineObject60.md)
- - [InlineObject61](docs/InlineObject61.md)
- - [InlineObject62](docs/InlineObject62.md)
- - [InlineObject63](docs/InlineObject63.md)
- - [InlineObject64](docs/InlineObject64.md)
- - [InlineObject65](docs/InlineObject65.md)
- - [InlineObject66](docs/InlineObject66.md)
- - [InlineObject67](docs/InlineObject67.md)
- - [InlineObject68](docs/InlineObject68.md)
- - [InlineObject69](docs/InlineObject69.md)
  - [InlineObject7](docs/InlineObject7.md)
- - [InlineObject70](docs/InlineObject70.md)
- - [InlineObject71](docs/InlineObject71.md)
- - [InlineObject72](docs/InlineObject72.md)
- - [InlineObject73](docs/InlineObject73.md)
- - [InlineObject74](docs/InlineObject74.md)
- - [InlineObject75](docs/InlineObject75.md)
- - [InlineObject76](docs/InlineObject76.md)
- - [InlineObject77](docs/InlineObject77.md)
- - [InlineObject78](docs/InlineObject78.md)
- - [InlineObject79](docs/InlineObject79.md)
  - [InlineObject8](docs/InlineObject8.md)
- - [InlineObject80](docs/InlineObject80.md)
- - [InlineObject81](docs/InlineObject81.md)
- - [InlineObject82](docs/InlineObject82.md)
- - [InlineObject83](docs/InlineObject83.md)
- - [InlineObject84](docs/InlineObject84.md)
- - [InlineObject85](docs/InlineObject85.md)
- - [InlineObject86](docs/InlineObject86.md)
- - [InlineObject87](docs/InlineObject87.md)
- - [InlineObject88](docs/InlineObject88.md)
- - [InlineObject89](docs/InlineObject89.md)
  - [InlineObject9](docs/InlineObject9.md)
- - [InlineObject90](docs/InlineObject90.md)
- - [InlineObject91](docs/InlineObject91.md)
- - [InlineObject92](docs/InlineObject92.md)
- - [InlineObject93](docs/InlineObject93.md)
- - [InlineObject94](docs/InlineObject94.md)
- - [InlineObject95](docs/InlineObject95.md)
- - [InlineObject96](docs/InlineObject96.md)
- - [InlineObject97](docs/InlineObject97.md)
- - [InlineObject98](docs/InlineObject98.md)
- - [InlineObject99](docs/InlineObject99.md)
  - [InstanceV1ZonesZoneVolumesIdServer](docs/InstanceV1ZonesZoneVolumesIdServer.md)
- - [IotV1RegionsRegionDevicesDeviceIdMessageFilters](docs/IotV1RegionsRegionDevicesDeviceIdMessageFilters.md)
- - [IotV1RegionsRegionDevicesMessageFilters](docs/IotV1RegionsRegionDevicesMessageFilters.md)
- - [IotV1RegionsRegionDevicesMessageFiltersPublish](docs/IotV1RegionsRegionDevicesMessageFiltersPublish.md)
- - [IotV1RegionsRegionDevicesMessageFiltersSubscribe](docs/IotV1RegionsRegionDevicesMessageFiltersSubscribe.md)
- - [IotV1RegionsRegionRoutesDbConfig](docs/IotV1RegionsRegionRoutesDbConfig.md)
- - [IotV1RegionsRegionRoutesRestConfig](docs/IotV1RegionsRegionRoutesRestConfig.md)
- - [IotV1RegionsRegionRoutesRouteIdDbConfig](docs/IotV1RegionsRegionRoutesRouteIdDbConfig.md)
- - [IotV1RegionsRegionRoutesRouteIdRestConfig](docs/IotV1RegionsRegionRoutesRouteIdRestConfig.md)
- - [IotV1RegionsRegionRoutesRouteIdS3Config](docs/IotV1RegionsRegionRoutesRouteIdS3Config.md)
- - [IotV1RegionsRegionRoutesS3Config](docs/IotV1RegionsRegionRoutesS3Config.md)
  - [K8sV1RegionsRegionClustersAutoUpgrade](docs/K8sV1RegionsRegionClustersAutoUpgrade.md)
  - [K8sV1RegionsRegionClustersAutoUpgradeMaintenanceWindow](docs/K8sV1RegionsRegionClustersAutoUpgradeMaintenanceWindow.md)
  - [K8sV1RegionsRegionClustersAutoscalerConfig](docs/K8sV1RegionsRegionClustersAutoscalerConfig.md)
@@ -537,22 +320,6 @@ Class | Method | HTTP request | Description
  - [K8sV1RegionsRegionClustersClusterIdPoolsUpgradePolicy](docs/K8sV1RegionsRegionClustersClusterIdPoolsUpgradePolicy.md)
  - [K8sV1RegionsRegionClustersOpenIdConnectConfig](docs/K8sV1RegionsRegionClustersOpenIdConnectConfig.md)
  - [K8sV1RegionsRegionPoolsPoolIdKubeletArgs](docs/K8sV1RegionsRegionPoolsPoolIdKubeletArgs.md)
- - [LbV1RegionsRegionAclsAclIdAction](docs/LbV1RegionsRegionAclsAclIdAction.md)
- - [LbV1RegionsRegionAclsAclIdMatch](docs/LbV1RegionsRegionAclsAclIdMatch.md)
- - [LbV1RegionsRegionBackendsBackendIdHealthcheckHttpConfig](docs/LbV1RegionsRegionBackendsBackendIdHealthcheckHttpConfig.md)
- - [LbV1RegionsRegionBackendsBackendIdHealthcheckMysqlConfig](docs/LbV1RegionsRegionBackendsBackendIdHealthcheckMysqlConfig.md)
- - [LbV1RegionsRegionBackendsBackendIdHealthcheckPgsqlConfig](docs/LbV1RegionsRegionBackendsBackendIdHealthcheckPgsqlConfig.md)
- - [LbV1RegionsRegionFrontendsFrontendIdAclsMatch](docs/LbV1RegionsRegionFrontendsFrontendIdAclsMatch.md)
- - [LbV1RegionsRegionLbsLbIdBackendsHealthCheck](docs/LbV1RegionsRegionLbsLbIdBackendsHealthCheck.md)
- - [LbV1RegionsRegionLbsLbIdBackendsHealthCheckHttpConfig](docs/LbV1RegionsRegionLbsLbIdBackendsHealthCheckHttpConfig.md)
- - [LbV1RegionsRegionLbsLbIdBackendsHealthCheckMysqlConfig](docs/LbV1RegionsRegionLbsLbIdBackendsHealthCheckMysqlConfig.md)
- - [LbV1RegionsRegionLbsLbIdBackendsHealthCheckPgsqlConfig](docs/LbV1RegionsRegionLbsLbIdBackendsHealthCheckPgsqlConfig.md)
- - [LbV1RegionsRegionLbsLbIdCertificatesCustomCertificate](docs/LbV1RegionsRegionLbsLbIdCertificatesCustomCertificate.md)
- - [LbV1RegionsRegionLbsLbIdCertificatesLetsencrypt](docs/LbV1RegionsRegionLbsLbIdCertificatesLetsencrypt.md)
- - [LbV1RegionsRegionLbsLbIdPrivateNetworksPrivateNetworkIdAttachStaticConfig](docs/LbV1RegionsRegionLbsLbIdPrivateNetworksPrivateNetworkIdAttachStaticConfig.md)
- - [LbV1RegionsRegionRoutesMatch](docs/LbV1RegionsRegionRoutesMatch.md)
- - [LbV1RegionsRegionSubscribersEmailConfig](docs/LbV1RegionsRegionSubscribersEmailConfig.md)
- - [LbV1RegionsRegionSubscribersWebhookConfig](docs/LbV1RegionsRegionSubscribersWebhookConfig.md)
  - [ScalewayAppleSiliconV1alpha1ListOsResponse](docs/ScalewayAppleSiliconV1alpha1ListOsResponse.md)
  - [ScalewayAppleSiliconV1alpha1ListServerTypesResponse](docs/ScalewayAppleSiliconV1alpha1ListServerTypesResponse.md)
  - [ScalewayAppleSiliconV1alpha1ListServersResponse](docs/ScalewayAppleSiliconV1alpha1ListServersResponse.md)
@@ -562,28 +329,6 @@ Class | Method | HTTP request | Description
  - [ScalewayAppleSiliconV1alpha1ServerTypeCpu](docs/ScalewayAppleSiliconV1alpha1ServerTypeCpu.md)
  - [ScalewayAppleSiliconV1alpha1ServerTypeDisk](docs/ScalewayAppleSiliconV1alpha1ServerTypeDisk.md)
  - [ScalewayAppleSiliconV1alpha1ServerTypeMemory](docs/ScalewayAppleSiliconV1alpha1ServerTypeMemory.md)
- - [ScalewayBaremetalV1BmcAccess](docs/ScalewayBaremetalV1BmcAccess.md)
- - [ScalewayBaremetalV1Cpu](docs/ScalewayBaremetalV1Cpu.md)
- - [ScalewayBaremetalV1CreateServerRequestInstall](docs/ScalewayBaremetalV1CreateServerRequestInstall.md)
- - [ScalewayBaremetalV1Disk](docs/ScalewayBaremetalV1Disk.md)
- - [ScalewayBaremetalV1GetServerMetricsResponse](docs/ScalewayBaremetalV1GetServerMetricsResponse.md)
- - [ScalewayBaremetalV1GetServerMetricsResponsePings](docs/ScalewayBaremetalV1GetServerMetricsResponsePings.md)
- - [ScalewayBaremetalV1Ip](docs/ScalewayBaremetalV1Ip.md)
- - [ScalewayBaremetalV1ListOffersResponse](docs/ScalewayBaremetalV1ListOffersResponse.md)
- - [ScalewayBaremetalV1ListOsResponse](docs/ScalewayBaremetalV1ListOsResponse.md)
- - [ScalewayBaremetalV1ListServerEventsResponse](docs/ScalewayBaremetalV1ListServerEventsResponse.md)
- - [ScalewayBaremetalV1ListServersResponse](docs/ScalewayBaremetalV1ListServersResponse.md)
- - [ScalewayBaremetalV1Memory](docs/ScalewayBaremetalV1Memory.md)
- - [ScalewayBaremetalV1Offer](docs/ScalewayBaremetalV1Offer.md)
- - [ScalewayBaremetalV1OfferPricePerHour](docs/ScalewayBaremetalV1OfferPricePerHour.md)
- - [ScalewayBaremetalV1OfferPricePerMonth](docs/ScalewayBaremetalV1OfferPricePerMonth.md)
- - [ScalewayBaremetalV1Os](docs/ScalewayBaremetalV1Os.md)
- - [ScalewayBaremetalV1PersistentMemory](docs/ScalewayBaremetalV1PersistentMemory.md)
- - [ScalewayBaremetalV1RaidController](docs/ScalewayBaremetalV1RaidController.md)
- - [ScalewayBaremetalV1Server](docs/ScalewayBaremetalV1Server.md)
- - [ScalewayBaremetalV1ServerEvent](docs/ScalewayBaremetalV1ServerEvent.md)
- - [ScalewayBaremetalV1ServerInstall](docs/ScalewayBaremetalV1ServerInstall.md)
- - [ScalewayBaremetalV1ServerInstallStatus](docs/ScalewayBaremetalV1ServerInstallStatus.md)
  - [ScalewayDomainV2beta1DnsZone](docs/ScalewayDomainV2beta1DnsZone.md)
  - [ScalewayDomainV2beta1DnsZoneStatus](docs/ScalewayDomainV2beta1DnsZoneStatus.md)
  - [ScalewayDomainV2beta1DnsZoneVersion](docs/ScalewayDomainV2beta1DnsZoneVersion.md)
@@ -723,33 +468,6 @@ Class | Method | HTTP request | Description
  - [ScalewayInstanceV1VolumeTypeCapabilities](docs/ScalewayInstanceV1VolumeTypeCapabilities.md)
  - [ScalewayInstanceV1VolumeTypeConstraints](docs/ScalewayInstanceV1VolumeTypeConstraints.md)
  - [ScalewayInstanceV1VolumeVolumeType](docs/ScalewayInstanceV1VolumeVolumeType.md)
- - [ScalewayIotV1CreateDeviceResponse](docs/ScalewayIotV1CreateDeviceResponse.md)
- - [ScalewayIotV1CreateDeviceResponseCertificate](docs/ScalewayIotV1CreateDeviceResponseCertificate.md)
- - [ScalewayIotV1CreateDeviceResponseDevice](docs/ScalewayIotV1CreateDeviceResponseDevice.md)
- - [ScalewayIotV1CreateNetworkResponse](docs/ScalewayIotV1CreateNetworkResponse.md)
- - [ScalewayIotV1CreateNetworkResponseNetwork](docs/ScalewayIotV1CreateNetworkResponseNetwork.md)
- - [ScalewayIotV1Device](docs/ScalewayIotV1Device.md)
- - [ScalewayIotV1DeviceMessageFiltersRulePolicy](docs/ScalewayIotV1DeviceMessageFiltersRulePolicy.md)
- - [ScalewayIotV1GetDeviceCertificateResponse](docs/ScalewayIotV1GetDeviceCertificateResponse.md)
- - [ScalewayIotV1GetDeviceMetricsResponse](docs/ScalewayIotV1GetDeviceMetricsResponse.md)
- - [ScalewayIotV1GetHubCaResponse](docs/ScalewayIotV1GetHubCaResponse.md)
- - [ScalewayIotV1GetHubMetricsResponse](docs/ScalewayIotV1GetHubMetricsResponse.md)
- - [ScalewayIotV1Hub](docs/ScalewayIotV1Hub.md)
- - [ScalewayIotV1ListDevicesResponse](docs/ScalewayIotV1ListDevicesResponse.md)
- - [ScalewayIotV1ListHubsResponse](docs/ScalewayIotV1ListHubsResponse.md)
- - [ScalewayIotV1ListNetworksResponse](docs/ScalewayIotV1ListNetworksResponse.md)
- - [ScalewayIotV1ListRoutesResponse](docs/ScalewayIotV1ListRoutesResponse.md)
- - [ScalewayIotV1Network](docs/ScalewayIotV1Network.md)
- - [ScalewayIotV1RenewDeviceCertificateResponse](docs/ScalewayIotV1RenewDeviceCertificateResponse.md)
- - [ScalewayIotV1Route](docs/ScalewayIotV1Route.md)
- - [ScalewayIotV1RouteDatabaseConfigEngine](docs/ScalewayIotV1RouteDatabaseConfigEngine.md)
- - [ScalewayIotV1RouteDbConfig](docs/ScalewayIotV1RouteDbConfig.md)
- - [ScalewayIotV1RouteRestConfig](docs/ScalewayIotV1RouteRestConfig.md)
- - [ScalewayIotV1RouteRestConfigHttpVerb](docs/ScalewayIotV1RouteRestConfigHttpVerb.md)
- - [ScalewayIotV1RouteS3Config](docs/ScalewayIotV1RouteS3Config.md)
- - [ScalewayIotV1RouteS3ConfigS3Strategy](docs/ScalewayIotV1RouteS3ConfigS3Strategy.md)
- - [ScalewayIotV1RouteSummary](docs/ScalewayIotV1RouteSummary.md)
- - [ScalewayIotV1SetDeviceCertificateResponse](docs/ScalewayIotV1SetDeviceCertificateResponse.md)
  - [ScalewayK8sV1Cluster](docs/ScalewayK8sV1Cluster.md)
  - [ScalewayK8sV1ClusterAutoUpgrade](docs/ScalewayK8sV1ClusterAutoUpgrade.md)
  - [ScalewayK8sV1ClusterAutoscalerConfig](docs/ScalewayK8sV1ClusterAutoscalerConfig.md)
@@ -768,93 +486,6 @@ Class | Method | HTTP request | Description
  - [ScalewayK8sV1PoolUpgradePolicy](docs/ScalewayK8sV1PoolUpgradePolicy.md)
  - [ScalewayK8sV1Runtime](docs/ScalewayK8sV1Runtime.md)
  - [ScalewayK8sV1Version](docs/ScalewayK8sV1Version.md)
- - [ScalewayLbV1Acl](docs/ScalewayLbV1Acl.md)
- - [ScalewayLbV1AclFrontend](docs/ScalewayLbV1AclFrontend.md)
- - [ScalewayLbV1Backend](docs/ScalewayLbV1Backend.md)
- - [ScalewayLbV1BackendServerStats](docs/ScalewayLbV1BackendServerStats.md)
- - [ScalewayLbV1Certificate](docs/ScalewayLbV1Certificate.md)
- - [ScalewayLbV1CertificateLb](docs/ScalewayLbV1CertificateLb.md)
- - [ScalewayLbV1ForwardPortAlgorithm](docs/ScalewayLbV1ForwardPortAlgorithm.md)
- - [ScalewayLbV1Frontend](docs/ScalewayLbV1Frontend.md)
- - [ScalewayLbV1HealthCheck](docs/ScalewayLbV1HealthCheck.md)
- - [ScalewayLbV1Instance](docs/ScalewayLbV1Instance.md)
- - [ScalewayLbV1InstanceStatus](docs/ScalewayLbV1InstanceStatus.md)
- - [ScalewayLbV1Ip](docs/ScalewayLbV1Ip.md)
- - [ScalewayLbV1Lb](docs/ScalewayLbV1Lb.md)
- - [ScalewayLbV1LbStats](docs/ScalewayLbV1LbStats.md)
- - [ScalewayLbV1LbStatus](docs/ScalewayLbV1LbStatus.md)
- - [ScalewayLbV1LbType](docs/ScalewayLbV1LbType.md)
- - [ScalewayLbV1LbTypeStock](docs/ScalewayLbV1LbTypeStock.md)
- - [ScalewayLbV1ListAclResponse](docs/ScalewayLbV1ListAclResponse.md)
- - [ScalewayLbV1ListBackendStatsResponse](docs/ScalewayLbV1ListBackendStatsResponse.md)
- - [ScalewayLbV1ListBackendsResponse](docs/ScalewayLbV1ListBackendsResponse.md)
- - [ScalewayLbV1ListCertificatesResponse](docs/ScalewayLbV1ListCertificatesResponse.md)
- - [ScalewayLbV1ListFrontendsResponse](docs/ScalewayLbV1ListFrontendsResponse.md)
- - [ScalewayLbV1ListIpsResponse](docs/ScalewayLbV1ListIpsResponse.md)
- - [ScalewayLbV1ListLbPrivateNetworksResponse](docs/ScalewayLbV1ListLbPrivateNetworksResponse.md)
- - [ScalewayLbV1ListLbTypesResponse](docs/ScalewayLbV1ListLbTypesResponse.md)
- - [ScalewayLbV1ListLbsRequestOrderBy](docs/ScalewayLbV1ListLbsRequestOrderBy.md)
- - [ScalewayLbV1ListLbsResponse](docs/ScalewayLbV1ListLbsResponse.md)
- - [ScalewayLbV1ListPrivateNetworksRequestOrderBy](docs/ScalewayLbV1ListPrivateNetworksRequestOrderBy.md)
- - [ScalewayLbV1ListRoutesRequestOrderBy](docs/ScalewayLbV1ListRoutesRequestOrderBy.md)
- - [ScalewayLbV1ListRoutesResponse](docs/ScalewayLbV1ListRoutesResponse.md)
- - [ScalewayLbV1ListSubscriberResponse](docs/ScalewayLbV1ListSubscriberResponse.md)
- - [ScalewayLbV1OnMarkedDownAction](docs/ScalewayLbV1OnMarkedDownAction.md)
- - [ScalewayLbV1PrivateNetwork](docs/ScalewayLbV1PrivateNetwork.md)
- - [ScalewayLbV1PrivateNetworkLb](docs/ScalewayLbV1PrivateNetworkLb.md)
- - [ScalewayLbV1PrivateNetworkStaticConfig](docs/ScalewayLbV1PrivateNetworkStaticConfig.md)
- - [ScalewayLbV1Protocol](docs/ScalewayLbV1Protocol.md)
- - [ScalewayLbV1ProxyProtocol](docs/ScalewayLbV1ProxyProtocol.md)
- - [ScalewayLbV1Route](docs/ScalewayLbV1Route.md)
- - [ScalewayLbV1SslCompatibilityLevel](docs/ScalewayLbV1SslCompatibilityLevel.md)
- - [ScalewayLbV1StickySessionsType](docs/ScalewayLbV1StickySessionsType.md)
- - [ScalewayLbV1Subscriber](docs/ScalewayLbV1Subscriber.md)
- - [ScalewayLbV1SubscriberEmailConfig](docs/ScalewayLbV1SubscriberEmailConfig.md)
- - [ScalewayLbV1SubscriberWebhookConfig](docs/ScalewayLbV1SubscriberWebhookConfig.md)
- - [ScalewayRdbV1AclRule](docs/ScalewayRdbV1AclRule.md)
- - [ScalewayRdbV1AclRuleAction](docs/ScalewayRdbV1AclRuleAction.md)
- - [ScalewayRdbV1AclRuleDirection](docs/ScalewayRdbV1AclRuleDirection.md)
- - [ScalewayRdbV1AclRuleProtocol](docs/ScalewayRdbV1AclRuleProtocol.md)
- - [ScalewayRdbV1AclRuleRequest](docs/ScalewayRdbV1AclRuleRequest.md)
- - [ScalewayRdbV1AddInstanceAclRulesResponse](docs/ScalewayRdbV1AddInstanceAclRulesResponse.md)
- - [ScalewayRdbV1AddInstanceSettingsResponse](docs/ScalewayRdbV1AddInstanceSettingsResponse.md)
- - [ScalewayRdbV1Database](docs/ScalewayRdbV1Database.md)
- - [ScalewayRdbV1DatabaseBackup](docs/ScalewayRdbV1DatabaseBackup.md)
- - [ScalewayRdbV1DatabaseEngine](docs/ScalewayRdbV1DatabaseEngine.md)
- - [ScalewayRdbV1DeleteInstanceAclRulesResponse](docs/ScalewayRdbV1DeleteInstanceAclRulesResponse.md)
- - [ScalewayRdbV1DeleteInstanceSettingsResponse](docs/ScalewayRdbV1DeleteInstanceSettingsResponse.md)
- - [ScalewayRdbV1Endpoint](docs/ScalewayRdbV1Endpoint.md)
- - [ScalewayRdbV1EngineSetting](docs/ScalewayRdbV1EngineSetting.md)
- - [ScalewayRdbV1EngineSettingFloatMax](docs/ScalewayRdbV1EngineSettingFloatMax.md)
- - [ScalewayRdbV1EngineSettingFloatMin](docs/ScalewayRdbV1EngineSettingFloatMin.md)
- - [ScalewayRdbV1EngineVersion](docs/ScalewayRdbV1EngineVersion.md)
- - [ScalewayRdbV1Instance](docs/ScalewayRdbV1Instance.md)
- - [ScalewayRdbV1InstanceBackupSchedule](docs/ScalewayRdbV1InstanceBackupSchedule.md)
- - [ScalewayRdbV1InstanceEndpoint](docs/ScalewayRdbV1InstanceEndpoint.md)
- - [ScalewayRdbV1InstanceLog](docs/ScalewayRdbV1InstanceLog.md)
- - [ScalewayRdbV1InstanceMetrics](docs/ScalewayRdbV1InstanceMetrics.md)
- - [ScalewayRdbV1InstanceSetting](docs/ScalewayRdbV1InstanceSetting.md)
- - [ScalewayRdbV1InstanceVolume](docs/ScalewayRdbV1InstanceVolume.md)
- - [ScalewayRdbV1ListDatabaseBackupsResponse](docs/ScalewayRdbV1ListDatabaseBackupsResponse.md)
- - [ScalewayRdbV1ListDatabaseEnginesResponse](docs/ScalewayRdbV1ListDatabaseEnginesResponse.md)
- - [ScalewayRdbV1ListDatabasesResponse](docs/ScalewayRdbV1ListDatabasesResponse.md)
- - [ScalewayRdbV1ListInstanceAclRulesResponse](docs/ScalewayRdbV1ListInstanceAclRulesResponse.md)
- - [ScalewayRdbV1ListInstanceLogsResponse](docs/ScalewayRdbV1ListInstanceLogsResponse.md)
- - [ScalewayRdbV1ListInstancesResponse](docs/ScalewayRdbV1ListInstancesResponse.md)
- - [ScalewayRdbV1ListNodeTypesResponse](docs/ScalewayRdbV1ListNodeTypesResponse.md)
- - [ScalewayRdbV1ListPrivilegesResponse](docs/ScalewayRdbV1ListPrivilegesResponse.md)
- - [ScalewayRdbV1ListSnapshotsResponse](docs/ScalewayRdbV1ListSnapshotsResponse.md)
- - [ScalewayRdbV1ListUsersResponse](docs/ScalewayRdbV1ListUsersResponse.md)
- - [ScalewayRdbV1NodeType](docs/ScalewayRdbV1NodeType.md)
- - [ScalewayRdbV1NodeTypeVolumeConstraint](docs/ScalewayRdbV1NodeTypeVolumeConstraint.md)
- - [ScalewayRdbV1NodeTypeVolumeType](docs/ScalewayRdbV1NodeTypeVolumeType.md)
- - [ScalewayRdbV1PrepareInstanceLogsResponse](docs/ScalewayRdbV1PrepareInstanceLogsResponse.md)
- - [ScalewayRdbV1Privilege](docs/ScalewayRdbV1Privilege.md)
- - [ScalewayRdbV1SetInstanceAclRulesResponse](docs/ScalewayRdbV1SetInstanceAclRulesResponse.md)
- - [ScalewayRdbV1SetInstanceSettingsResponse](docs/ScalewayRdbV1SetInstanceSettingsResponse.md)
- - [ScalewayRdbV1Snapshot](docs/ScalewayRdbV1Snapshot.md)
- - [ScalewayRdbV1User](docs/ScalewayRdbV1User.md)
- - [ScalewayRdbV1VolumeType](docs/ScalewayRdbV1VolumeType.md)
  - [ScalewayRegistryV1Image](docs/ScalewayRegistryV1Image.md)
  - [ScalewayRegistryV1ListImagesResponse](docs/ScalewayRegistryV1ListImagesResponse.md)
  - [ScalewayRegistryV1ListNamespacesResponse](docs/ScalewayRegistryV1ListNamespacesResponse.md)
@@ -862,9 +493,7 @@ Class | Method | HTTP request | Description
  - [ScalewayRegistryV1Namespace](docs/ScalewayRegistryV1Namespace.md)
  - [ScalewayRegistryV1Tag](docs/ScalewayRegistryV1Tag.md)
  - [ScalewayStdFile](docs/ScalewayStdFile.md)
- - [ScalewayStdMapStringStringValue](docs/ScalewayStdMapStringStringValue.md)
  - [ScalewayStdServiceInfo](docs/ScalewayStdServiceInfo.md)
- - [ScalewayStdTimeSeries](docs/ScalewayStdTimeSeries.md)
  - [ScalewayVpcV1ListPrivateNetworksResponse](docs/ScalewayVpcV1ListPrivateNetworksResponse.md)
  - [ScalewayVpcV1PrivateNetwork](docs/ScalewayVpcV1PrivateNetwork.md)
 

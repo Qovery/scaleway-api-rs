@@ -111,7 +111,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, inline_object106)
+> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, inline_object46)
 Update DNS zone nameservers
 
 Update DNS zone nameservers and set optional glue records.
@@ -122,7 +122,7 @@ Update DNS zone nameservers and set optional glue records.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone where the DNS zone nameservers will be updated | [required] |
-**inline_object106** | [**InlineObject106**](InlineObject106.md) |  | [required] |
+**inline_object46** | [**InlineObject46**](InlineObject46.md) |  | [required] |
 
 ### Return type
 
@@ -142,7 +142,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, inline_object108)
+> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, inline_object48)
 Update DNS zone records
 
 Only available with default NS.<br/> Send a list of actions and records.  Action can be:  - add:   - Add new record   - Can be more specific and add a new IP to an existing A record for example  - set:   - Edit a record   - Can be more specific and edit an IP from an existing A record for example  - delete:   - Delete a record   - Can be more specific and delete an IP from an existing A record for example  - clear:   - Delete all records from a DNS zone  All edits will be versioned. 
@@ -153,7 +153,7 @@ Only available with default NS.<br/> Send a list of actions and records.  Action
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone where the DNS zone records will be updated | [required] |
-**inline_object108** | [**InlineObject108**](InlineObject108.md) |  | [required] |
+**inline_object48** | [**InlineObject48**](InlineObject48.md) |  | [required] |
 
 ### Return type
 

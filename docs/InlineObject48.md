@@ -4,9 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**frontend_id** | Option<**String**> | Origin of redirection | [optional]
-**backend_id** | Option<**String**> | Destination of destination | [optional]
-**_match** | Option<[**crate::models::LbV1RegionsRegionRoutesMatch**](_lb_v1_regions__region__routes_match.md)> |  | [optional]
+**changes** | Option<[**Vec<crate::models::ScalewayDomainV2beta1RecordChange>**](scaleway.domain.v2beta1.RecordChange.md)> | The changes made to the records | [optional]
+**return_all_records** | Option<**bool**> | Whether or not to return all the records | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

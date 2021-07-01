@@ -4,9 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | Option<**String**> | Name of the server (≠hostname), not updated if null | [optional]
-**description** | Option<**String**> | Description associated to the server, max 255 characters, not updated if null | [optional]
-**tags** | Option<**Vec<String>**> | Tags associated to the server, not updated if null | [optional]
+**name** | **String** | Define a namespace name | 
+**description** | Option<**String**> | Define a description | [optional]
+**organization_id** | Option<**String**> | Assign the namespace owner (deprecated) | [optional]
+**project_id** | Option<**String**> | Assign the namespace to a project ID | [optional]
+**is_public** | Option<**bool**> | Define the default visibility policy | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

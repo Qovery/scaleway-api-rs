@@ -4,12 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **String** | Resource name | 
-**inbound_port** | **f32** | TCP port to listen on the front side | 
-**backend_id** | **String** | Backend ID | 
-**timeout_client** | Option<**f32**> | Client session maximum inactivity time (in milliseconds) | [optional]
-**certificate_id** | Option<**String**> | Certificate ID, deprecated in favor of `certificate_ids` array! | [optional]
-**certificate_ids** | Option<**Vec<String>**> | List of certificate IDs to bind on the frontend | [optional]
+**description** | Option<**String**> | Description to associate with the Flexible IP, max 255 characters | [optional]
+**tags** | Option<**Vec<String>**> | Tags to associate with the Flexible IP | [optional]
+**reverse** | Option<**String**> | Reverse DNS value | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

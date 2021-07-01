@@ -275,7 +275,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_image
 
-> crate::models::ScalewayRegistryV1Image update_image(region, image_id, inline_object52)
+> crate::models::ScalewayRegistryV1Image update_image(region, image_id, inline_object22)
 Update an existing image
 
 Update the image associated with the given id.
@@ -287,7 +287,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **image_id** | **String** | Image ID to update | [required] |
-**inline_object52** | [**InlineObject52**](InlineObject52.md) |  | [required] |
+**inline_object22** | [**InlineObject22**](InlineObject22.md) |  | [required] |
 
 ### Return type
 

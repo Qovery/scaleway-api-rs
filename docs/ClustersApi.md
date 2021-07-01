@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 ## create_cluster
 
-> crate::models::ScalewayK8sV1Cluster create_cluster(region, inline_object76)
+> crate::models::ScalewayK8sV1Cluster create_cluster(region, inline_object25)
 Create a new cluster
 
 This method allows to create a new Kubernetes cluster on an account.
@@ -29,7 +29,7 @@ This method allows to create a new Kubernetes cluster on an account.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object76** | [**InlineObject76**](InlineObject76.md) |  | [required] |
+**inline_object25** | [**InlineObject25**](InlineObject25.md) |  | [required] |
 
 ### Return type
 
@@ -244,7 +244,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_cluster
 
-> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, inline_object77)
+> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, inline_object26)
 Update a cluster
 
 This method allows to update a specific Kubernetes cluster. Note that this method is not made to upgrade a Kubernetes cluster.
@@ -256,7 +256,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster to update | [required] |
-**inline_object77** | [**InlineObject77**](InlineObject77.md) |  | [required] |
+**inline_object26** | [**InlineObject26**](InlineObject26.md) |  | [required] |
 
 ### Return type
 
@@ -276,7 +276,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_cluster
 
-> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, inline_object79)
+> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, inline_object28)
 Upgrade a cluster
 
 This method allows to upgrade a specific Kubernetes cluster and/or its associated pools to a specific and supported Kubernetes version.
@@ -288,7 +288,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster to upgrade | [required] |
-**inline_object79** | [**InlineObject79**](InlineObject79.md) |  | [required] |
+**inline_object28** | [**InlineObject28**](InlineObject28.md) |  | [required] |
 
 ### Return type
 

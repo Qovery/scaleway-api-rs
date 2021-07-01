@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, inline_object91)
+> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, inline_object31)
 Create a private network
 
 ### Parameters
@@ -23,7 +23,7 @@ Create a private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object91** | [**InlineObject91**](InlineObject91.md) |  | [required] |
+**inline_object31** | [**InlineObject31**](InlineObject31.md) |  | [required] |
 
 ### Return type
 
@@ -136,7 +136,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, inline_object92)
+> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, inline_object32)
 Update private network
 
 ### Parameters
@@ -146,7 +146,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **private_network_id** | **String** | The private network ID | [required] |
-**inline_object92** | [**InlineObject92**](InlineObject92.md) |  | [required] |
+**inline_object32** | [**InlineObject32**](InlineObject32.md) |  | [required] |
 
 ### Return type
 

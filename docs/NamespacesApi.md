@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_namespace
 
-> crate::models::ScalewayRegistryV1Namespace create_namespace(region, inline_object53)
+> crate::models::ScalewayRegistryV1Namespace create_namespace(region, inline_object23)
 Create a new namespace
 
 ### Parameters
@@ -23,7 +23,7 @@ Create a new namespace
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object53** | [**InlineObject53**](InlineObject53.md) |  | [required] |
+**inline_object23** | [**InlineObject23**](InlineObject23.md) |  | [required] |
 
 ### Return type
 
@@ -139,7 +139,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_namespace
 
-> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, inline_object54)
+> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, inline_object24)
 Update an existing namespace
 
 Update the namespace associated with the given id.
@@ -151,7 +151,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **namespace_id** | **String** | Namespace ID to update | [required] |
-**inline_object54** | [**InlineObject54**](InlineObject54.md) |  | [required] |
+**inline_object24** | [**InlineObject24**](InlineObject24.md) |  | [required] |
 
 ### Return type
 

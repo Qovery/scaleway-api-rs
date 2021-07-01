@@ -4,14 +4,14 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_os1**](OsApi.md#get_os1) | **get** /apple-silicon/v1alpha1/zones/{zone}/os/{os_id} | Get an Operating System (OS)
-[**list_os1**](OsApi.md#list_os1) | **get** /apple-silicon/v1alpha1/zones/{zone}/os | List all Operating System (OS)
+[**get_os**](OsApi.md#get_os) | **get** /apple-silicon/v1alpha1/zones/{zone}/os/{os_id} | Get an Operating System (OS)
+[**list_os**](OsApi.md#list_os) | **get** /apple-silicon/v1alpha1/zones/{zone}/os | List all Operating System (OS)
 
 
 
-## get_os1
+## get_os
 
-> crate::models::ScalewayAppleSiliconV1alpha1Os get_os1(zone, os_id)
+> crate::models::ScalewayAppleSiliconV1alpha1Os get_os(zone, os_id)
 Get an Operating System (OS)
 
 Get an Operating System (OS).
@@ -40,9 +40,9 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
-## list_os1
+## list_os
 
-> crate::models::ScalewayAppleSiliconV1alpha1ListOsResponse list_os1(zone, page, page_size, server_type, name)
+> crate::models::ScalewayAppleSiliconV1alpha1ListOsResponse list_os(zone, page, page_size, server_type, name)
 List all Operating System (OS)
 
 List all Operating System (OS).
