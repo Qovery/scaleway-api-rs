@@ -1,6 +1,6 @@
 [package]
 name = "scaleway_api_rs"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Qovery Team", "OpenAPI Generator team and contributors"]
 description = "Generated library to interact with Scaleway API."
 repository = "https://github.com/Qovery/scaleway-api-rs"
