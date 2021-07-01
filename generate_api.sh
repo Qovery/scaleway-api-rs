@@ -48,9 +48,14 @@ openapi-generator generate -g rust \
 
 # do not use the generated Cargo.toml
 rm Cargo.toml
-cp Cargo.toml.template Cargo.toml
-rm .gitignore
-cp .gitignore.template .gitignore
+cp templates/Cargo.toml.template Cargo.toml
+
+# use custom .gitignore
+rm .gitignore || true
+cp templates/.gitignore.template .gitignore
+
+# adding README elements
+cat templates/README.preprend.md README.md > README.md
 
 # remove useless objects
 rm -rf .generation
