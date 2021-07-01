@@ -59,5 +59,6 @@ find . -type d -name '.openapi-generator' -exec rm -rf {} +
 find . -type f -name '.travis.yml' -exec rm -rf {} +
 find . -type f -name 'git_push.sh' -exec rm -rf {} +
 
+# cargo fmt and clippy
 cargo fmt
 cargo +nightly clippy --fix -Z unstable-options --allow-dirty --allow-staged
