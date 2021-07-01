@@ -3,6 +3,14 @@
 ## Introduction
 This library is auto-generated using [OpenAPI Generator](https://openapi-generator.tech).
 
+## Dependencies
+Here are dependencies you need to have to run generation locally:
+- Rust tool chain (stable + nightly builds): https://www.rust-lang.org/tools/install
+- `wget`: https://www.gnu.org/software/wget/
+- `npm` and `npx`: https://www.npmjs.com & https://www.npmjs.com/package/npx
+- `openapi-merge-cli`: https://www.npmjs.com/package/openapi-merge-cli
+- `openapi-generator`: https://github.com/OpenAPITools/openapi-generator
+
 ## Adding / Updating / Deleting any API specs
 Open specs links should be added into [generate_api.sh](generate_api.sh):
 ```
