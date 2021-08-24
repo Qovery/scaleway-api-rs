@@ -4,14 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**protocol** | [**crate::models::ScalewayInstanceV1SecurityGroupRuleProtocol**](scaleway.instance.v1.SecurityGroupRule.Protocol.md) |  | 
-**direction** | [**crate::models::ScalewayInstanceV1SecurityGroupRuleDirection**](scaleway.instance.v1.SecurityGroupRule.Direction.md) |  | 
-**action** | [**crate::models::ScalewayInstanceV1SecurityGroupRuleAction**](scaleway.instance.v1.SecurityGroupRule.Action.md) |  | 
-**ip_range** | **String** | (IP network) | 
-**dest_port_from** | Option<**f32**> |  | [optional]
-**dest_port_to** | Option<**f32**> |  | [optional]
-**position** | Option<**f32**> |  | [optional]
-**editable** | Option<**bool**> |  | [optional]
+**backup_schedule_frequency** | Option<**f32**> | In hours | [optional]
+**backup_schedule_retention** | Option<**f32**> | In days | [optional]
+**is_backup_schedule_disabled** | Option<**bool**> | Whether or not the backup schedule is disabled | [optional]
+**name** | Option<**String**> | Name of the instance | [optional]
+**tags** | Option<**Vec<String>**> | Tags of a given instance | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

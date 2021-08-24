@@ -4,17 +4,17 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_namespace**](NamespacesApi.md#create_namespace) | **post** /registry/v1/regions/{region}/namespaces | Create a new namespace
-[**delete_namespace**](NamespacesApi.md#delete_namespace) | **delete** /registry/v1/regions/{region}/namespaces/{namespace_id} | Delete an existing namespace
-[**get_namespace**](NamespacesApi.md#get_namespace) | **get** /registry/v1/regions/{region}/namespaces/{namespace_id} | Get a namespace
-[**list_namespaces**](NamespacesApi.md#list_namespaces) | **get** /registry/v1/regions/{region}/namespaces | List all your namespaces
-[**update_namespace**](NamespacesApi.md#update_namespace) | **patch** /registry/v1/regions/{region}/namespaces/{namespace_id} | Update an existing namespace
+[**create_namespace**](NamespacesApi.md#create_namespace) | **POST** /registry/v1/regions/{region}/namespaces | Create a new namespace
+[**delete_namespace**](NamespacesApi.md#delete_namespace) | **DELETE** /registry/v1/regions/{region}/namespaces/{namespace_id} | Delete an existing namespace
+[**get_namespace**](NamespacesApi.md#get_namespace) | **GET** /registry/v1/regions/{region}/namespaces/{namespace_id} | Get a namespace
+[**list_namespaces**](NamespacesApi.md#list_namespaces) | **GET** /registry/v1/regions/{region}/namespaces | List all your namespaces
+[**update_namespace**](NamespacesApi.md#update_namespace) | **PATCH** /registry/v1/regions/{region}/namespaces/{namespace_id} | Update an existing namespace
 
 
 
 ## create_namespace
 
-> crate::models::ScalewayRegistryV1Namespace create_namespace(region, inline_object23)
+> crate::models::ScalewayRegistryV1Namespace create_namespace(region, inline_object29)
 Create a new namespace
 
 ### Parameters
@@ -23,7 +23,7 @@ Create a new namespace
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object23** | [**InlineObject23**](InlineObject23.md) |  | [required] |
+**inline_object29** | [**InlineObject29**](InlineObject29.md) |  | [required] |
 
 ### Return type
 
@@ -139,7 +139,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_namespace
 
-> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, inline_object24)
+> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, inline_object30)
 Update an existing namespace
 
 Update the namespace associated with the given id.
@@ -151,7 +151,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **namespace_id** | **String** | Namespace ID to update | [required] |
-**inline_object24** | [**InlineObject24**](InlineObject24.md) |  | [required] |
+**inline_object30** | [**InlineObject30**](InlineObject30.md) |  | [required] |
 
 ### Return type
 

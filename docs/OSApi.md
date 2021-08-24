@@ -1,32 +1,32 @@
-# \OsApi
+# \OSApi
 
 All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_os**](OsApi.md#get_os) | **get** /apple-silicon/v1alpha1/zones/{zone}/os/{os_id} | Get an Operating System (OS)
-[**list_os**](OsApi.md#list_os) | **get** /apple-silicon/v1alpha1/zones/{zone}/os | List all Operating System (OS)
+[**get_os**](OSApi.md#get_os) | **GET** /baremetal/v1/zones/{zone}/os/{os_id} | Get an OS with a given ID
+[**list_os**](OSApi.md#list_os) | **GET** /baremetal/v1/zones/{zone}/os | List all available OS that can be install on a baremetal server
 
 
 
 ## get_os
 
-> crate::models::ScalewayAppleSiliconV1alpha1Os get_os(zone, os_id)
-Get an Operating System (OS)
+> crate::models::ScalewayBaremetalV1Os get_os(zone, os_id)
+Get an OS with a given ID
 
-Get an Operating System (OS).
+Return specific OS for the given ID.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**zone** | **String** | The global you want to target | [required] |
-**os_id** | **String** | UUID of the OS you want to get | [required] |
+**zone** | **String** | The zone you want to target | [required] |
+**os_id** | **String** | ID of the OS | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayAppleSiliconV1alpha1Os**](scaleway.apple_silicon.v1alpha1.OS.md)
+[**crate::models::ScalewayBaremetalV1Os**](scaleway.baremetal.v1.OS.md)
 
 ### Authorization
 
@@ -42,25 +42,24 @@ Name | Type | Description  | Required | Notes
 
 ## list_os
 
-> crate::models::ScalewayAppleSiliconV1alpha1ListOsResponse list_os(zone, page, page_size, server_type, name)
-List all Operating System (OS)
+> crate::models::ScalewayBaremetalV1ListOsResponse list_os(zone, page, page_size, offer_id)
+List all available OS that can be install on a baremetal server
 
-List all Operating System (OS).
+List all available OS that can be install on a baremetal server.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**zone** | **String** | The global you want to target | [required] |
-**page** | Option<**f32**> | A positive integer to choose the page to return |  |[default to 1]
-**page_size** | Option<**f32**> | A positive integer lower or equal to 100 to select the number of items to return |  |
-**server_type** | Option<**String**> | List of compatible server type |  |
-**name** | Option<**String**> | Filter os by name (for eg. \"11.1\" will return \"11.1.2\" and \"11.1\" but not \"12\") |  |
+**zone** | **String** | The zone you want to target | [required] |
+**page** | Option<**f32**> | Page number |  |[default to 1]
+**page_size** | Option<**f32**> | Number of OS per page |  |[default to 20]
+**offer_id** | Option<**String**> | Filter OS by offer ID |  |
 
 ### Return type
 
-[**crate::models::ScalewayAppleSiliconV1alpha1ListOsResponse**](scaleway.apple_silicon.v1alpha1.ListOSResponse.md)
+[**crate::models::ScalewayBaremetalV1ListOsResponse**](scaleway.baremetal.v1.ListOSResponse.md)
 
 ### Authorization
 

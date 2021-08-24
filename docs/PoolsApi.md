@@ -4,18 +4,18 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_pool**](PoolsApi.md#create_pool) | **post** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | Create a new pool in a cluster
-[**delete_pool**](PoolsApi.md#delete_pool) | **delete** /k8s/v1/regions/{region}/pools/{pool_id} | Delete a pool in a cluster
-[**get_pool**](PoolsApi.md#get_pool) | **get** /k8s/v1/regions/{region}/pools/{pool_id} | Get a pool in a cluster
-[**list_pools**](PoolsApi.md#list_pools) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | List all the pools in a cluster
-[**update_pool**](PoolsApi.md#update_pool) | **patch** /k8s/v1/regions/{region}/pools/{pool_id} | Update a pool in a cluster
-[**upgrade_pool**](PoolsApi.md#upgrade_pool) | **post** /k8s/v1/regions/{region}/pools/{pool_id}/upgrade | Upgrade a pool in a cluster
+[**create_pool**](PoolsApi.md#create_pool) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | Create a new pool in a cluster
+[**delete_pool**](PoolsApi.md#delete_pool) | **DELETE** /k8s/v1/regions/{region}/pools/{pool_id} | Delete a pool in a cluster
+[**get_pool**](PoolsApi.md#get_pool) | **GET** /k8s/v1/regions/{region}/pools/{pool_id} | Get a pool in a cluster
+[**list_pools**](PoolsApi.md#list_pools) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | List all the pools in a cluster
+[**update_pool**](PoolsApi.md#update_pool) | **PATCH** /k8s/v1/regions/{region}/pools/{pool_id} | Update a pool in a cluster
+[**upgrade_pool**](PoolsApi.md#upgrade_pool) | **POST** /k8s/v1/regions/{region}/pools/{pool_id}/upgrade | Upgrade a pool in a cluster
 
 
 
 ## create_pool
 
-> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, inline_object27)
+> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, inline_object33)
 Create a new pool in a cluster
 
 This method allows to create a new pool in a specific Kubernetes cluster.
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster in which the pool will be created | [required] |
-**inline_object27** | [**InlineObject27**](InlineObject27.md) |  | [required] |
+**inline_object33** | [**InlineObject33**](InlineObject33.md) |  | [required] |
 
 ### Return type
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_pool
 
-> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, inline_object29)
+> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, inline_object35)
 Update a pool in a cluster
 
 This method allows to update some attributes of a specific pool such as the size, the autoscaling enablement, the tags, ...
@@ -157,7 +157,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **pool_id** | **String** | The ID of the pool to update | [required] |
-**inline_object29** | [**InlineObject29**](InlineObject29.md) |  | [required] |
+**inline_object35** | [**InlineObject35**](InlineObject35.md) |  | [required] |
 
 ### Return type
 
@@ -177,7 +177,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_pool
 
-> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, inline_object30)
+> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, inline_object36)
 Upgrade a pool in a cluster
 
 This method allows to upgrade the Kubernetes version of a specific pool. Note that this will work when the targeted version is the same than the version of the cluster.
@@ -189,7 +189,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **pool_id** | **String** | The ID of the pool to upgrade | [required] |
-**inline_object30** | [**InlineObject30**](InlineObject30.md) |  | [required] |
+**inline_object36** | [**InlineObject36**](InlineObject36.md) |  | [required] |
 
 ### Return type
 

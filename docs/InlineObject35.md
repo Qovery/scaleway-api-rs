@@ -4,11 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**project_id** | **String** | ID of the project to associate with the Flexible IP | 
-**description** | Option<**String**> | Description to associate with the Flexible IP, max 255 characters | [optional]
-**tags** | Option<**Vec<String>**> | Tags to associate to the Flexible IP | [optional]
-**server_id** | Option<**String**> | Server ID on which to attach the created Flexible IP | [optional]
-**reverse** | Option<**String**> | Reverse DNS value | [optional]
+**autoscaling** | Option<**bool**> | The new value for the enablement of autoscaling for the pool | [optional]
+**size** | Option<**f32**> | The new size for the pool | [optional]
+**min_size** | Option<**f32**> | The new minimun size for the pool | [optional]
+**max_size** | Option<**f32**> | The new maximum size for the pool | [optional]
+**autohealing** | Option<**bool**> | The new value for the enablement of autohealing for the pool | [optional]
+**tags** | Option<**Vec<String>**> | The new tags associated with the pool | [optional]
+**kubelet_args** | Option<[**crate::models::K8sV1RegionsRegionPoolsPoolIdKubeletArgs**](_k8s_v1_regions__region__pools__pool_id__kubelet_args.md)> |  | [optional]
+**upgrade_policy** | Option<[**crate::models::K8sV1RegionsRegionClustersClusterIdPoolsUpgradePolicy**](_k8s_v1_regions__region__clusters__cluster_id__pools_upgrade_policy.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -4,19 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | Option<**String**> | The name of the security group | [optional]
-**creation_date** | Option<**String**> | The creation date of the security group (will be ignored) | [optional]
-**modification_date** | Option<**String**> | The modification date of the security group (will be ignored) | [optional]
-**description** | Option<**String**> | The description of the security group | [optional]
-**enable_default_security** | Option<**bool**> | True if SMTP is blocked on IPv4 and IPv6. This feature is read only, please open a ticket if you need to make it configurable. | [optional]
-**inbound_default_policy** | Option<**String**> | The default inbound policy | [optional][default to InboundDefaultPolicy_Accept]
-**outbound_default_policy** | Option<**String**> | The default outbound policy | [optional][default to OutboundDefaultPolicy_Accept]
-**organization** | Option<**String**> | The security groups organization ID | [optional]
-**project** | Option<**String**> | The security group project ID | [optional]
-**organization_default** | Option<**bool**> | Please use project_default instead | [optional]
-**project_default** | Option<**bool**> | True use this security group for future instances created in this project | [optional]
-**servers** | Option<[**Vec<crate::models::ScalewayInstanceV1ServerSummary>**](scaleway.instance.v1.ServerSummary.md)> | The servers attached to this security group | [optional]
-**stateful** | Option<**bool**> | True to set the security group as stateful | [optional]
+**organization_id** | Option<**String**> | Please use `project_id` instead | [optional]
+**project_id** | Option<**String**> | The project ID on which to create the instance | [optional]
+**name** | Option<**String**> | Name of the instance | [optional]
+**engine** | **String** | Database engine of the database (PostgreSQL, MySQL, ...) | 
+**user_name** | **String** | Name of the user created when the instance is created | 
+**password** | **String** | Password of the user | 
+**node_type** | **String** | Type of node to use for the instance | 
+**is_ha_cluster** | Option<**bool**> | Whether or not High-Availability is enabled | [optional]
+**disable_backup** | Option<**bool**> | Whether or not backups are disabled | [optional]
+**tags** | Option<**Vec<String>**> | Tags to apply to the instance | [optional]
+**init_settings** | Option<[**Vec<crate::models::ScalewayRdbV1InstanceSetting>**](scaleway.rdb.v1.InstanceSetting.md)> | List of engine settings to be set at database initialisation | [optional]
+**volume_type** | Option<**String**> | Type of volume where data are stored (lssd, bssd, ...) | [optional][default to VolumeType_Lssd]
+**volume_size** | Option<**f32**> | Volume size when volume_type is not lssd (in bytes) | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

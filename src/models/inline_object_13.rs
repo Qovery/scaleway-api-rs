@@ -1,7 +1,7 @@
 /*
- * Instance API
+ * Bare metal API
  *
- * # Introduction  ## Endpoints  Scaleway instance API can be reach on  - `https://api.scaleway.com/instance/v1/zones/fr-par-1` - `https://api.scaleway.com/instance/v1/zones/fr-par-2` - `https://api.scaleway.com/instance/v1/zones/nl-ams-1` - `https://api.scaleway.com/instance/v1/zones/pl-waw-1`  Older endpoints are still reachable but should not be used for new projects  - `https://cp-par1.scaleway.com` - `https://cp-ams1.scaleway.com`  <Example>  The following code is an example request to retrieve detailed information about a volume:  ``` % curl -H 'X-Auth-Token: xxxxxxxx-xxxx-xxxxx-xxxx-xxxxxxxxxxxxx' -H 'Content-Type: application/json' https://api.scaleway.com/instance/v1/zones/fr-par-1/volumes/f929fe39-63f8-4be8-a80e-1e9c8ae22a76 -i  HTTP/1.1 200 OK Server: nginx Date: Thu, 22 May 2014 07:55:00 GMT Content-Type: application/json Content-Length: 1345 Connection: keep-alive Strict-Transport-Security: max-age=86400  {   \"volumes\": [     {       \"export_uri\": null,       \"id\": \"f929fe39-63f8-4be8-a80e-1e9c8ae22a76\",       \"name\": \"volume-0-1\",       \"organization\": \"000a115d-2852-4b0a-9ce8-47f1134ba95a\",       \"server\": null,       \"size\": 10000000000,       \"volume_type\": \"l_ssd\"     },     {       \"export_uri\": null,       \"id\": \"0facb6b5-b117-441a-81c1-f28b1d723779\",       \"name\": \"volume-0-2\",       \"organization\": \"000a115d-2852-4b0a-9ce8-47f1134ba95a\",       \"server\": null,       \"size\": 20000000000,       \"volume_type\": \"l_ssd\"     }   ] } ```  </Example>  ## Pagination  Most of listing requests receive a paginated response.  **Paginated request**  Requests against paginated endpoints accept two `query` arguments:  - `page`, a positive integer to choose the page to return. - `per_page`, an positive integer lower or equal to 100 to select the number of   items to return. The default value is `50`.  Paginated endpoints usually also accept filters to search and sort results. These filters are documented along each endpoint documentation.  **Paginated response**  ```bash % curl -H 'X-Auth-Token: <token>' 'https://api.scaleway.com/instance/v1/zones/fr-par-1/images/?page=2&per_page=10' -i HTTP/1.0 200 OK [...] X-Total-Count: 209 [...] ```  The `X-Total-Count` header contains the total number of items for the resource.
+ * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
  *
  * The version of the OpenAPI document: v1
  *
@@ -10,81 +10,13 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject13 {
-    /// The server name
-    #[serde(rename = "name")]
-    pub name: String,
-    /// Define if a dynamic IP is required for the instance
-    #[serde(
-        rename = "dynamic_ip_required",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub dynamic_ip_required: Option<bool>,
-    /// Define the server commercial type (i.e. GP1-S)
-    #[serde(rename = "commercial_type")]
-    pub commercial_type: String,
-    /// The server image ID
-    #[serde(rename = "image", skip_serializing_if = "Option::is_none")]
-    pub image: Option<String>,
-    /// The volumes attached to the server
-    #[serde(rename = "volumes", skip_serializing_if = "Option::is_none")]
-    pub volumes: Option<::std::collections::HashMap<String, serde_json::Value>>,
-    /// True if IPv6 is enabled on the server
-    #[serde(rename = "enable_ipv6", skip_serializing_if = "Option::is_none")]
-    pub enable_ipv6: Option<bool>,
-    /// The ID of the reserved IP to attach to the server
-    #[serde(rename = "public_ip", skip_serializing_if = "Option::is_none")]
-    pub public_ip: Option<String>,
-    /// The boot type to use
-    #[serde(rename = "boot_type", skip_serializing_if = "Option::is_none")]
-    pub boot_type: Option<BootType>,
-    /// The bootscript ID to use when `boot_type` is set to `bootscript`
-    #[serde(rename = "bootscript", skip_serializing_if = "Option::is_none")]
-    pub bootscript: Option<String>,
-    /// The server organization ID
-    #[serde(rename = "organization", skip_serializing_if = "Option::is_none")]
-    pub organization: Option<String>,
-    /// The server project ID
-    #[serde(rename = "project", skip_serializing_if = "Option::is_none")]
-    pub project: Option<String>,
-    /// The server tags
-    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
-    pub tags: Option<Vec<String>>,
-    /// The security group ID
-    #[serde(rename = "security_group", skip_serializing_if = "Option::is_none")]
-    pub security_group: Option<String>,
-    /// Placement group ID if server must be part of a placement group
-    #[serde(rename = "placement_group", skip_serializing_if = "Option::is_none")]
-    pub placement_group: Option<String>,
+    /// ACLs rules to add to the instance
+    #[serde(rename = "rules", skip_serializing_if = "Option::is_none")]
+    pub rules: Option<Vec<crate::models::ScalewayRdbV1AclRuleRequest>>,
 }
 
 impl InlineObject13 {
-    pub fn new(name: String, commercial_type: String) -> InlineObject13 {
-        InlineObject13 {
-            name,
-            dynamic_ip_required: None,
-            commercial_type,
-            image: None,
-            volumes: None,
-            enable_ipv6: None,
-            public_ip: None,
-            boot_type: None,
-            bootscript: None,
-            organization: None,
-            project: None,
-            tags: None,
-            security_group: None,
-            placement_group: None,
-        }
+    pub fn new() -> InlineObject13 {
+        InlineObject13 { rules: None }
     }
-}
-
-/// The boot type to use
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum BootType {
-    #[serde(rename = "local")]
-    Local,
-    #[serde(rename = "bootscript")]
-    Bootscript,
-    #[serde(rename = "rescue")]
-    Rescue,
 }

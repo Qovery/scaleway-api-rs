@@ -1,7 +1,7 @@
 /*
- * Instance API
+ * Bare metal API
  *
- * # Introduction  ## Endpoints  Scaleway instance API can be reach on  - `https://api.scaleway.com/instance/v1/zones/fr-par-1` - `https://api.scaleway.com/instance/v1/zones/fr-par-2` - `https://api.scaleway.com/instance/v1/zones/nl-ams-1` - `https://api.scaleway.com/instance/v1/zones/pl-waw-1`  Older endpoints are still reachable but should not be used for new projects  - `https://cp-par1.scaleway.com` - `https://cp-ams1.scaleway.com`  <Example>  The following code is an example request to retrieve detailed information about a volume:  ``` % curl -H 'X-Auth-Token: xxxxxxxx-xxxx-xxxxx-xxxx-xxxxxxxxxxxxx' -H 'Content-Type: application/json' https://api.scaleway.com/instance/v1/zones/fr-par-1/volumes/f929fe39-63f8-4be8-a80e-1e9c8ae22a76 -i  HTTP/1.1 200 OK Server: nginx Date: Thu, 22 May 2014 07:55:00 GMT Content-Type: application/json Content-Length: 1345 Connection: keep-alive Strict-Transport-Security: max-age=86400  {   \"volumes\": [     {       \"export_uri\": null,       \"id\": \"f929fe39-63f8-4be8-a80e-1e9c8ae22a76\",       \"name\": \"volume-0-1\",       \"organization\": \"000a115d-2852-4b0a-9ce8-47f1134ba95a\",       \"server\": null,       \"size\": 10000000000,       \"volume_type\": \"l_ssd\"     },     {       \"export_uri\": null,       \"id\": \"0facb6b5-b117-441a-81c1-f28b1d723779\",       \"name\": \"volume-0-2\",       \"organization\": \"000a115d-2852-4b0a-9ce8-47f1134ba95a\",       \"server\": null,       \"size\": 20000000000,       \"volume_type\": \"l_ssd\"     }   ] } ```  </Example>  ## Pagination  Most of listing requests receive a paginated response.  **Paginated request**  Requests against paginated endpoints accept two `query` arguments:  - `page`, a positive integer to choose the page to return. - `per_page`, an positive integer lower or equal to 100 to select the number of   items to return. The default value is `50`.  Paginated endpoints usually also accept filters to search and sort results. These filters are documented along each endpoint documentation.  **Paginated response**  ```bash % curl -H 'X-Auth-Token: <token>' 'https://api.scaleway.com/instance/v1/zones/fr-par-1/images/?page=2&per_page=10' -i HTTP/1.0 200 OK [...] X-Total-Count: 209 [...] ```  The `X-Total-Count` header contains the total number of items for the resource.
+ * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
  *
  * The version of the OpenAPI document: v1
  *
@@ -10,92 +10,77 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject10 {
-    /// The name of the security group
+    /// Please use `project_id` instead
+    #[serde(rename = "organization_id", skip_serializing_if = "Option::is_none")]
+    pub organization_id: Option<String>,
+    /// The project ID on which to create the instance
+    #[serde(rename = "project_id", skip_serializing_if = "Option::is_none")]
+    pub project_id: Option<String>,
+    /// Name of the instance
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    /// The creation date of the security group (will be ignored)
-    #[serde(rename = "creation_date", skip_serializing_if = "Option::is_none")]
-    pub creation_date: Option<String>,
-    /// The modification date of the security group (will be ignored)
-    #[serde(rename = "modification_date", skip_serializing_if = "Option::is_none")]
-    pub modification_date: Option<String>,
-    /// The description of the security group
-    #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    /// True if SMTP is blocked on IPv4 and IPv6. This feature is read only, please open a ticket if you need to make it configurable.
-    #[serde(
-        rename = "enable_default_security",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub enable_default_security: Option<bool>,
-    /// The default inbound policy
-    #[serde(
-        rename = "inbound_default_policy",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub inbound_default_policy: Option<InboundDefaultPolicy>,
-    /// The default outbound policy
-    #[serde(
-        rename = "outbound_default_policy",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub outbound_default_policy: Option<OutboundDefaultPolicy>,
-    /// The security groups organization ID
-    #[serde(rename = "organization", skip_serializing_if = "Option::is_none")]
-    pub organization: Option<String>,
-    /// The security group project ID
-    #[serde(rename = "project", skip_serializing_if = "Option::is_none")]
-    pub project: Option<String>,
-    /// Please use project_default instead
-    #[serde(
-        rename = "organization_default",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub organization_default: Option<bool>,
-    /// True use this security group for future instances created in this project
-    #[serde(rename = "project_default", skip_serializing_if = "Option::is_none")]
-    pub project_default: Option<bool>,
-    /// The servers attached to this security group
-    #[serde(rename = "servers", skip_serializing_if = "Option::is_none")]
-    pub servers: Option<Vec<crate::models::ScalewayInstanceV1ServerSummary>>,
-    /// True to set the security group as stateful
-    #[serde(rename = "stateful", skip_serializing_if = "Option::is_none")]
-    pub stateful: Option<bool>,
+    /// Database engine of the database (PostgreSQL, MySQL, ...)
+    #[serde(rename = "engine")]
+    pub engine: String,
+    /// Name of the user created when the instance is created
+    #[serde(rename = "user_name")]
+    pub user_name: String,
+    /// Password of the user
+    #[serde(rename = "password")]
+    pub password: String,
+    /// Type of node to use for the instance
+    #[serde(rename = "node_type")]
+    pub node_type: String,
+    /// Whether or not High-Availability is enabled
+    #[serde(rename = "is_ha_cluster", skip_serializing_if = "Option::is_none")]
+    pub is_ha_cluster: Option<bool>,
+    /// Whether or not backups are disabled
+    #[serde(rename = "disable_backup", skip_serializing_if = "Option::is_none")]
+    pub disable_backup: Option<bool>,
+    /// Tags to apply to the instance
+    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
+    /// List of engine settings to be set at database initialisation
+    #[serde(rename = "init_settings", skip_serializing_if = "Option::is_none")]
+    pub init_settings: Option<Vec<crate::models::ScalewayRdbV1InstanceSetting>>,
+    /// Type of volume where data are stored (lssd, bssd, ...)
+    #[serde(rename = "volume_type", skip_serializing_if = "Option::is_none")]
+    pub volume_type: Option<VolumeType>,
+    /// Volume size when volume_type is not lssd (in bytes)
+    #[serde(rename = "volume_size", skip_serializing_if = "Option::is_none")]
+    pub volume_size: Option<f32>,
 }
 
 impl InlineObject10 {
-    pub fn new() -> InlineObject10 {
+    pub fn new(
+        engine: String,
+        user_name: String,
+        password: String,
+        node_type: String,
+    ) -> InlineObject10 {
         InlineObject10 {
+            organization_id: None,
+            project_id: None,
             name: None,
-            creation_date: None,
-            modification_date: None,
-            description: None,
-            enable_default_security: None,
-            inbound_default_policy: None,
-            outbound_default_policy: None,
-            organization: None,
-            project: None,
-            organization_default: None,
-            project_default: None,
-            servers: None,
-            stateful: None,
+            engine,
+            user_name,
+            password,
+            node_type,
+            is_ha_cluster: None,
+            disable_backup: None,
+            tags: None,
+            init_settings: None,
+            volume_type: None,
+            volume_size: None,
         }
     }
 }
 
-/// The default inbound policy
+/// Type of volume where data are stored (lssd, bssd, ...)
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum InboundDefaultPolicy {
-    #[serde(rename = "accept")]
-    Accept,
-    #[serde(rename = "drop")]
-    Drop,
-}
-/// The default outbound policy
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum OutboundDefaultPolicy {
-    #[serde(rename = "accept")]
-    Accept,
-    #[serde(rename = "drop")]
-    Drop,
+pub enum VolumeType {
+    #[serde(rename = "lssd")]
+    Lssd,
+    #[serde(rename = "bssd")]
+    Bssd,
 }

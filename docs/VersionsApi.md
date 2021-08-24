@@ -4,12 +4,12 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_dns_zone_version_diff**](VersionsApi.md#get_dns_zone_version_diff) | **get** /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff | Get DNS zone version diff
-[**get_version**](VersionsApi.md#get_version) | **get** /k8s/v1/regions/{region}/versions/{version_name} | Get details about a specific version
-[**list_dns_zone_version_records**](VersionsApi.md#list_dns_zone_version_records) | **get** /domain/v2beta1/dns-zones/version/{dns_zone_version_id} | List DNS zone version records
-[**list_dns_zone_versions**](VersionsApi.md#list_dns_zone_versions) | **get** /domain/v2beta1/dns-zones/{dns_zone}/versions | List DNS zone versions
-[**list_versions**](VersionsApi.md#list_versions) | **get** /k8s/v1/regions/{region}/versions | List all available versions
-[**restore_dns_zone_version**](VersionsApi.md#restore_dns_zone_version) | **post** /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/restore | Restore DNS zone version
+[**get_dns_zone_version_diff**](VersionsApi.md#get_dns_zone_version_diff) | **GET** /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff | Get DNS zone version diff
+[**get_version**](VersionsApi.md#get_version) | **GET** /k8s/v1/regions/{region}/versions/{version_name} | Get details about a specific version
+[**list_dns_zone_version_records**](VersionsApi.md#list_dns_zone_version_records) | **GET** /domain/v2beta1/dns-zones/version/{dns_zone_version_id} | List DNS zone version records
+[**list_dns_zone_versions**](VersionsApi.md#list_dns_zone_versions) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/versions | List DNS zone versions
+[**list_versions**](VersionsApi.md#list_versions) | **GET** /k8s/v1/regions/{region}/versions | List all available versions
+[**restore_dns_zone_version**](VersionsApi.md#restore_dns_zone_version) | **POST** /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/restore | Restore DNS zone version
 
 
 

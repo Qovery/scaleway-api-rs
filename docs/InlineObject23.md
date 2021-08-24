@@ -4,11 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **String** | Define a namespace name | 
-**description** | Option<**String**> | Define a description | [optional]
-**organization_id** | Option<**String**> | Assign the namespace owner (deprecated) | [optional]
-**project_id** | Option<**String**> | Assign the namespace to a project ID | [optional]
-**is_public** | Option<**bool**> | Define the default visibility policy | [optional]
+**node_type** | Option<**String**> | Node type of the instance you want to upgrade to | [optional]
+**enable_ha** | Option<**bool**> | Set to true to enable high availability on your instance | [optional]
+**volume_size** | Option<**f32**> | Increase your block storage volume size | [optional]
+**volume_type** | Option<**String**> | Change your instance storage type | [optional][default to VolumeType_Lssd]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

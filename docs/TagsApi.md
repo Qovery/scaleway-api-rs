@@ -4,9 +4,9 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**delete_tag**](TagsApi.md#delete_tag) | **delete** /registry/v1/regions/{region}/tags/{tag_id} | Delete a tag
-[**get_tag**](TagsApi.md#get_tag) | **get** /registry/v1/regions/{region}/tags/{tag_id} | Get a tag
-[**list_tags**](TagsApi.md#list_tags) | **get** /registry/v1/regions/{region}/images/{image_id}/tags | List all your tags
+[**delete_tag**](TagsApi.md#delete_tag) | **DELETE** /registry/v1/regions/{region}/tags/{tag_id} | Delete a tag
+[**get_tag**](TagsApi.md#get_tag) | **GET** /registry/v1/regions/{region}/tags/{tag_id} | Get a tag
+[**list_tags**](TagsApi.md#list_tags) | **GET** /registry/v1/regions/{region}/images/{image_id}/tags | List all your tags
 
 
 

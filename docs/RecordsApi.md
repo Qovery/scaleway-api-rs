@@ -4,11 +4,11 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**clear_dns_zone_records**](RecordsApi.md#clear_dns_zone_records) | **delete** /domain/v2beta1/dns-zones/{dns_zone}/records | Clear DNS zone records
-[**list_dns_zone_nameservers**](RecordsApi.md#list_dns_zone_nameservers) | **get** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | List DNS zone nameservers
-[**list_dns_zone_records**](RecordsApi.md#list_dns_zone_records) | **get** /domain/v2beta1/dns-zones/{dns_zone}/records | List DNS zone records
-[**update_dns_zone_nameservers**](RecordsApi.md#update_dns_zone_nameservers) | **put** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | Update DNS zone nameservers
-[**update_dns_zone_records**](RecordsApi.md#update_dns_zone_records) | **patch** /domain/v2beta1/dns-zones/{dns_zone}/records | Update DNS zone records
+[**clear_dns_zone_records**](RecordsApi.md#clear_dns_zone_records) | **DELETE** /domain/v2beta1/dns-zones/{dns_zone}/records | Clear DNS zone records
+[**list_dns_zone_nameservers**](RecordsApi.md#list_dns_zone_nameservers) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | List DNS zone nameservers
+[**list_dns_zone_records**](RecordsApi.md#list_dns_zone_records) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/records | List DNS zone records
+[**update_dns_zone_nameservers**](RecordsApi.md#update_dns_zone_nameservers) | **PUT** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | Update DNS zone nameservers
+[**update_dns_zone_records**](RecordsApi.md#update_dns_zone_records) | **PATCH** /domain/v2beta1/dns-zones/{dns_zone}/records | Update DNS zone records
 
 
 
@@ -111,7 +111,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, inline_object46)
+> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, inline_object50)
 Update DNS zone nameservers
 
 Update DNS zone nameservers and set optional glue records.
@@ -122,7 +122,7 @@ Update DNS zone nameservers and set optional glue records.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone where the DNS zone nameservers will be updated | [required] |
-**inline_object46** | [**InlineObject46**](InlineObject46.md) |  | [required] |
+**inline_object50** | [**InlineObject50**](InlineObject50.md) |  | [required] |
 
 ### Return type
 
@@ -142,7 +142,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, inline_object48)
+> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, inline_object52)
 Update DNS zone records
 
 Only available with default NS.<br/> Send a list of actions and records.  Action can be:  - add:   - Add new record   - Can be more specific and add a new IP to an existing A record for example  - set:   - Edit a record   - Can be more specific and edit an IP from an existing A record for example  - delete:   - Delete a record   - Can be more specific and delete an IP from an existing A record for example  - clear:   - Delete all records from a DNS zone  All edits will be versioned. 
@@ -153,7 +153,7 @@ Only available with default NS.<br/> Send a list of actions and records.  Action
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone where the DNS zone records will be updated | [required] |
-**inline_object48** | [**InlineObject48**](InlineObject48.md) |  | [required] |
+**inline_object52** | [**InlineObject52**](InlineObject52.md) |  | [required] |
 
 ### Return type
 

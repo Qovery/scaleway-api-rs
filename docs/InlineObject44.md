@@ -4,9 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**dest_dns_zone** | **String** | The destinaton DNS zone | 
-**overwrite** | Option<**bool**> | Whether or not the destination DNS zone will be overwritten | [optional]
-**project_id** | Option<**String**> | The project ID of the destination DNS zone | [optional]
+**fips_ids** | **Vec<String>** | Multiple IDs can be provided as long as Flexible IPs belong to the same MAC groups (see details about MAC groups). | 
+**server_id** | **String** | A server ID on which to attach the Flexible IPs | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
