@@ -4,17 +4,17 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_private_network**](PrivateNetworksApi.md#create_private_network) | **post** /vpc/v1/zones/{zone}/private-networks | Create a private network
-[**delete_private_network**](PrivateNetworksApi.md#delete_private_network) | **delete** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Delete a private network
-[**get_private_network**](PrivateNetworksApi.md#get_private_network) | **get** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Get a private network
-[**list_private_networks**](PrivateNetworksApi.md#list_private_networks) | **get** /vpc/v1/zones/{zone}/private-networks | List private networks
-[**update_private_network**](PrivateNetworksApi.md#update_private_network) | **patch** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Update private network
+[**create_private_network**](PrivateNetworksApi.md#create_private_network) | **POST** /vpc/v1/zones/{zone}/private-networks | Create a private network
+[**delete_private_network**](PrivateNetworksApi.md#delete_private_network) | **DELETE** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Delete a private network
+[**get_private_network**](PrivateNetworksApi.md#get_private_network) | **GET** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Get a private network
+[**list_private_networks**](PrivateNetworksApi.md#list_private_networks) | **GET** /vpc/v1/zones/{zone}/private-networks | List private networks
+[**update_private_network**](PrivateNetworksApi.md#update_private_network) | **PATCH** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Update private network
 
 
 
 ## create_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, inline_object31)
+> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, inline_object37)
 Create a private network
 
 ### Parameters
@@ -23,7 +23,7 @@ Create a private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object31** | [**InlineObject31**](InlineObject31.md) |  | [required] |
+**inline_object37** | [**InlineObject37**](InlineObject37.md) |  | [required] |
 
 ### Return type
 
@@ -136,7 +136,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, inline_object32)
+> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, inline_object38)
 Update private network
 
 ### Parameters
@@ -146,7 +146,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **private_network_id** | **String** | The private network ID | [required] |
-**inline_object32** | [**InlineObject32**](InlineObject32.md) |  | [required] |
+**inline_object38** | [**InlineObject38**](InlineObject38.md) |  | [required] |
 
 ### Return type
 

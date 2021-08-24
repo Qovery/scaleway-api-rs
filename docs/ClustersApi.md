@@ -4,21 +4,21 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_cluster**](ClustersApi.md#create_cluster) | **post** /k8s/v1/regions/{region}/clusters | Create a new cluster
-[**delete_cluster**](ClustersApi.md#delete_cluster) | **delete** /k8s/v1/regions/{region}/clusters/{cluster_id} | Delete a cluster
-[**get_cluster**](ClustersApi.md#get_cluster) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id} | Get a cluster
-[**get_cluster_kube_config**](ClustersApi.md#get_cluster_kube_config) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig | Download the kubeconfig for a cluster
-[**list_cluster_available_versions**](ClustersApi.md#list_cluster_available_versions) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions | List available versions for a cluster
-[**list_clusters**](ClustersApi.md#list_clusters) | **get** /k8s/v1/regions/{region}/clusters | List all the clusters
-[**reset_cluster_admin_token**](ClustersApi.md#reset_cluster_admin_token) | **post** /k8s/v1/regions/{region}/clusters/{cluster_id}/reset-admin-token | Reset the admin token of a cluster
-[**update_cluster**](ClustersApi.md#update_cluster) | **patch** /k8s/v1/regions/{region}/clusters/{cluster_id} | Update a cluster
-[**upgrade_cluster**](ClustersApi.md#upgrade_cluster) | **post** /k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade | Upgrade a cluster
+[**create_cluster**](ClustersApi.md#create_cluster) | **POST** /k8s/v1/regions/{region}/clusters | Create a new cluster
+[**delete_cluster**](ClustersApi.md#delete_cluster) | **DELETE** /k8s/v1/regions/{region}/clusters/{cluster_id} | Delete a cluster
+[**get_cluster**](ClustersApi.md#get_cluster) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id} | Get a cluster
+[**get_cluster_kube_config**](ClustersApi.md#get_cluster_kube_config) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig | Download the kubeconfig for a cluster
+[**list_cluster_available_versions**](ClustersApi.md#list_cluster_available_versions) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions | List available versions for a cluster
+[**list_clusters**](ClustersApi.md#list_clusters) | **GET** /k8s/v1/regions/{region}/clusters | List all the clusters
+[**reset_cluster_admin_token**](ClustersApi.md#reset_cluster_admin_token) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/reset-admin-token | Reset the admin token of a cluster
+[**update_cluster**](ClustersApi.md#update_cluster) | **PATCH** /k8s/v1/regions/{region}/clusters/{cluster_id} | Update a cluster
+[**upgrade_cluster**](ClustersApi.md#upgrade_cluster) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade | Upgrade a cluster
 
 
 
 ## create_cluster
 
-> crate::models::ScalewayK8sV1Cluster create_cluster(region, inline_object25)
+> crate::models::ScalewayK8sV1Cluster create_cluster(region, inline_object31)
 Create a new cluster
 
 This method allows to create a new Kubernetes cluster on an account.
@@ -29,7 +29,7 @@ This method allows to create a new Kubernetes cluster on an account.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object25** | [**InlineObject25**](InlineObject25.md) |  | [required] |
+**inline_object31** | [**InlineObject31**](InlineObject31.md) |  | [required] |
 
 ### Return type
 
@@ -244,7 +244,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_cluster
 
-> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, inline_object26)
+> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, inline_object32)
 Update a cluster
 
 This method allows to update a specific Kubernetes cluster. Note that this method is not made to upgrade a Kubernetes cluster.
@@ -256,7 +256,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster to update | [required] |
-**inline_object26** | [**InlineObject26**](InlineObject26.md) |  | [required] |
+**inline_object32** | [**InlineObject32**](InlineObject32.md) |  | [required] |
 
 ### Return type
 
@@ -276,7 +276,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_cluster
 
-> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, inline_object28)
+> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, inline_object34)
 Upgrade a cluster
 
 This method allows to upgrade a specific Kubernetes cluster and/or its associated pools to a specific and supported Kubernetes version.
@@ -288,7 +288,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster to upgrade | [required] |
-**inline_object28** | [**InlineObject28**](InlineObject28.md) |  | [required] |
+**inline_object34** | [**InlineObject34**](InlineObject34.md) |  | [required] |
 
 ### Return type
 

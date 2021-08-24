@@ -1,7 +1,7 @@
 /*
- * Instance API
+ * Bare metal API
  *
- * # Introduction  ## Endpoints  Scaleway instance API can be reach on  - `https://api.scaleway.com/instance/v1/zones/fr-par-1` - `https://api.scaleway.com/instance/v1/zones/fr-par-2` - `https://api.scaleway.com/instance/v1/zones/nl-ams-1` - `https://api.scaleway.com/instance/v1/zones/pl-waw-1`  Older endpoints are still reachable but should not be used for new projects  - `https://cp-par1.scaleway.com` - `https://cp-ams1.scaleway.com`  <Example>  The following code is an example request to retrieve detailed information about a volume:  ``` % curl -H 'X-Auth-Token: xxxxxxxx-xxxx-xxxxx-xxxx-xxxxxxxxxxxxx' -H 'Content-Type: application/json' https://api.scaleway.com/instance/v1/zones/fr-par-1/volumes/f929fe39-63f8-4be8-a80e-1e9c8ae22a76 -i  HTTP/1.1 200 OK Server: nginx Date: Thu, 22 May 2014 07:55:00 GMT Content-Type: application/json Content-Length: 1345 Connection: keep-alive Strict-Transport-Security: max-age=86400  {   \"volumes\": [     {       \"export_uri\": null,       \"id\": \"f929fe39-63f8-4be8-a80e-1e9c8ae22a76\",       \"name\": \"volume-0-1\",       \"organization\": \"000a115d-2852-4b0a-9ce8-47f1134ba95a\",       \"server\": null,       \"size\": 10000000000,       \"volume_type\": \"l_ssd\"     },     {       \"export_uri\": null,       \"id\": \"0facb6b5-b117-441a-81c1-f28b1d723779\",       \"name\": \"volume-0-2\",       \"organization\": \"000a115d-2852-4b0a-9ce8-47f1134ba95a\",       \"server\": null,       \"size\": 20000000000,       \"volume_type\": \"l_ssd\"     }   ] } ```  </Example>  ## Pagination  Most of listing requests receive a paginated response.  **Paginated request**  Requests against paginated endpoints accept two `query` arguments:  - `page`, a positive integer to choose the page to return. - `per_page`, an positive integer lower or equal to 100 to select the number of   items to return. The default value is `50`.  Paginated endpoints usually also accept filters to search and sort results. These filters are documented along each endpoint documentation.  **Paginated response**  ```bash % curl -H 'X-Auth-Token: <token>' 'https://api.scaleway.com/instance/v1/zones/fr-par-1/images/?page=2&per_page=10' -i HTTP/1.0 200 OK [...] X-Total-Count: 209 [...] ```  The `X-Total-Count` header contains the total number of items for the resource.
+ * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
  *
  * The version of the OpenAPI document: v1
  *
@@ -20,24 +20,10 @@ pub enum CreateServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `create_server1`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum CreateServer1Error {
-    UnknownValue(serde_json::Value),
-}
-
 /// struct for typed errors of method `delete_server`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteServerError {
-    UnknownValue(serde_json::Value),
-}
-
-/// struct for typed errors of method `delete_server1`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum DeleteServer1Error {
     UnknownValue(serde_json::Value),
 }
 
@@ -48,17 +34,24 @@ pub enum GetServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_server1`
+/// struct for typed errors of method `get_server_metrics`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum GetServer1Error {
+pub enum GetServerMetricsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_server_actions`
+/// struct for typed errors of method `install_server`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ListServerActionsError {
+pub enum InstallServerError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method `list_server_events`
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListServerEventsError {
     UnknownValue(serde_json::Value),
 }
 
@@ -69,31 +62,10 @@ pub enum ListServersError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_servers1`
+/// struct for typed errors of method `update_ip`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ListServers1Error {
-    UnknownValue(serde_json::Value),
-}
-
-/// struct for typed errors of method `reboot_server`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum RebootServerError {
-    UnknownValue(serde_json::Value),
-}
-
-/// struct for typed errors of method `reinstall_server`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum ReinstallServerError {
-    UnknownValue(serde_json::Value),
-}
-
-/// struct for typed errors of method `server_action`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum ServerActionError {
+pub enum UpdateIpError {
     UnknownValue(serde_json::Value),
 }
 
@@ -104,26 +76,21 @@ pub enum UpdateServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_server1`
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum UpdateServer1Error {
-    UnknownValue(serde_json::Value),
-}
-
+/// Create a new baremetal server. Once the server is created, you probably want to install an OS.
 pub async fn create_server(
     configuration: &configuration::Configuration,
     zone: &str,
-    inline_object13: crate::models::InlineObject13,
-) -> Result<crate::models::ScalewayInstanceV1CreateServerResponse, Error<CreateServerError>> {
+    inline_object: crate::models::InlineObject,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<CreateServerError>> {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers",
+        "{}/baremetal/v1/zones/{zone}/servers",
         configuration.base_path,
         zone = crate::apis::urlencode(zone)
     );
-    let mut local_var_req_builder = local_var_client.post(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -137,7 +104,7 @@ pub async fn create_server(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object13);
+    local_var_req_builder = local_var_req_builder.json(&inline_object);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -159,20 +126,22 @@ pub async fn create_server(
     }
 }
 
-/// Create a server.
-pub async fn create_server1(
+/// Delete the server associated with the given ID.
+pub async fn delete_server(
     configuration: &configuration::Configuration,
     zone: &str,
-    inline_object33: crate::models::InlineObject33,
-) -> Result<crate::models::ScalewayAppleSiliconV1alpha1Server, Error<CreateServer1Error>> {
+    server_id: &str,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<DeleteServerError>> {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers",
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}",
         configuration.base_path,
-        zone = crate::apis::urlencode(zone)
+        zone = crate::apis::urlencode(zone),
+        server_id = crate::apis::urlencode(server_id)
     );
-    let mut local_var_req_builder = local_var_client.post(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -186,7 +155,6 @@ pub async fn create_server1(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object33);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -196,55 +164,6 @@ pub async fn create_server1(
 
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<CreateServer1Error> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Delete a server with the given ID.
-pub async fn delete_server(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    server_id: &str,
-) -> Result<(), Error<DeleteServerError>> {
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
-    );
-    let mut local_var_req_builder = local_var_client.delete(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        Ok(())
     } else {
         let local_var_entity: Option<DeleteServerError> =
             serde_json::from_str(&local_var_content).ok();
@@ -257,70 +176,22 @@ pub async fn delete_server(
     }
 }
 
-/// Delete a server.
-pub async fn delete_server1(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    server_id: &str,
-) -> Result<(), Error<DeleteServer1Error>> {
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
-    );
-    let mut local_var_req_builder = local_var_client.delete(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        Ok(())
-    } else {
-        let local_var_entity: Option<DeleteServer1Error> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Get the details of a specified Server.
+/// Get the server associated with the given ID.
 pub async fn get_server(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-) -> Result<crate::models::ScalewayInstanceV1GetServerResponse, Error<GetServerError>> {
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<GetServerError>> {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers/{server_id}",
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}",
         configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
-    let mut local_var_req_builder = local_var_client.get(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -355,71 +226,23 @@ pub async fn get_server(
     }
 }
 
-/// Get a server.
-pub async fn get_server1(
+/// Give the ping status on the server associated with the given ID.
+pub async fn get_server_metrics(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-) -> Result<crate::models::ScalewayAppleSiliconV1alpha1Server, Error<GetServer1Error>> {
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
-    );
-    let mut local_var_req_builder = local_var_client.get(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<GetServer1Error> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Liste all actions that can currently be performed on a server.
-pub async fn list_server_actions(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    server_id: &str,
-) -> Result<crate::models::ScalewayInstanceV1ListServerActionsResponse, Error<ListServerActionsError>>
+) -> Result<crate::models::ScalewayBaremetalV1GetServerMetricsResponse, Error<GetServerMetricsError>>
 {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers/{server_id}/action",
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}/metrics",
         configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
-    let mut local_var_req_builder = local_var_client.get(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -443,7 +266,7 @@ pub async fn list_server_actions(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<ListServerActionsError> =
+        let local_var_entity: Option<GetServerMetricsError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -454,78 +277,192 @@ pub async fn list_server_actions(
     }
 }
 
-pub async fn list_servers(
+/// Install an OS on the server associated with the given ID.
+pub async fn install_server(
     configuration: &configuration::Configuration,
     zone: &str,
-    per_page: Option<f32>,
-    page: Option<f32>,
-    organization: Option<&str>,
-    project: Option<&str>,
-    name: Option<&str>,
-    private_ip: Option<&str>,
-    without_ip: Option<bool>,
-    commercial_type: Option<&str>,
-    state: Option<&str>,
-    tags: Option<&str>,
-    private_network: Option<&str>,
-    order: Option<&str>,
-) -> Result<crate::models::ScalewayInstanceV1ListServersResponse, Error<ListServersError>> {
+    server_id: &str,
+    inline_object3: crate::models::InlineObject3,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<InstallServerError>> {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers",
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}/install",
         configuration.base_path,
-        zone = crate::apis::urlencode(zone)
+        zone = crate::apis::urlencode(zone),
+        server_id = crate::apis::urlencode(server_id)
     );
-    let mut local_var_req_builder = local_var_client.get(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_str) = per_page {
+    if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
-            local_var_req_builder.query(&[("per_page", &local_var_str.to_string())]);
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
+    if let Some(ref local_var_apikey) = configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+    local_var_req_builder = local_var_req_builder.json(&inline_object3);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<InstallServerError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// List events associated to the given server ID.
+pub async fn list_server_events(
+    configuration: &configuration::Configuration,
+    zone: &str,
+    server_id: &str,
+    page: Option<f32>,
+    page_size: Option<f32>,
+    order_by: Option<&str>,
+) -> Result<crate::models::ScalewayBaremetalV1ListServerEventsResponse, Error<ListServerEventsError>>
+{
+    let local_var_client = &configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}/events",
+        configuration.base_path,
+        zone = crate::apis::urlencode(zone),
+        server_id = crate::apis::urlencode(server_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
     if let Some(ref local_var_str) = page {
         local_var_req_builder =
             local_var_req_builder.query(&[("page", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = organization {
+    if let Some(ref local_var_str) = page_size {
         local_var_req_builder =
-            local_var_req_builder.query(&[("organization", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("page_size", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = project {
+    if let Some(ref local_var_str) = order_by {
         local_var_req_builder =
-            local_var_req_builder.query(&[("project", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("order_by", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<ListServerEventsError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// List baremetal servers for organization.
+pub async fn list_servers(
+    configuration: &configuration::Configuration,
+    zone: &str,
+    page: Option<f32>,
+    page_size: Option<f32>,
+    order_by: Option<&str>,
+    tags: Option<Vec<String>>,
+    status: Option<Vec<String>>,
+    name: Option<&str>,
+    organization_id: Option<&str>,
+    project_id: Option<&str>,
+) -> Result<crate::models::ScalewayBaremetalV1ListServersResponse, Error<ListServersError>> {
+    let local_var_client = &configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/baremetal/v1/zones/{zone}/servers",
+        configuration.base_path,
+        zone = crate::apis::urlencode(zone)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = page {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("page", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = page_size {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("page_size", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = order_by {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("order_by", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = tags {
+        local_var_req_builder = local_var_req_builder.query(&[(
+            "tags",
+            &local_var_str
+                .iter()
+                .map(|p| p.to_string())
+                .collect::<Vec<String>>()
+                .join(",")
+                ,
+        )]);
+    }
+    if let Some(ref local_var_str) = status {
+        local_var_req_builder = local_var_req_builder.query(&[(
+            "status",
+            &local_var_str
+                .iter()
+                .map(|p| p.to_string())
+                .collect::<Vec<String>>()
+                .join(",")
+                ,
+        )]);
     }
     if let Some(ref local_var_str) = name {
         local_var_req_builder =
             local_var_req_builder.query(&[("name", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = private_ip {
+    if let Some(ref local_var_str) = organization_id {
         local_var_req_builder =
-            local_var_req_builder.query(&[("private_ip", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("organization_id", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = without_ip {
+    if let Some(ref local_var_str) = project_id {
         local_var_req_builder =
-            local_var_req_builder.query(&[("without_ip", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = commercial_type {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("commercial_type", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = state {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("state", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = tags {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("tags", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = private_network {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("private_network", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = order {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("order", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("project_id", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -560,95 +497,25 @@ pub async fn list_servers(
     }
 }
 
-/// List all servers.
-pub async fn list_servers1(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    order_by: Option<&str>,
-    project_id: Option<&str>,
-    organization_id: Option<&str>,
-    page: Option<f32>,
-    page_size: Option<f32>,
-) -> Result<crate::models::ScalewayAppleSiliconV1alpha1ListServersResponse, Error<ListServers1Error>>
-{
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone)
-    );
-    let mut local_var_req_builder = local_var_client.get(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = order_by {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("order_by", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = project_id {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("project_id", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = organization_id {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("organization_id", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = page {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("page", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = page_size {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("page_size", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<ListServers1Error> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Reboot a server.
-pub async fn reboot_server(
+/// Configure ip associated with the given server ID and ipID. You can use this method to set a reverse dns for an IP.
+pub async fn update_ip(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-    body: serde_json::Value,
-) -> Result<crate::models::ScalewayAppleSiliconV1alpha1Server, Error<RebootServerError>> {
+    ip_id: &str,
+    inline_object4: crate::models::InlineObject4,
+) -> Result<crate::models::ScalewayBaremetalV1Ip, Error<UpdateIpError>> {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reboot",
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id}",
         configuration.base_path,
         zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
+        server_id = crate::apis::urlencode(server_id),
+        ip_id = crate::apis::urlencode(ip_id)
     );
-    let mut local_var_req_builder = local_var_client.post(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -662,7 +529,7 @@ pub async fn reboot_server(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&body);
+    local_var_req_builder = local_var_req_builder.json(&inline_object4);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -673,8 +540,7 @@ pub async fn reboot_server(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<RebootServerError> =
-            serde_json::from_str(&local_var_content).ok();
+        let local_var_entity: Option<UpdateIpError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
             content: local_var_content,
@@ -684,123 +550,23 @@ pub async fn reboot_server(
     }
 }
 
-/// Reinstall a server.
-pub async fn reinstall_server(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    server_id: &str,
-    body: serde_json::Value,
-) -> Result<crate::models::ScalewayAppleSiliconV1alpha1Server, Error<ReinstallServerError>> {
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}/reinstall",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
-    );
-    let mut local_var_req_builder = local_var_client.post(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-    local_var_req_builder = local_var_req_builder.json(&body);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<ReinstallServerError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Perform power related actions on a server. Be wary that when terminating a server, all the attached volumes (local *and* block storage) are deleted. So, if you want to keep your local volumes, you must use the `archive` action instead of `terminate`. And if you want to keep block-storage volumes, **you must** detach it beforehand you issue the `terminate` call.  For more information, read the [Volumes](#volumes-7e8a39) documentation.
-pub async fn server_action(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    server_id: &str,
-    inline_object15: crate::models::InlineObject15,
-) -> Result<crate::models::ScalewayInstanceV1ServerActionResponse, Error<ServerActionError>> {
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers/{server_id}/action",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
-    );
-    let mut local_var_req_builder = local_var_client.post(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-    local_var_req_builder = local_var_req_builder.json(&inline_object15);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<ServerActionError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
+/// Update the server associated with the given ID.
 pub async fn update_server(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-    inline_object14: crate::models::InlineObject14,
-) -> Result<crate::models::ScalewayInstanceV1UpdateServerResponse, Error<UpdateServerError>> {
+    inline_object1: crate::models::InlineObject1,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<UpdateServerError>> {
     let local_var_client = &configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/instance/v1/zones/{zone}/servers/{server_id}",
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}",
         configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
-    let mut local_var_req_builder = local_var_client.patch(local_var_uri_str.as_str());
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
     if let Some(ref local_var_user_agent) = configuration.user_agent {
         local_var_req_builder =
@@ -814,7 +580,7 @@ pub async fn update_server(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object14);
+    local_var_req_builder = local_var_req_builder.json(&inline_object1);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -826,57 +592,6 @@ pub async fn update_server(
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<UpdateServerError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Update a server.
-pub async fn update_server1(
-    configuration: &configuration::Configuration,
-    zone: &str,
-    server_id: &str,
-    inline_object34: crate::models::InlineObject34,
-) -> Result<crate::models::ScalewayAppleSiliconV1alpha1Server, Error<UpdateServer1Error>> {
-    let local_var_client = &configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/apple-silicon/v1alpha1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone),
-        server_id = crate::apis::urlencode(server_id)
-    );
-    let mut local_var_req_builder = local_var_client.patch(local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_apikey) = configuration.api_key {
-        let local_var_key = local_var_apikey.key.clone();
-        let local_var_value = match local_var_apikey.prefix {
-            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
-            None => local_var_key,
-        };
-        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
-    };
-    local_var_req_builder = local_var_req_builder.json(&inline_object34);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<UpdateServer1Error> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,

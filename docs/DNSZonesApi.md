@@ -4,24 +4,24 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**clone_dns_zone**](DNSZonesApi.md#clone_dns_zone) | **post** /domain/v2beta1/dns-zones/{dns_zone}/clone | Clone a DNS zone
-[**create_dns_zone**](DNSZonesApi.md#create_dns_zone) | **post** /domain/v2beta1/dns-zones | Create a DNS zone
-[**create_ssl_certificate**](DNSZonesApi.md#create_ssl_certificate) | **post** /domain/v2beta1/ssl-certificates | Create or return the zone TLS certificate
-[**delete_dns_zone**](DNSZonesApi.md#delete_dns_zone) | **delete** /domain/v2beta1/dns-zones/{dns_zone} | Delete DNS zone
-[**delete_dns_zone_tsig_key**](DNSZonesApi.md#delete_dns_zone_tsig_key) | **delete** /domain/v2beta1/dns-zones/{dns_zone}/tsig-key | Delete the DNS zone TSIG Key
-[**delete_ssl_certificate**](DNSZonesApi.md#delete_ssl_certificate) | **delete** /domain/v2beta1/ssl-certificates/{dns_zone} | Delete an TLS certificate
-[**get_dns_zone_tsig_key**](DNSZonesApi.md#get_dns_zone_tsig_key) | **get** /domain/v2beta1/dns-zones/{dns_zone}/tsig-key | Get the DNS zone TSIG Key
-[**get_ssl_certificate**](DNSZonesApi.md#get_ssl_certificate) | **get** /domain/v2beta1/ssl-certificates/{dns_zone} | Get the zone TLS certificate if it exists
-[**list_dns_zones**](DNSZonesApi.md#list_dns_zones) | **get** /domain/v2beta1/dns-zones | List DNS zones
-[**list_ssl_certificates**](DNSZonesApi.md#list_ssl_certificates) | **get** /domain/v2beta1/ssl-certificates | List all user TLS certificates
-[**refresh_dns_zone**](DNSZonesApi.md#refresh_dns_zone) | **post** /domain/v2beta1/dns-zones/{dns_zone}/refresh | Refresh DNS zone
-[**update_dns_zone**](DNSZonesApi.md#update_dns_zone) | **patch** /domain/v2beta1/dns-zones/{dns_zone} | Update a DNS zone
+[**clone_dns_zone**](DNSZonesApi.md#clone_dns_zone) | **POST** /domain/v2beta1/dns-zones/{dns_zone}/clone | Clone a DNS zone
+[**create_dns_zone**](DNSZonesApi.md#create_dns_zone) | **POST** /domain/v2beta1/dns-zones | Create a DNS zone
+[**create_ssl_certificate**](DNSZonesApi.md#create_ssl_certificate) | **POST** /domain/v2beta1/ssl-certificates | Create or return the zone TLS certificate
+[**delete_dns_zone**](DNSZonesApi.md#delete_dns_zone) | **DELETE** /domain/v2beta1/dns-zones/{dns_zone} | Delete DNS zone
+[**delete_dns_zone_tsig_key**](DNSZonesApi.md#delete_dns_zone_tsig_key) | **DELETE** /domain/v2beta1/dns-zones/{dns_zone}/tsig-key | Delete the DNS zone TSIG Key
+[**delete_ssl_certificate**](DNSZonesApi.md#delete_ssl_certificate) | **DELETE** /domain/v2beta1/ssl-certificates/{dns_zone} | Delete an TLS certificate
+[**get_dns_zone_tsig_key**](DNSZonesApi.md#get_dns_zone_tsig_key) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/tsig-key | Get the DNS zone TSIG Key
+[**get_ssl_certificate**](DNSZonesApi.md#get_ssl_certificate) | **GET** /domain/v2beta1/ssl-certificates/{dns_zone} | Get the zone TLS certificate if it exists
+[**list_dns_zones**](DNSZonesApi.md#list_dns_zones) | **GET** /domain/v2beta1/dns-zones | List DNS zones
+[**list_ssl_certificates**](DNSZonesApi.md#list_ssl_certificates) | **GET** /domain/v2beta1/ssl-certificates | List all user TLS certificates
+[**refresh_dns_zone**](DNSZonesApi.md#refresh_dns_zone) | **POST** /domain/v2beta1/dns-zones/{dns_zone}/refresh | Refresh DNS zone
+[**update_dns_zone**](DNSZonesApi.md#update_dns_zone) | **PATCH** /domain/v2beta1/dns-zones/{dns_zone} | Update a DNS zone
 
 
 
 ## clone_dns_zone
 
-> crate::models::ScalewayDomainV2beta1DnsZone clone_dns_zone(dns_zone, inline_object44)
+> crate::models::ScalewayDomainV2beta1DnsZone clone_dns_zone(dns_zone, inline_object48)
 Clone a DNS zone
 
 Clone an existed DNS zone with all its records into a new one.
@@ -32,7 +32,7 @@ Clone an existed DNS zone with all its records into a new one.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to clone | [required] |
-**inline_object44** | [**InlineObject44**](InlineObject44.md) |  | [required] |
+**inline_object48** | [**InlineObject48**](InlineObject48.md) |  | [required] |
 
 ### Return type
 
@@ -52,7 +52,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_dns_zone
 
-> crate::models::ScalewayDomainV2beta1DnsZone create_dns_zone(inline_object42)
+> crate::models::ScalewayDomainV2beta1DnsZone create_dns_zone(inline_object46)
 Create a DNS zone
 
 Create a new DNS zone.
@@ -62,7 +62,7 @@ Create a new DNS zone.
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**inline_object42** | [**InlineObject42**](InlineObject42.md) |  | [required] |
+**inline_object46** | [**InlineObject46**](InlineObject46.md) |  | [required] |
 
 ### Return type
 
@@ -82,7 +82,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_ssl_certificate
 
-> crate::models::ScalewayDomainV2beta1SslCertificate create_ssl_certificate(inline_object50)
+> crate::models::ScalewayDomainV2beta1SslCertificate create_ssl_certificate(inline_object54)
 Create or return the zone TLS certificate
 
 ### Parameters
@@ -90,7 +90,7 @@ Create or return the zone TLS certificate
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**inline_object50** | [**InlineObject50**](InlineObject50.md) |  | [required] |
+**inline_object54** | [**InlineObject54**](InlineObject54.md) |  | [required] |
 
 ### Return type
 
@@ -322,7 +322,7 @@ Name | Type | Description  | Required | Notes
 
 ## refresh_dns_zone
 
-> crate::models::ScalewayDomainV2beta1RefreshDnsZoneResponse refresh_dns_zone(dns_zone, inline_object49)
+> crate::models::ScalewayDomainV2beta1RefreshDnsZoneResponse refresh_dns_zone(dns_zone, inline_object53)
 Refresh DNS zone
 
 Refresh SOA DNS zone. You can recreate the given DNS zone and its sub DNS zone if needed. 
@@ -333,7 +333,7 @@ Refresh SOA DNS zone. You can recreate the given DNS zone and its sub DNS zone i
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to refresh | [required] |
-**inline_object49** | [**InlineObject49**](InlineObject49.md) |  | [required] |
+**inline_object53** | [**InlineObject53**](InlineObject53.md) |  | [required] |
 
 ### Return type
 
@@ -353,7 +353,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone
 
-> crate::models::ScalewayDomainV2beta1DnsZone update_dns_zone(dns_zone, inline_object43)
+> crate::models::ScalewayDomainV2beta1DnsZone update_dns_zone(dns_zone, inline_object47)
 Update a DNS zone
 
 Update the name and/or the organizations for a DNS zone.
@@ -364,7 +364,7 @@ Update the name and/or the organizations for a DNS zone.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to update | [required] |
-**inline_object43** | [**InlineObject43**](InlineObject43.md) |  | [required] |
+**inline_object47** | [**InlineObject47**](InlineObject47.md) |  | [required] |
 
 ### Return type
 

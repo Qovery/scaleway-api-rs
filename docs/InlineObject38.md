@@ -4,7 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**duplicate_from_fip_id** | **String** | Flexible IPs need to be attached to the same server. | 
+**name** | Option<**String**> | The name of the private network | [optional]
+**tags** | Option<**Vec<String>**> | The private networks tags | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

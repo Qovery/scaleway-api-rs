@@ -4,10 +4,10 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_node**](NodesApi.md#get_node) | **get** /k8s/v1/regions/{region}/nodes/{node_id} | Get a node in a cluster
-[**list_nodes**](NodesApi.md#list_nodes) | **get** /k8s/v1/regions/{region}/clusters/{cluster_id}/nodes | List all the nodes in a cluster
-[**reboot_node**](NodesApi.md#reboot_node) | **post** /k8s/v1/regions/{region}/nodes/{node_id}/reboot | Reboot a node in a cluster
-[**replace_node**](NodesApi.md#replace_node) | **post** /k8s/v1/regions/{region}/nodes/{node_id}/replace | Replace a node in a cluster
+[**get_node**](NodesApi.md#get_node) | **GET** /k8s/v1/regions/{region}/nodes/{node_id} | Get a node in a cluster
+[**list_nodes**](NodesApi.md#list_nodes) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/nodes | List all the nodes in a cluster
+[**reboot_node**](NodesApi.md#reboot_node) | **POST** /k8s/v1/regions/{region}/nodes/{node_id}/reboot | Reboot a node in a cluster
+[**replace_node**](NodesApi.md#replace_node) | **POST** /k8s/v1/regions/{region}/nodes/{node_id}/replace | Replace a node in a cluster
 
 
 

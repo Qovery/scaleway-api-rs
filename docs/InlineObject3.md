@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**reverse** | Option<**String**> | Reverse domain name | [optional]
-**tags** | Option<**Vec<String>**> | An array of keywords you want to tag this IP with | [optional]
-**server** | Option<**String**> |  | [optional]
+**os_id** | **String** | ID of the OS to install on the server | 
+**hostname** | **String** | Hostname of the server | 
+**ssh_key_ids** | **Vec<String>** | SSH key IDs authorized on the server | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

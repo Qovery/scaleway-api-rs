@@ -4,14 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | Option<**String**> | Name of the image | [optional]
-**root_volume** | **String** | UUID of the snapshot | 
-**arch** | **String** | Architecture of the image | [default to Arch_X8664]
-**default_bootscript** | Option<**String**> | Default bootscript of the image | [optional]
-**extra_volumes** | Option<[**::std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)> | Additional volumes of the image | [optional]
-**organization** | Option<**String**> | Organization ID of the image | [optional]
-**project** | Option<**String**> | Project ID of the image | [optional]
-**public** | Option<**bool**> | True to create a public image | [optional]
+**offer_id** | **String** | Offer ID of the new server | 
+**organization_id** | Option<**String**> | Organization ID with which the server will be created | [optional]
+**project_id** | Option<**String**> | Project ID with which the server will be created | [optional]
+**name** | **String** | Name of the server (≠hostname) | 
+**description** | **String** | Description associated to the server, max 255 characters | 
+**tags** | Option<**Vec<String>**> | Tags to associate to the server | [optional]
+**install** | Option<[**crate::models::ScalewayBaremetalV1CreateServerRequestInstall**](scaleway.baremetal.v1.CreateServerRequest.Install.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

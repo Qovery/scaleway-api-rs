@@ -4,9 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**content** | Option<**String**> |  | [optional]
-**project_id** | Option<**String**> |  | [optional]
-**format** | Option<[**crate::models::ScalewayDomainV2beta1RawFormat**](scaleway.domain.v2beta1.RawFormat.md)> |  | [optional]
+**new_dns_zone** | Option<**String**> | The new DNS zone | 
+**project_id** | **String** | The project ID of the new DNS zone | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

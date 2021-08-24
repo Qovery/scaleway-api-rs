@@ -4,20 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **String** | The server name | 
-**dynamic_ip_required** | Option<**bool**> | Define if a dynamic IP is required for the instance | [optional]
-**commercial_type** | **String** | Define the server commercial type (i.e. GP1-S) | 
-**image** | Option<**String**> | The server image ID | [optional]
-**volumes** | Option<[**::std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)> | The volumes attached to the server | [optional]
-**enable_ipv6** | Option<**bool**> | True if IPv6 is enabled on the server | [optional]
-**public_ip** | Option<**String**> | The ID of the reserved IP to attach to the server | [optional]
-**boot_type** | Option<**String**> | The boot type to use | [optional][default to BootType_Local]
-**bootscript** | Option<**String**> | The bootscript ID to use when `boot_type` is set to `bootscript` | [optional]
-**organization** | Option<**String**> | The server organization ID | [optional]
-**project** | Option<**String**> | The server project ID | [optional]
-**tags** | Option<**Vec<String>**> | The server tags | [optional]
-**security_group** | Option<**String**> | The security group ID | [optional]
-**placement_group** | Option<**String**> | Placement group ID if server must be part of a placement group | [optional]
+**rules** | Option<[**Vec<crate::models::ScalewayRdbV1AclRuleRequest>**](scaleway.rdb.v1.ACLRuleRequest.md)> | ACLs rules to add to the instance | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
