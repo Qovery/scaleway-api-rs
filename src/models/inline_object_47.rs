@@ -10,19 +10,28 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject47 {
-    /// The new DNS zone
-    #[serde(rename = "new_dns_zone")]
-    pub new_dns_zone: Option<String>,
-    /// The project ID of the new DNS zone
-    #[serde(rename = "project_id")]
-    pub project_id: String,
+    /// Route name
+    #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// Topic the route subscribes to. It must be a valid MQTT topic and up to 65535 characters
+    #[serde(rename = "topic", skip_serializing_if = "Option::is_none")]
+    pub topic: Option<String>,
+    #[serde(rename = "s3_config", skip_serializing_if = "Option::is_none")]
+    pub s3_config: Option<Box<crate::models::IotV1RegionsRegionRoutesRouteIdS3Config>>,
+    #[serde(rename = "db_config", skip_serializing_if = "Option::is_none")]
+    pub db_config: Option<Box<crate::models::IotV1RegionsRegionRoutesRouteIdDbConfig>>,
+    #[serde(rename = "rest_config", skip_serializing_if = "Option::is_none")]
+    pub rest_config: Option<Box<crate::models::IotV1RegionsRegionRoutesRouteIdRestConfig>>,
 }
 
 impl InlineObject47 {
-    pub fn new(new_dns_zone: Option<String>, project_id: String) -> InlineObject47 {
+    pub fn new() -> InlineObject47 {
         InlineObject47 {
-            new_dns_zone,
-            project_id,
+            name: None,
+            topic: None,
+            s3_config: None,
+            db_config: None,
+            rest_config: None,
         }
     }
 }

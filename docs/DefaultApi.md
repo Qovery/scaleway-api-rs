@@ -40,7 +40,7 @@ Name | Type | Description  | Required | Notes
 
 ## move_mac_addr
 
-> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp move_mac_addr(zone, fip_id, inline_object43)
+> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp move_mac_addr(zone, fip_id, inline_object54)
 
 
 ### Parameters
@@ -50,7 +50,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **fip_id** | **String** |  | [required] |
-**inline_object43** | [**InlineObject43**](InlineObject43.md) |  | [required] |
+**inline_object54** | [**InlineObject54**](InlineObject54.md) |  | [required] |
 
 ### Return type
 

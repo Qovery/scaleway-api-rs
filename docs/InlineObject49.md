@@ -4,7 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**online_v1** | Option<[**crate::models::DomainV2beta1DnsZonesDnsZoneImportProviderOnlineV1**](_domain_v2beta1_dns_zones__dns_zone__import_provider_online_v1.md)> |  | [optional]
+**version** | Option<**f32**> | If set, ensures that the document's current version matches before persisting the update. | [optional]
+**data** | Option<[**crate::models::IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData1**](_iot_v1_regions__region__twins__twin_id__documents__document_name__data_1.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

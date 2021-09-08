@@ -10,19 +10,19 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject44 {
-    /// Multiple IDs can be provided as long as Flexible IPs belong to the same MAC groups (see details about MAC groups).
-    #[serde(rename = "fips_ids")]
-    pub fips_ids: Vec<String>,
-    /// A server ID on which to attach the Flexible IPs
-    #[serde(rename = "server_id")]
-    pub server_id: String,
+    /// The CA's PEM-encoded certificate
+    #[serde(rename = "ca_cert_pem")]
+    pub ca_cert_pem: String,
+    /// The challenge is a PEM-encoded certificate to prove the possession of the CA. It must be signed by the CA, and have a Common Name equal to the Hub ID.
+    #[serde(rename = "challenge_cert_pem")]
+    pub challenge_cert_pem: String,
 }
 
 impl InlineObject44 {
-    pub fn new(fips_ids: Vec<String>, server_id: String) -> InlineObject44 {
+    pub fn new(ca_cert_pem: String, challenge_cert_pem: String) -> InlineObject44 {
         InlineObject44 {
-            fips_ids,
-            server_id,
+            ca_cert_pem,
+            challenge_cert_pem,
         }
     }
 }

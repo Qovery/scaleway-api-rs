@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ## attach_flexible_ip
 
-> crate::models::ScalewayFlexibleIpV1alpha1AttachFlexibleIpsResponse attach_flexible_ip(zone, inline_object44)
+> crate::models::ScalewayFlexibleIpV1alpha1AttachFlexibleIpsResponse attach_flexible_ip(zone, inline_object55)
 Attach a Flexible IP to a server
 
 ### Parameters
@@ -28,7 +28,7 @@ Attach a Flexible IP to a server
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object44** | [**InlineObject44**](InlineObject44.md) |  | [required] |
+**inline_object55** | [**InlineObject55**](InlineObject55.md) |  | [required] |
 
 ### Return type
 
@@ -48,7 +48,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_flexible_ip
 
-> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp create_flexible_ip(zone, inline_object39)
+> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp create_flexible_ip(zone, inline_object50)
 Create a Flexible IP
 
 ### Parameters
@@ -57,7 +57,7 @@ Create a Flexible IP
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object39** | [**InlineObject39**](InlineObject39.md) |  | [required] |
+**inline_object50** | [**InlineObject50**](InlineObject50.md) |  | [required] |
 
 ### Return type
 
@@ -135,7 +135,7 @@ Name | Type | Description  | Required | Notes
 
 ## detach_flexible_ip
 
-> crate::models::ScalewayFlexibleIpV1alpha1DetachFlexibleIpsResponse detach_flexible_ip(zone, inline_object45)
+> crate::models::ScalewayFlexibleIpV1alpha1DetachFlexibleIpsResponse detach_flexible_ip(zone, inline_object56)
 Detach a Flexible IP from a server
 
 ### Parameters
@@ -144,7 +144,7 @@ Detach a Flexible IP from a server
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object45** | [**InlineObject45**](InlineObject45.md) |  | [required] |
+**inline_object56** | [**InlineObject56**](InlineObject56.md) |  | [required] |
 
 ### Return type
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Required | Notes
 
 ## duplicate_mac_addr
 
-> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp duplicate_mac_addr(zone, fip_id, inline_object42)
+> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp duplicate_mac_addr(zone, fip_id, inline_object53)
 Duplicate a Virtual MAC
 
 Duplicate a Virtual MAC from a given Flexible IP onto another attached on the same server.
@@ -176,7 +176,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **fip_id** | **String** | Flexible IPs need to be attached to the same server. | [required] |
-**inline_object42** | [**InlineObject42**](InlineObject42.md) |  | [required] |
+**inline_object53** | [**InlineObject53**](InlineObject53.md) |  | [required] |
 
 ### Return type
 
@@ -196,7 +196,7 @@ Name | Type | Description  | Required | Notes
 
 ## generate_mac_addr
 
-> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp generate_mac_addr(zone, fip_id, inline_object41)
+> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp generate_mac_addr(zone, fip_id, inline_object52)
 Generate a virtual MAC on a given Flexible IP
 
 ### Parameters
@@ -206,7 +206,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **fip_id** | **String** | Flexible IP ID on which to generate a Virtual MAC | [required] |
-**inline_object41** | [**InlineObject41**](InlineObject41.md) |  | [required] |
+**inline_object52** | [**InlineObject52**](InlineObject52.md) |  | [required] |
 
 ### Return type
 
@@ -291,7 +291,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_flexible_ip
 
-> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp update_flexible_ip(zone, fip_id, inline_object40)
+> crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp update_flexible_ip(zone, fip_id, inline_object51)
 Update a Flexible IP
 
 ### Parameters
@@ -301,7 +301,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **fip_id** | **String** | ID of the Flexible IP to update | [required] |
-**inline_object40** | [**InlineObject40**](InlineObject40.md) |  | [required] |
+**inline_object51** | [**InlineObject51**](InlineObject51.md) |  | [required] |
 
 ### Return type
 

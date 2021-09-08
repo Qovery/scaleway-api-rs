@@ -10,12 +10,57 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject43 {
-    #[serde(rename = "dst_fip_id", skip_serializing_if = "Option::is_none")]
-    pub dst_fip_id: Option<String>,
+    /// Hub name (up to 255 characters)
+    #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// Hub feature set
+    #[serde(rename = "product_plan", skip_serializing_if = "Option::is_none")]
+    pub product_plan: Option<ProductPlan>,
+    /// Disable Hub events
+    #[serde(rename = "disable_events", skip_serializing_if = "Option::is_none")]
+    pub disable_events: Option<bool>,
+    /// Hub events topic prefix
+    #[serde(
+        rename = "events_topic_prefix",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub events_topic_prefix: Option<String>,
+    /// Enable device auto provisioning
+    #[serde(
+        rename = "enable_device_auto_provisioning",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_device_auto_provisioning: Option<bool>,
+    #[serde(
+        rename = "twins_graphite_config",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub twins_graphite_config:
+        Option<Box<crate::models::IotV1RegionsRegionHubsTwinsGraphiteConfig>>,
 }
 
 impl InlineObject43 {
     pub fn new() -> InlineObject43 {
-        InlineObject43 { dst_fip_id: None }
+        InlineObject43 {
+            name: None,
+            product_plan: None,
+            disable_events: None,
+            events_topic_prefix: None,
+            enable_device_auto_provisioning: None,
+            twins_graphite_config: None,
+        }
     }
+}
+
+/// Hub feature set
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum ProductPlan {
+    #[serde(rename = "plan_unknown")]
+    Unknown,
+    #[serde(rename = "plan_shared")]
+    Shared,
+    #[serde(rename = "plan_dedicated")]
+    Dedicated,
+    #[serde(rename = "plan_ha")]
+    Ha,
 }

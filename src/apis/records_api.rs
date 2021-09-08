@@ -237,7 +237,7 @@ pub async fn list_dns_zone_records(
 pub async fn update_dns_zone_nameservers(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object50: crate::models::InlineObject50,
+    inline_object61: crate::models::InlineObject61,
 ) -> Result<
     crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse,
     Error<UpdateDnsZoneNameserversError>,
@@ -264,7 +264,7 @@ pub async fn update_dns_zone_nameservers(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object50);
+    local_var_req_builder = local_var_req_builder.json(&inline_object61);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -290,7 +290,7 @@ pub async fn update_dns_zone_nameservers(
 pub async fn update_dns_zone_records(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object52: crate::models::InlineObject52,
+    inline_object63: crate::models::InlineObject63,
 ) -> Result<
     crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse,
     Error<UpdateDnsZoneRecordsError>,
@@ -317,7 +317,7 @@ pub async fn update_dns_zone_records(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object52);
+    local_var_req_builder = local_var_req_builder.json(&inline_object63);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

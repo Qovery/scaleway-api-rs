@@ -10,23 +10,32 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject46 {
-    /// The domain of the DNS zone to create
-    #[serde(rename = "domain")]
-    pub domain: String,
-    /// The subdomain of the DNS zone to create
-    #[serde(rename = "subdomain")]
-    pub subdomain: String,
-    /// The project ID where the DNS zone will be created
-    #[serde(rename = "project_id")]
-    pub project_id: String,
+    /// Route name
+    #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// ID of the route's hub
+    #[serde(rename = "hub_id", skip_serializing_if = "Option::is_none")]
+    pub hub_id: Option<String>,
+    /// Topic the route subscribes to. It must be a valid MQTT topic and up to 65535 characters
+    #[serde(rename = "topic", skip_serializing_if = "Option::is_none")]
+    pub topic: Option<String>,
+    #[serde(rename = "s3_config", skip_serializing_if = "Option::is_none")]
+    pub s3_config: Option<Box<crate::models::IotV1RegionsRegionRoutesS3Config>>,
+    #[serde(rename = "db_config", skip_serializing_if = "Option::is_none")]
+    pub db_config: Option<Box<crate::models::IotV1RegionsRegionRoutesDbConfig>>,
+    #[serde(rename = "rest_config", skip_serializing_if = "Option::is_none")]
+    pub rest_config: Option<Box<crate::models::IotV1RegionsRegionRoutesRestConfig>>,
 }
 
 impl InlineObject46 {
-    pub fn new(domain: String, subdomain: String, project_id: String) -> InlineObject46 {
+    pub fn new() -> InlineObject46 {
         InlineObject46 {
-            domain,
-            subdomain,
-            project_id,
+            name: None,
+            hub_id: None,
+            topic: None,
+            s3_config: None,
+            db_config: None,
+            rest_config: None,
         }
     }
 }

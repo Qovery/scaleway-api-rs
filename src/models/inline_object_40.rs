@@ -10,23 +10,34 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject40 {
-    /// Description to associate with the Flexible IP, max 255 characters
+    /// Device description
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    /// Tags to associate with the Flexible IP
-    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
-    pub tags: Option<Vec<String>>,
-    /// Reverse DNS value
-    #[serde(rename = "reverse", skip_serializing_if = "Option::is_none")]
-    pub reverse: Option<String>,
+    /// Allow plain and server-authenticated SSL connections in addition to mutually-authenticated ones
+    #[serde(rename = "allow_insecure", skip_serializing_if = "Option::is_none")]
+    pub allow_insecure: Option<bool>,
+    /// Allow multiple physical devices to connect with this device's credentials
+    #[serde(
+        rename = "allow_multiple_connections",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub allow_multiple_connections: Option<bool>,
+    #[serde(rename = "message_filters", skip_serializing_if = "Option::is_none")]
+    pub message_filters:
+        Option<Box<crate::models::IotV1RegionsRegionDevicesDeviceIdMessageFilters>>,
+    /// Change Hub for this device, additional fees may apply, see IoT Hub pricing
+    #[serde(rename = "hub_id", skip_serializing_if = "Option::is_none")]
+    pub hub_id: Option<String>,
 }
 
 impl InlineObject40 {
     pub fn new() -> InlineObject40 {
         InlineObject40 {
             description: None,
-            tags: None,
-            reverse: None,
+            allow_insecure: None,
+            allow_multiple_connections: None,
+            message_filters: None,
+            hub_id: None,
         }
     }
 }
