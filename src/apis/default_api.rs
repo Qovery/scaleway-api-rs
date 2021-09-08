@@ -85,7 +85,7 @@ pub async fn move_mac_addr(
     configuration: &configuration::Configuration,
     zone: &str,
     fip_id: &str,
-    inline_object43: crate::models::InlineObject43,
+    inline_object54: crate::models::InlineObject54,
 ) -> Result<crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp, Error<MoveMacAddrError>> {
     let local_var_client = &configuration.client;
 
@@ -110,7 +110,7 @@ pub async fn move_mac_addr(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object43);
+    local_var_req_builder = local_var_req_builder.json(&inline_object54);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

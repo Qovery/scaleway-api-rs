@@ -10,26 +10,13 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject41 {
-    /// TODO
-    #[serde(rename = "mac_type")]
-    pub mac_type: MacType,
+    /// The PEM-encoded custom certificate
+    #[serde(rename = "certificate_pem")]
+    pub certificate_pem: String,
 }
 
 impl InlineObject41 {
-    pub fn new(mac_type: MacType) -> InlineObject41 {
-        InlineObject41 { mac_type }
+    pub fn new(certificate_pem: String) -> InlineObject41 {
+        InlineObject41 { certificate_pem }
     }
-}
-
-/// TODO
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum MacType {
-    #[serde(rename = "unknown_type")]
-    UnknownType,
-    #[serde(rename = "vmware")]
-    Vmware,
-    #[serde(rename = "xen")]
-    Xen,
-    #[serde(rename = "kvm")]
-    Kvm,
 }

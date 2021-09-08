@@ -10,20 +10,12 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject54 {
-    #[serde(rename = "dns_zone", skip_serializing_if = "Option::is_none")]
-    pub dns_zone: Option<String>,
-    #[serde(
-        rename = "alternative_dns_zones",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub alternative_dns_zones: Option<Vec<String>>,
+    #[serde(rename = "dst_fip_id", skip_serializing_if = "Option::is_none")]
+    pub dst_fip_id: Option<String>,
 }
 
 impl InlineObject54 {
     pub fn new() -> InlineObject54 {
-        InlineObject54 {
-            dns_zone: None,
-            alternative_dns_zones: None,
-        }
+        InlineObject54 { dst_fip_id: None }
     }
 }

@@ -10,26 +10,26 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject52 {
-    /// The changes made to the records
-    #[serde(rename = "changes", skip_serializing_if = "Option::is_none")]
-    pub changes: Option<Vec<crate::models::ScalewayDomainV2beta1RecordChange>>,
-    /// Whether or not to return all the records
-    #[serde(rename = "return_all_records", skip_serializing_if = "Option::is_none")]
-    pub return_all_records: Option<bool>,
-    /// Forbid the creation of the target zone if not existing (default action is yes)
-    #[serde(
-        rename = "disallow_new_zone_creation",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub disallow_new_zone_creation: Option<bool>,
+    /// TODO
+    #[serde(rename = "mac_type")]
+    pub mac_type: MacType,
 }
 
 impl InlineObject52 {
-    pub fn new() -> InlineObject52 {
-        InlineObject52 {
-            changes: None,
-            return_all_records: None,
-            disallow_new_zone_creation: None,
-        }
+    pub fn new(mac_type: MacType) -> InlineObject52 {
+        InlineObject52 { mac_type }
     }
+}
+
+/// TODO
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum MacType {
+    #[serde(rename = "unknown_type")]
+    UnknownType,
+    #[serde(rename = "vmware")]
+    Vmware,
+    #[serde(rename = "xen")]
+    Xen,
+    #[serde(rename = "kvm")]
+    Kvm,
 }

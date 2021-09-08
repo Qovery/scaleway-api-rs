@@ -86,7 +86,7 @@ pub enum UpdateFlexibleIpError {
 pub async fn attach_flexible_ip(
     configuration: &configuration::Configuration,
     zone: &str,
-    inline_object44: crate::models::InlineObject44,
+    inline_object55: crate::models::InlineObject55,
 ) -> Result<
     crate::models::ScalewayFlexibleIpV1alpha1AttachFlexibleIpsResponse,
     Error<AttachFlexibleIpError>,
@@ -113,7 +113,7 @@ pub async fn attach_flexible_ip(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object44);
+    local_var_req_builder = local_var_req_builder.json(&inline_object55);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -138,7 +138,7 @@ pub async fn attach_flexible_ip(
 pub async fn create_flexible_ip(
     configuration: &configuration::Configuration,
     zone: &str,
-    inline_object39: crate::models::InlineObject39,
+    inline_object50: crate::models::InlineObject50,
 ) -> Result<crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp, Error<CreateFlexibleIpError>> {
     let local_var_client = &configuration.client;
 
@@ -162,7 +162,7 @@ pub async fn create_flexible_ip(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object39);
+    local_var_req_builder = local_var_req_builder.json(&inline_object50);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -285,7 +285,7 @@ pub async fn delete_mac_addr(
 pub async fn detach_flexible_ip(
     configuration: &configuration::Configuration,
     zone: &str,
-    inline_object45: crate::models::InlineObject45,
+    inline_object56: crate::models::InlineObject56,
 ) -> Result<
     crate::models::ScalewayFlexibleIpV1alpha1DetachFlexibleIpsResponse,
     Error<DetachFlexibleIpError>,
@@ -312,7 +312,7 @@ pub async fn detach_flexible_ip(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object45);
+    local_var_req_builder = local_var_req_builder.json(&inline_object56);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -339,7 +339,7 @@ pub async fn duplicate_mac_addr(
     configuration: &configuration::Configuration,
     zone: &str,
     fip_id: &str,
-    inline_object42: crate::models::InlineObject42,
+    inline_object53: crate::models::InlineObject53,
 ) -> Result<crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp, Error<DuplicateMacAddrError>> {
     let local_var_client = &configuration.client;
 
@@ -364,7 +364,7 @@ pub async fn duplicate_mac_addr(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object42);
+    local_var_req_builder = local_var_req_builder.json(&inline_object53);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -390,7 +390,7 @@ pub async fn generate_mac_addr(
     configuration: &configuration::Configuration,
     zone: &str,
     fip_id: &str,
-    inline_object41: crate::models::InlineObject41,
+    inline_object52: crate::models::InlineObject52,
 ) -> Result<crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp, Error<GenerateMacAddrError>> {
     let local_var_client = &configuration.client;
 
@@ -415,7 +415,7 @@ pub async fn generate_mac_addr(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object41);
+    local_var_req_builder = local_var_req_builder.json(&inline_object52);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -601,7 +601,7 @@ pub async fn update_flexible_ip(
     configuration: &configuration::Configuration,
     zone: &str,
     fip_id: &str,
-    inline_object40: crate::models::InlineObject40,
+    inline_object51: crate::models::InlineObject51,
 ) -> Result<crate::models::ScalewayFlexibleIpV1alpha1FlexibleIp, Error<UpdateFlexibleIpError>> {
     let local_var_client = &configuration.client;
 
@@ -626,7 +626,7 @@ pub async fn update_flexible_ip(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object40);
+    local_var_req_builder = local_var_req_builder.json(&inline_object51);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

@@ -4,11 +4,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**project_id** | **String** | ID of the project to associate with the Flexible IP | 
-**description** | Option<**String**> | Description to associate with the Flexible IP, max 255 characters | [optional]
-**tags** | Option<**Vec<String>**> | Tags to associate to the Flexible IP | [optional]
-**server_id** | Option<**String**> | Server ID on which to attach the created Flexible IP | [optional]
-**reverse** | Option<**String**> | Reverse DNS value | [optional]
+**name** | **String** | Device name | 
+**hub_id** | **String** | ID of the device's hub | 
+**allow_insecure** | Option<**bool**> | Allow plain and server-authenticated SSL connections in addition to mutually-authenticated ones | [optional]
+**allow_multiple_connections** | Option<**bool**> | Allow multiple physical devices to connect with this device's credentials | [optional]
+**message_filters** | Option<[**crate::models::IotV1RegionsRegionDevicesMessageFilters**](_iot_v1_regions__region__devices_message_filters.md)> |  | [optional]
+**description** | Option<**String**> | Device description | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**fips_ids** | **Vec<String>** | Multiple IDs can be provided as long as Flexible IPs belong to the same MAC groups (see details about MAC groups). | 
-**server_id** | **String** | A server ID on which to attach the Flexible IPs | 
+**ca_cert_pem** | **String** | The CA's PEM-encoded certificate | 
+**challenge_cert_pem** | **String** | The challenge is a PEM-encoded certificate to prove the possession of the CA. It must be signed by the CA, and have a Common Name equal to the Hub ID. | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

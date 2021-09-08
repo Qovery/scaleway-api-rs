@@ -10,15 +10,54 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject42 {
-    /// Flexible IPs need to be attached to the same server.
-    #[serde(rename = "duplicate_from_fip_id")]
-    pub duplicate_from_fip_id: String,
+    /// Hub name (up to 255 characters)
+    #[serde(rename = "name")]
+    pub name: String,
+    /// Organization/project owning the resource
+    #[serde(rename = "project_id")]
+    pub project_id: String,
+    /// Hub feature set
+    #[serde(rename = "product_plan")]
+    pub product_plan: ProductPlan,
+    /// Disable Hub events
+    #[serde(rename = "disable_events", skip_serializing_if = "Option::is_none")]
+    pub disable_events: Option<bool>,
+    /// Hub events topic prefix (default '$SCW/events')
+    #[serde(
+        rename = "events_topic_prefix",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub events_topic_prefix: Option<String>,
+    #[serde(
+        rename = "twins_graphite_config",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub twins_graphite_config:
+        Option<Box<crate::models::IotV1RegionsRegionHubsTwinsGraphiteConfig>>,
 }
 
 impl InlineObject42 {
-    pub fn new(duplicate_from_fip_id: String) -> InlineObject42 {
+    pub fn new(name: String, project_id: String, product_plan: ProductPlan) -> InlineObject42 {
         InlineObject42 {
-            duplicate_from_fip_id,
+            name,
+            project_id,
+            product_plan,
+            disable_events: None,
+            events_topic_prefix: None,
+            twins_graphite_config: None,
         }
     }
+}
+
+/// Hub feature set
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum ProductPlan {
+    #[serde(rename = "plan_unknown")]
+    Unknown,
+    #[serde(rename = "plan_shared")]
+    Shared,
+    #[serde(rename = "plan_dedicated")]
+    Dedicated,
+    #[serde(rename = "plan_ha")]
+    Ha,
 }

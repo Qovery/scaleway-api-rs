@@ -101,7 +101,7 @@ pub enum UpdateDnsZoneError {
 pub async fn clone_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object48: crate::models::InlineObject48,
+    inline_object59: crate::models::InlineObject59,
 ) -> Result<crate::models::ScalewayDomainV2beta1DnsZone, Error<CloneDnsZoneError>> {
     let local_var_client = &configuration.client;
 
@@ -125,7 +125,7 @@ pub async fn clone_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object48);
+    local_var_req_builder = local_var_req_builder.json(&inline_object59);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -150,7 +150,7 @@ pub async fn clone_dns_zone(
 /// Create a new DNS zone.
 pub async fn create_dns_zone(
     configuration: &configuration::Configuration,
-    inline_object46: crate::models::InlineObject46,
+    inline_object57: crate::models::InlineObject57,
 ) -> Result<crate::models::ScalewayDomainV2beta1DnsZone, Error<CreateDnsZoneError>> {
     let local_var_client = &configuration.client;
 
@@ -170,7 +170,7 @@ pub async fn create_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object46);
+    local_var_req_builder = local_var_req_builder.json(&inline_object57);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -194,7 +194,7 @@ pub async fn create_dns_zone(
 
 pub async fn create_ssl_certificate(
     configuration: &configuration::Configuration,
-    inline_object54: crate::models::InlineObject54,
+    inline_object65: crate::models::InlineObject65,
 ) -> Result<crate::models::ScalewayDomainV2beta1SslCertificate, Error<CreateSslCertificateError>> {
     let local_var_client = &configuration.client;
 
@@ -217,7 +217,7 @@ pub async fn create_ssl_certificate(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object54);
+    local_var_req_builder = local_var_req_builder.json(&inline_object65);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -631,7 +631,7 @@ pub async fn list_ssl_certificates(
 pub async fn refresh_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object53: crate::models::InlineObject53,
+    inline_object64: crate::models::InlineObject64,
 ) -> Result<crate::models::ScalewayDomainV2beta1RefreshDnsZoneResponse, Error<RefreshDnsZoneError>>
 {
     let local_var_client = &configuration.client;
@@ -656,7 +656,7 @@ pub async fn refresh_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object53);
+    local_var_req_builder = local_var_req_builder.json(&inline_object64);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -682,7 +682,7 @@ pub async fn refresh_dns_zone(
 pub async fn update_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object47: crate::models::InlineObject47,
+    inline_object58: crate::models::InlineObject58,
 ) -> Result<crate::models::ScalewayDomainV2beta1DnsZone, Error<UpdateDnsZoneError>> {
     let local_var_client = &configuration.client;
 
@@ -706,7 +706,7 @@ pub async fn update_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object47);
+    local_var_req_builder = local_var_req_builder.json(&inline_object58);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

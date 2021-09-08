@@ -10,23 +10,18 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject48 {
-    /// The destinaton DNS zone
-    #[serde(rename = "dest_dns_zone")]
-    pub dest_dns_zone: String,
-    /// Whether or not the destination DNS zone will be overwritten
-    #[serde(rename = "overwrite", skip_serializing_if = "Option::is_none")]
-    pub overwrite: Option<bool>,
-    /// The project ID of the destination DNS zone
-    #[serde(rename = "project_id", skip_serializing_if = "Option::is_none")]
-    pub project_id: Option<String>,
+    /// If set, ensures that the document's current version matches before persisting the update.
+    #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
+    pub version: Option<f32>,
+    #[serde(rename = "data", skip_serializing_if = "Option::is_none")]
+    pub data: Option<Box<crate::models::IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData>>,
 }
 
 impl InlineObject48 {
-    pub fn new(dest_dns_zone: String) -> InlineObject48 {
+    pub fn new() -> InlineObject48 {
         InlineObject48 {
-            dest_dns_zone,
-            overwrite: None,
-            project_id: None,
+            version: None,
+            data: None,
         }
     }
 }
