@@ -44,6 +44,7 @@ openapi-generator generate -g rust \
  -i .generation/consolidated-specs.yml \
  -o . \
  -c openapi-generator-config.yml \
+ --type-mappings number=i64 \
 
 # adding README elements
 cat templates/README.prepend.md README.md > README.consolidated.md
