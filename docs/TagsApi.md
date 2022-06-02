@@ -85,8 +85,8 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **image_id** | **String** | The unique ID of the image | [required] |
-**page** | Option<**f32**> | A positive integer to choose the page to display |  |[default to 1]
-**page_size** | Option<**f32**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
+**page** | Option<**i64**> | A positive integer to choose the page to display |  |[default to 1]
+**page_size** | Option<**i64**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
 **order_by** | Option<**String**> | Field by which to order the display of Images |  |[default to created_at_asc]
 **name** | Option<**String**> | Filter by the tag name (exact match) |  |
 

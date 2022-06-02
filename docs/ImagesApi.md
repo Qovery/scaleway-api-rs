@@ -84,8 +84,8 @@ List all your images
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | A positive integer to choose the page to display |  |[default to 1]
-**page_size** | Option<**f32**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
+**page** | Option<**i64**> | A positive integer to choose the page to display |  |[default to 1]
+**page_size** | Option<**i64**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
 **order_by** | Option<**String**> | Field by which to order the display of Images |  |[default to created_at_asc]
 **namespace_id** | Option<**String**> | Filter by the Namespace ID |  |
 **name** | Option<**String**> | Filter by the Image name (exact match) |  |
@@ -110,7 +110,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_image
 
-> crate::models::ScalewayRegistryV1Image update_image(region, image_id, inline_object28)
+> crate::models::ScalewayRegistryV1Image update_image(region, image_id, update_image_request)
 Update an existing image
 
 Update the image associated with the given id.
@@ -122,7 +122,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **image_id** | **String** | Image ID to update | [required] |
-**inline_object28** | [**InlineObject28**](InlineObject28.md) |  | [required] |
+**update_image_request** | [**UpdateImageRequest**](UpdateImageRequest.md) |  | [required] |
 
 ### Return type
 

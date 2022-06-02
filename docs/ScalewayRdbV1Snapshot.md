@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **instance_id** | Option<**String**> | UUID of the instance | [optional]
 **name** | Option<**String**> | Name of the snapshot | [optional]
 **status** | Option<**String**> | Status of the snapshot | [optional][default to Status_Unknown]
-**size** | Option<**f32**> | Size of the snapshot (in bytes) | [optional]
+**size** | Option<**i64**> | Size of the snapshot (in bytes) | [optional]
 **expires_at** | Option<**String**> | Expiration date (Format ISO 8601) | [optional]
 **created_at** | Option<**String**> | Creation date (Format ISO 8601) | [optional]
 **updated_at** | Option<**String**> | Updated date (Format ISO 8601) | [optional]

@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 ## create_hub
 
-> crate::models::ScalewayIotV1Hub create_hub(region, inline_object42)
+> crate::models::ScalewayIotV1Hub create_hub(region, create_hub_request)
 Create a hub
 
 ### Parameters
@@ -28,7 +28,7 @@ Create a hub
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object42** | [**InlineObject42**](InlineObject42.md) |  | [required] |
+**create_hub_request** | [**CreateHubRequest**](CreateHubRequest.md) |  | [required] |
 
 ### Return type
 
@@ -235,8 +235,8 @@ List hubs
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size. The maximum value is 100 |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size. The maximum value is 100 |  |[default to 20]
 **order_by** | Option<**String**> | Ordering of requested hub |  |[default to name_asc]
 **project_id** | Option<**String**> | Filter on project |  |
 **organization_id** | Option<**String**> | Filter on the organization |  |
@@ -260,7 +260,7 @@ Name | Type | Description  | Required | Notes
 
 ## set_hub_ca
 
-> crate::models::ScalewayIotV1Hub set_hub_ca(region, hub_id, inline_object44)
+> crate::models::ScalewayIotV1Hub set_hub_ca(region, hub_id, set_hub_ca_request)
 Set the certificate authority of a hub
 
 ### Parameters
@@ -270,7 +270,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **hub_id** | **String** | Hub ID | [required] |
-**inline_object44** | [**InlineObject44**](InlineObject44.md) |  | [required] |
+**set_hub_ca_request** | [**SetHubCaRequest**](SetHubCaRequest.md) |  | [required] |
 
 ### Return type
 
@@ -290,7 +290,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_hub
 
-> crate::models::ScalewayIotV1Hub update_hub(region, hub_id, inline_object43)
+> crate::models::ScalewayIotV1Hub update_hub(region, hub_id, update_hub_request)
 Update a hub
 
 ### Parameters
@@ -300,7 +300,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **hub_id** | **String** | Hub ID | [required] |
-**inline_object43** | [**InlineObject43**](InlineObject43.md) |  | [required] |
+**update_hub_request** | [**UpdateHubRequest**](UpdateHubRequest.md) |  | [required] |
 
 ### Return type
 

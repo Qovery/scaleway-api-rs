@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **is_connected** | Option<**bool**> | Whether the device is connected to the Hub or not | [optional]
 **allow_insecure** | Option<**bool**> | Whether to allow device to connect without TLS mutual authentication | [optional]
 **allow_multiple_connections** | Option<**bool**> | Whether to allow multiple physical devices to connect with this device's credentials | [optional]
-**message_filters** | Option<[**crate::models::IotV1RegionsRegionDevicesDeviceIdMessageFilters**](_iot_v1_regions__region__devices__device_id__message_filters.md)> |  | [optional]
+**message_filters** | Option<[**crate::models::UpdateDeviceRequestMessageFilters**](UpdateDevice_request_message_filters.md)> |  | [optional]
 **has_custom_certificate** | Option<**bool**> | Assigning a custom certificate allows a device to authenticate using that specific certificate without checking the hub's CA certificate. | [optional]
 **created_at** | Option<**String**> | Device add date | [optional]
 **updated_at** | Option<**String**> | Device last modification date | [optional]
