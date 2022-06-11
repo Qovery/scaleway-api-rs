@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_namespace
 
-> crate::models::ScalewayRegistryV1Namespace create_namespace(region, inline_object29)
+> crate::models::ScalewayRegistryV1Namespace create_namespace(region, create_namespace_request)
 Create a new namespace
 
 ### Parameters
@@ -23,7 +23,7 @@ Create a new namespace
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object29** | [**InlineObject29**](InlineObject29.md) |  | [required] |
+**create_namespace_request** | [**CreateNamespaceRequest**](CreateNamespaceRequest.md) |  | [required] |
 
 ### Return type
 
@@ -114,8 +114,8 @@ List all your namespaces
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | A positive integer to choose the page to display |  |[default to 1]
-**page_size** | Option<**f32**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
+**page** | Option<**i64**> | A positive integer to choose the page to display |  |[default to 1]
+**page_size** | Option<**i64**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
 **order_by** | Option<**String**> | Field by which to order the display of Images |  |[default to created_at_asc]
 **organization_id** | Option<**String**> | Filter by Organization ID |  |
 **project_id** | Option<**String**> | Filter by Project ID |  |
@@ -139,7 +139,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_namespace
 
-> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, inline_object30)
+> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, update_namespace_request)
 Update an existing namespace
 
 Update the namespace associated with the given id.
@@ -151,7 +151,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **namespace_id** | **String** | Namespace ID to update | [required] |
-**inline_object30** | [**InlineObject30**](InlineObject30.md) |  | [required] |
+**update_namespace_request** | [**UpdateNamespaceRequest**](UpdateNamespaceRequest.md) |  | [required] |
 
 ### Return type
 

@@ -75,7 +75,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneRecordsResponse list_dns_zone_records(dns_zone, project_id, order_by, page, page_size, name, _type)
+> crate::models::ScalewayDomainV2beta1ListDnsZoneRecordsResponse list_dns_zone_records(dns_zone, project_id, order_by, page, page_size, name, _type, id)
 List DNS zone records
 
 Returns a list of DNS records of a DNS zone with default NS. You can filter the records by type and name. 
@@ -88,10 +88,11 @@ Name | Type | Description  | Required | Notes
 **dns_zone** | **String** | The DNS zone on which to filter the returned DNS zone records | [required] |
 **project_id** | Option<**String**> | The project ID on which to filter the returned DNS zone records |  |
 **order_by** | Option<**String**> | The sort order of the returned DNS zone records |  |[default to name_asc]
-**page** | Option<**f32**> | The page number for the returned DNS zone records |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of DNS zone records per page |  |[default to 20]
+**page** | Option<**i64**> | The page number for the returned DNS zone records |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of DNS zone records per page |  |[default to 20]
 **name** | Option<**String**> | The name on which to filter the returned DNS zone records |  |
 **_type** | Option<**String**> | The record type on which to filter the returned DNS zone records |  |[default to unknown]
+**id** | Option<**String**> | The record ID on which to filter the returned DNS zone records |  |
 
 ### Return type
 
@@ -111,7 +112,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, inline_object61)
+> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, update_dns_zone_nameservers_request)
 Update DNS zone nameservers
 
 Update DNS zone nameservers and set optional glue records.
@@ -122,7 +123,7 @@ Update DNS zone nameservers and set optional glue records.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone where the DNS zone nameservers will be updated | [required] |
-**inline_object61** | [**InlineObject61**](InlineObject61.md) |  | [required] |
+**update_dns_zone_nameservers_request** | [**UpdateDnsZoneNameserversRequest**](UpdateDnsZoneNameserversRequest.md) |  | [required] |
 
 ### Return type
 
@@ -142,7 +143,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, inline_object63)
+> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, update_dns_zone_records_request)
 Update DNS zone records
 
 Only available with default NS.<br/> Send a list of actions and records.  Action can be:  - add:   - Add new record   - Can be more specific and add a new IP to an existing A record for example  - set:   - Edit a record   - Can be more specific and edit an IP from an existing A record for example  - delete:   - Delete a record   - Can be more specific and delete an IP from an existing A record for example  - clear:   - Delete all records from a DNS zone  All edits will be versioned. 
@@ -153,7 +154,7 @@ Only available with default NS.<br/> Send a list of actions and records.  Action
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone where the DNS zone records will be updated | [required] |
-**inline_object63** | [**InlineObject63**](InlineObject63.md) |  | [required] |
+**update_dns_zone_records_request** | [**UpdateDnsZoneRecordsRequest**](UpdateDnsZoneRecordsRequest.md) |  | [required] |
 
 ### Return type
 

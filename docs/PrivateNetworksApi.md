@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, inline_object37)
+> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, create_private_network_request)
 Create a private network
 
 ### Parameters
@@ -23,7 +23,7 @@ Create a private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object37** | [**InlineObject37**](InlineObject37.md) |  | [required] |
+**create_private_network_request** | [**CreatePrivateNetworkRequest**](CreatePrivateNetworkRequest.md) |  | [required] |
 
 ### Return type
 
@@ -111,8 +111,8 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **order_by** | Option<**String**> | The sort order of the returned private networks |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned private networks |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of private networks per page |  |[default to 20]
+**page** | Option<**i64**> | The page number for the returned private networks |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of private networks per page |  |[default to 20]
 **name** | Option<**String**> | Filter private networks with names containing this string |  |
 **tags** | Option<[**Vec<String>**](String.md)> | Filter private networks with one or more matching tags |  |
 **organization_id** | Option<**String**> | The organization ID on which to filter the returned private networks |  |
@@ -136,7 +136,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, inline_object38)
+> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, update_private_network_request)
 Update private network
 
 ### Parameters
@@ -146,7 +146,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **private_network_id** | **String** | The private network ID | [required] |
-**inline_object38** | [**InlineObject38**](InlineObject38.md) |  | [required] |
+**update_private_network_request** | [**UpdatePrivateNetworkRequest**](UpdatePrivateNetworkRequest.md) |  | [required] |
 
 ### Return type
 

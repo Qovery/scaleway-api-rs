@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_route
 
-> crate::models::ScalewayIotV1Route create_route(region, inline_object46)
+> crate::models::ScalewayIotV1Route create_route(region, create_route_request)
 Create a route
 
 Multiple route kinds can be created: - Database Route.   Create a route that will record subscribed MQTT messages into your database.   <b>You need to manage the database by yourself</b>. - REST Route.   Create a route that will call a REST API on received subscribed MQTT messages. - S3 Routes.   Create a route that will put subscribed MQTT messages into an S3 bucket.   You need to create the bucket yourself and grant us write access.   The grant can be done with s3cmd (`s3cmd setacl s3://<my-bucket> --acl-grant=write:555c69c3-87d0-4bf8-80f1-99a2f757d031:555c69c3-87d0-4bf8-80f1-99a2f757d031`). 
@@ -25,7 +25,7 @@ Multiple route kinds can be created: - Database Route.   Create a route that wil
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object46** | [**InlineObject46**](InlineObject46.md) |  | [required] |
+**create_route_request** | [**CreateRouteRequest**](CreateRouteRequest.md) |  | [required] |
 
 ### Return type
 
@@ -112,8 +112,8 @@ List routes
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size. The maximum value is 100 |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size. The maximum value is 100 |  |[default to 20]
 **order_by** | Option<**String**> | Ordering of requested routes |  |[default to name_asc]
 **hub_id** | Option<**String**> | Filter on the hub |  |
 **name** | Option<**String**> | Filter on route's name |  |
@@ -136,7 +136,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_route
 
-> crate::models::ScalewayIotV1Route update_route(region, route_id, inline_object47)
+> crate::models::ScalewayIotV1Route update_route(region, route_id, update_route_request)
 Update a route
 
 ### Parameters
@@ -146,7 +146,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **route_id** | **String** | Route id | [required] |
-**inline_object47** | [**InlineObject47**](InlineObject47.md) |  | [required] |
+**update_route_request** | [**UpdateRouteRequest**](UpdateRouteRequest.md) |  | [required] |
 
 ### Return type
 

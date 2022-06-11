@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## create_pool
 
-> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, inline_object33)
+> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, create_pool_request)
 Create a new pool in a cluster
 
 This method allows to create a new pool in a specific Kubernetes cluster.
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster in which the pool will be created | [required] |
-**inline_object33** | [**InlineObject33**](InlineObject33.md) |  | [required] |
+**create_pool_request** | [**CreatePoolRequest**](CreatePoolRequest.md) |  | [required] |
 
 ### Return type
 
@@ -122,8 +122,8 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster from which the pools will be listed from | [required] |
 **order_by** | Option<**String**> | The sort order of the returned pools |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned pools |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of pools per page |  |[default to 20]
+**page** | Option<**i64**> | The page number for the returned pools |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of pools per page |  |[default to 20]
 **name** | Option<**String**> | The name on which to filter the returned pools |  |
 **status** | Option<**String**> | The status on which to filter the returned pools |  |[default to unknown]
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_pool
 
-> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, inline_object35)
+> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, update_pool_request)
 Update a pool in a cluster
 
 This method allows to update some attributes of a specific pool such as the size, the autoscaling enablement, the tags, ...
@@ -157,7 +157,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **pool_id** | **String** | The ID of the pool to update | [required] |
-**inline_object35** | [**InlineObject35**](InlineObject35.md) |  | [required] |
+**update_pool_request** | [**UpdatePoolRequest**](UpdatePoolRequest.md) |  | [required] |
 
 ### Return type
 
@@ -177,7 +177,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_pool
 
-> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, inline_object36)
+> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, upgrade_pool_request)
 Upgrade a pool in a cluster
 
 This method allows to upgrade the Kubernetes version of a specific pool. Note that this will work when the targeted version is the same than the version of the cluster.
@@ -189,7 +189,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **pool_id** | **String** | The ID of the pool to upgrade | [required] |
-**inline_object36** | [**InlineObject36**](InlineObject36.md) |  | [required] |
+**upgrade_pool_request** | [**UpgradePoolRequest**](UpgradePoolRequest.md) |  | [required] |
 
 ### Return type
 

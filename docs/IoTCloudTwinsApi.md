@@ -133,7 +133,7 @@ Name | Type | Description  | Required | Notes
 
 ## patch_twin_document
 
-> crate::models::ScalewayIotV1TwinDocument patch_twin_document(region, twin_id, document_name, inline_object49)
+> crate::models::ScalewayIotV1TwinDocument patch_twin_document(region, twin_id, document_name, patch_twin_document_request)
 BETA - Patch a Cloud Twin Document
 
 ### Parameters
@@ -144,7 +144,7 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **twin_id** | **String** | Twin ID | [required] |
 **document_name** | **String** | Document name | [required] |
-**inline_object49** | [**InlineObject49**](InlineObject49.md) |  | [required] |
+**patch_twin_document_request** | [**PatchTwinDocumentRequest**](PatchTwinDocumentRequest.md) |  | [required] |
 
 ### Return type
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Required | Notes
 
 ## put_twin_document
 
-> crate::models::ScalewayIotV1TwinDocument put_twin_document(region, twin_id, document_name, inline_object48)
+> crate::models::ScalewayIotV1TwinDocument put_twin_document(region, twin_id, document_name, put_twin_document_request)
 BETA - Update a Cloud Twin Document
 
 ### Parameters
@@ -175,7 +175,7 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **twin_id** | **String** | Twin ID | [required] |
 **document_name** | **String** | Document name | [required] |
-**inline_object48** | [**InlineObject48**](InlineObject48.md) |  | [required] |
+**put_twin_document_request** | [**PutTwinDocumentRequest**](PutTwinDocumentRequest.md) |  | [required] |
 
 ### Return type
 

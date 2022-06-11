@@ -12,10 +12,11 @@ Name | Type | Description | Notes
 **updated_at** | Option<**String**> | Date of last update of the Flexible IP | [optional]
 **created_at** | Option<**String**> | Date of creation of the Flexible IP | [optional]
 **status** | Option<**String**> | - ready : Flexible IP is created and ready to be attached to a server or to have a virtual MAC generated. - updating: Flexible IP is being attached to a server or a virtual MAC operation is ongoing - attached: Flexible IP is attached to a server - error: a Flexible IP operation resulted in an error - detaching: Flexible IP is being detached from a server - locked: Flexible IP resource is locked  | [optional][default to Status_Unknown]
-**ip_address** | Option<**String**> | IP of the Flexible IP (IPv4 address) | [optional]
+**ip_address** | Option<**String**> | IP of the Flexible IP (IP address) | [optional]
 **mac_address** | Option<[**crate::models::ScalewayFlexibleIpV1alpha1FlexibleIpMacAddress**](scaleway_flexible_ip_v1alpha1_FlexibleIP_mac_address.md)> |  | [optional]
 **server_id** | Option<**String**> | ID of the server linked to the Flexible IP | [optional]
 **reverse** | Option<**String**> | Reverse DNS value | [optional]
+**zone** | Option<**String**> | Flexible IP Availability Zone | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -5,7 +5,7 @@ All URIs are relative to *https://api.scaleway.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**get_os**](OSApi.md#get_os) | **GET** /baremetal/v1/zones/{zone}/os/{os_id} | Get an OS with a given ID
-[**list_os**](OSApi.md#list_os) | **GET** /baremetal/v1/zones/{zone}/os | List all available OS that can be install on a baremetal server
+[**list_os**](OSApi.md#list_os) | **GET** /baremetal/v1/zones/{zone}/os | List all available OS that can be install on an elastic metal server
 
 
 
@@ -43,9 +43,9 @@ Name | Type | Description  | Required | Notes
 ## list_os
 
 > crate::models::ScalewayBaremetalV1ListOsResponse list_os(zone, page, page_size, offer_id)
-List all available OS that can be install on a baremetal server
+List all available OS that can be install on an elastic metal server
 
-List all available OS that can be install on a baremetal server.
+List all available OS that can be install on an elastic metal server.
 
 ### Parameters
 
@@ -53,8 +53,8 @@ List all available OS that can be install on a baremetal server.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Number of OS per page |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Number of OS per page |  |[default to 20]
 **offer_id** | Option<**String**> | Filter OS by offer ID |  |
 
 ### Return type

@@ -76,7 +76,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_version_records
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneVersionRecordsResponse list_dns_zone_version_records(dns_zone_version_id)
+> crate::models::ScalewayDomainV2beta1ListDnsZoneVersionRecordsResponse list_dns_zone_version_records(dns_zone_version_id, page, page_size)
 List DNS zone version records
 
 Get a list of records from a previous DNS zone version.
@@ -87,6 +87,8 @@ Get a list of records from a previous DNS zone version.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone_version_id** | **String** | (UUID format) | [required] |
+**page** | Option<**i64**> | The page number for the returned DNS zones versions records |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of DNS zones versions records per page |  |[default to 20]
 
 ### Return type
 
@@ -106,7 +108,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_versions
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneVersionsResponse list_dns_zone_versions(dns_zone)
+> crate::models::ScalewayDomainV2beta1ListDnsZoneVersionsResponse list_dns_zone_versions(dns_zone, page, page_size)
 List DNS zone versions
 
 Get a list of DNS zone versions.<br/> The maximum version count is 100.<br/> If the count reaches this limit, the oldest version will be deleted after each new modification. 
@@ -117,6 +119,8 @@ Get a list of DNS zone versions.<br/> The maximum version count is 100.<br/> If 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** |  | [required] |
+**page** | Option<**i64**> | The page number for the returned DNS zones versions |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of DNS zones versions per page |  |[default to 20]
 
 ### Return type
 

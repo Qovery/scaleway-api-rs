@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **status** | Option<**String**> | The status of the image | [optional][default to Status_Unknown]
 **status_message** | Option<**String**> | Details of the image status | [optional]
 **visibility** | Option<**String**> | A `public` image is pullable from internet without authentication, opposed to a `private` image. `inherit` will use the namespace `is_public` parameter | [optional][default to Visibility_VisibilityUnknown]
-**size** | Option<**f32**> | Image size in bytes, calculated from the size of image layers. One layer used in two tags of the same image is counted once but one layer used in two images is counted twice. (in bytes) | [optional]
+**size** | Option<**i64**> | Image size in bytes, calculated from the size of image layers. One layer used in two tags of the same image is counted once but one layer used in two images is counted twice. (in bytes) | [optional]
 **created_at** | Option<**String**> | Creation date | [optional]
 **updated_at** | Option<**String**> | Last modification date, from the user or the service | [optional]
 **tags** | Option<**Vec<String>**> | List of docker tags of the image | [optional]

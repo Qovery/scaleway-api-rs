@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## add_instance_settings
 
-> crate::models::ScalewayRdbV1AddInstanceSettingsResponse add_instance_settings(region, instance_id, inline_object20)
+> crate::models::ScalewayRdbV1AddInstanceSettingsResponse add_instance_settings(region, instance_id, add_instance_settings_request)
 Add an instance setting
 
 ### Parameters
@@ -22,7 +22,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want to add settings to | [required] |
-**inline_object20** | [**InlineObject20**](InlineObject20.md) |  | [required] |
+**add_instance_settings_request** | [**AddInstanceSettingsRequest**](AddInstanceSettingsRequest.md) |  | [required] |
 
 ### Return type
 
@@ -42,7 +42,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_instance_settings
 
-> crate::models::ScalewayRdbV1DeleteInstanceSettingsResponse delete_instance_settings(region, instance_id, inline_object21)
+> crate::models::ScalewayRdbV1DeleteInstanceSettingsResponse delete_instance_settings(region, instance_id, delete_instance_settings_request)
 Delete an instance setting
 
 ### Parameters
@@ -52,7 +52,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance to delete settings from | [required] |
-**inline_object21** | [**InlineObject21**](InlineObject21.md) |  | [required] |
+**delete_instance_settings_request** | [**DeleteInstanceSettingsRequest**](DeleteInstanceSettingsRequest.md) |  | [required] |
 
 ### Return type
 
@@ -72,7 +72,7 @@ Name | Type | Description  | Required | Notes
 
 ## set_instance_settings
 
-> crate::models::ScalewayRdbV1SetInstanceSettingsResponse set_instance_settings(region, instance_id, inline_object19)
+> crate::models::ScalewayRdbV1SetInstanceSettingsResponse set_instance_settings(region, instance_id, set_instance_settings_request)
 Set a given instance setting
 
 ### Parameters
@@ -82,7 +82,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance where the settings has to be set | [required] |
-**inline_object19** | [**InlineObject19**](InlineObject19.md) |  | [required] |
+**set_instance_settings_request** | [**SetInstanceSettingsRequest**](SetInstanceSettingsRequest.md) |  | [required] |
 
 ### Return type
 

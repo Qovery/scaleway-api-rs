@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -13,63 +13,63 @@ use reqwest;
 use super::{configuration, Error};
 use crate::apis::ResponseContent;
 
-/// struct for typed errors of method `create_cluster`
+/// struct for typed errors of method [`create_cluster`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CreateClusterError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_cluster`
+/// struct for typed errors of method [`delete_cluster`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteClusterError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_cluster`
+/// struct for typed errors of method [`get_cluster`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetClusterError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_cluster_kube_config`
+/// struct for typed errors of method [`get_cluster_kube_config`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetClusterKubeConfigError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_cluster_available_versions`
+/// struct for typed errors of method [`list_cluster_available_versions`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListClusterAvailableVersionsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_clusters`
+/// struct for typed errors of method [`list_clusters`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListClustersError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `reset_cluster_admin_token`
+/// struct for typed errors of method [`reset_cluster_admin_token`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ResetClusterAdminTokenError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_cluster`
+/// struct for typed errors of method [`update_cluster`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateClusterError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `upgrade_cluster`
+/// struct for typed errors of method [`upgrade_cluster`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpgradeClusterError {
@@ -80,23 +80,25 @@ pub enum UpgradeClusterError {
 pub async fn create_cluster(
     configuration: &configuration::Configuration,
     region: &str,
-    inline_object31: crate::models::InlineObject31,
+    create_cluster_request: crate::models::CreateClusterRequest,
 ) -> Result<crate::models::ScalewayK8sV1Cluster, Error<CreateClusterError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -104,7 +106,7 @@ pub async fn create_cluster(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object31);
+    local_var_req_builder = local_var_req_builder.json(&create_cluster_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -133,11 +135,13 @@ pub async fn delete_cluster(
     cluster_id: &str,
     with_additional_resources: Option<bool>,
 ) -> Result<crate::models::ScalewayK8sV1Cluster, Error<DeleteClusterError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
@@ -148,11 +152,11 @@ pub async fn delete_cluster(
         local_var_req_builder = local_var_req_builder
             .query(&[("with_additional_resources", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -187,22 +191,24 @@ pub async fn get_cluster(
     region: &str,
     cluster_id: &str,
 ) -> Result<crate::models::ScalewayK8sV1Cluster, Error<GetClusterError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -237,22 +243,24 @@ pub async fn get_cluster_kube_config(
     region: &str,
     cluster_id: &str,
 ) -> Result<crate::models::ScalewayStdFile, Error<GetClusterKubeConfigError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -290,22 +298,24 @@ pub async fn list_cluster_available_versions(
     crate::models::ScalewayK8sV1ListClusterAvailableVersionsResponse,
     Error<ListClusterAvailableVersionsError>,
 > {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -341,17 +351,19 @@ pub async fn list_clusters(
     organization_id: Option<&str>,
     project_id: Option<&str>,
     order_by: Option<&str>,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
     name: Option<&str>,
     status: Option<&str>,
     _type: Option<&str>,
 ) -> Result<crate::models::ScalewayK8sV1ListClustersResponse, Error<ListClustersError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region)
     );
     let mut local_var_req_builder =
@@ -389,11 +401,11 @@ pub async fn list_clusters(
         local_var_req_builder =
             local_var_req_builder.query(&[("type", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -429,22 +441,24 @@ pub async fn reset_cluster_admin_token(
     cluster_id: &str,
     body: serde_json::Value,
 ) -> Result<(), Error<ResetClusterAdminTokenError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}/reset-admin-token",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -479,24 +493,26 @@ pub async fn update_cluster(
     configuration: &configuration::Configuration,
     region: &str,
     cluster_id: &str,
-    inline_object32: crate::models::InlineObject32,
+    update_cluster_request: crate::models::UpdateClusterRequest,
 ) -> Result<crate::models::ScalewayK8sV1Cluster, Error<UpdateClusterError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -504,7 +520,7 @@ pub async fn update_cluster(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object32);
+    local_var_req_builder = local_var_req_builder.json(&update_cluster_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -531,24 +547,26 @@ pub async fn upgrade_cluster(
     configuration: &configuration::Configuration,
     region: &str,
     cluster_id: &str,
-    inline_object34: crate::models::InlineObject34,
+    upgrade_cluster_request: crate::models::UpgradeClusterRequest,
 ) -> Result<crate::models::ScalewayK8sV1Cluster, Error<UpgradeClusterError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         cluster_id = crate::apis::urlencode(cluster_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -556,7 +574,7 @@ pub async fn upgrade_cluster(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object34);
+    local_var_req_builder = local_var_req_builder.json(&upgrade_cluster_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

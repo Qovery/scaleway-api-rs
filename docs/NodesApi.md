@@ -58,8 +58,8 @@ Name | Type | Description  | Required | Notes
 **cluster_id** | **String** | The cluster ID from which the nodes will be listed from | [required] |
 **pool_id** | Option<**String**> | The pool ID on which to filter the returned nodes |  |
 **order_by** | Option<**String**> | The sort order of the returned nodes |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned nodes |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of nodes per page |  |[default to 20]
+**page** | Option<**i64**> | The page number for the returned nodes |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of nodes per page |  |[default to 20]
 **name** | Option<**String**> | The name on which to filter the returned nodes |  |
 **status** | Option<**String**> | The status on which to filter the returned nodes |  |[default to unknown]
 
