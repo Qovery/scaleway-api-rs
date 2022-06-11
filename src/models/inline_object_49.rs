@@ -10,12 +10,18 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject49 {
-    #[serde(rename = "online_v1", skip_serializing_if = "Option::is_none")]
-    pub online_v1: Option<Box<crate::models::DomainV2beta1DnsZonesDnsZoneImportProviderOnlineV1>>,
+    /// If set, ensures that the document's current version matches before persisting the update.
+    #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
+    pub version: Option<f32>,
+    #[serde(rename = "data", skip_serializing_if = "Option::is_none")]
+    pub data: Option<Box<crate::models::IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData1>>,
 }
 
 impl InlineObject49 {
     pub fn new() -> InlineObject49 {
-        InlineObject49 { online_v1: None }
+        InlineObject49 {
+            version: None,
+            data: None,
+        }
     }
 }

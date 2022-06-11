@@ -10,13 +10,38 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject45 {
-    /// Multiple IDs can be provided as long as Flexible IPs belong to the same MAC groups (see details about MAC groups).
-    #[serde(rename = "fips_ids")]
-    pub fips_ids: Vec<String>,
+    /// Network name
+    #[serde(rename = "name")]
+    pub name: String,
+    /// Type of network to connect with
+    #[serde(rename = "type")]
+    pub _type: Type,
+    /// Hub ID to connect the Network to
+    #[serde(rename = "hub_id")]
+    pub hub_id: String,
+    /// Topic prefix for the Network
+    #[serde(rename = "topic_prefix")]
+    pub topic_prefix: String,
 }
 
 impl InlineObject45 {
-    pub fn new(fips_ids: Vec<String>) -> InlineObject45 {
-        InlineObject45 { fips_ids }
+    pub fn new(name: String, _type: Type, hub_id: String, topic_prefix: String) -> InlineObject45 {
+        InlineObject45 {
+            name,
+            _type,
+            hub_id,
+            topic_prefix,
+        }
     }
+}
+
+/// Type of network to connect with
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum Type {
+    #[serde(rename = "unknown")]
+    Unknown,
+    #[serde(rename = "sigfox")]
+    Sigfox,
+    #[serde(rename = "rest")]
+    Rest,
 }

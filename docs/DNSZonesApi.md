@@ -21,7 +21,7 @@ Method | HTTP request | Description
 
 ## clone_dns_zone
 
-> crate::models::ScalewayDomainV2beta1DnsZone clone_dns_zone(dns_zone, inline_object48)
+> crate::models::ScalewayDomainV2beta1DnsZone clone_dns_zone(dns_zone, inline_object59)
 Clone a DNS zone
 
 Clone an existed DNS zone with all its records into a new one.
@@ -32,7 +32,7 @@ Clone an existed DNS zone with all its records into a new one.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to clone | [required] |
-**inline_object48** | [**InlineObject48**](InlineObject48.md) |  | [required] |
+**inline_object59** | [**InlineObject59**](InlineObject59.md) |  | [required] |
 
 ### Return type
 
@@ -52,7 +52,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_dns_zone
 
-> crate::models::ScalewayDomainV2beta1DnsZone create_dns_zone(inline_object46)
+> crate::models::ScalewayDomainV2beta1DnsZone create_dns_zone(inline_object57)
 Create a DNS zone
 
 Create a new DNS zone.
@@ -62,7 +62,7 @@ Create a new DNS zone.
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**inline_object46** | [**InlineObject46**](InlineObject46.md) |  | [required] |
+**inline_object57** | [**InlineObject57**](InlineObject57.md) |  | [required] |
 
 ### Return type
 
@@ -82,7 +82,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_ssl_certificate
 
-> crate::models::ScalewayDomainV2beta1SslCertificate create_ssl_certificate(inline_object54)
+> crate::models::ScalewayDomainV2beta1SslCertificate create_ssl_certificate(inline_object65)
 Create or return the zone TLS certificate
 
 ### Parameters
@@ -90,7 +90,7 @@ Create or return the zone TLS certificate
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**inline_object54** | [**InlineObject54**](InlineObject54.md) |  | [required] |
+**inline_object65** | [**InlineObject65**](InlineObject65.md) |  | [required] |
 
 ### Return type
 
@@ -322,7 +322,7 @@ Name | Type | Description  | Required | Notes
 
 ## refresh_dns_zone
 
-> crate::models::ScalewayDomainV2beta1RefreshDnsZoneResponse refresh_dns_zone(dns_zone, inline_object53)
+> crate::models::ScalewayDomainV2beta1RefreshDnsZoneResponse refresh_dns_zone(dns_zone, inline_object64)
 Refresh DNS zone
 
 Refresh SOA DNS zone. You can recreate the given DNS zone and its sub DNS zone if needed. 
@@ -333,7 +333,7 @@ Refresh SOA DNS zone. You can recreate the given DNS zone and its sub DNS zone i
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to refresh | [required] |
-**inline_object53** | [**InlineObject53**](InlineObject53.md) |  | [required] |
+**inline_object64** | [**InlineObject64**](InlineObject64.md) |  | [required] |
 
 ### Return type
 
@@ -353,7 +353,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone
 
-> crate::models::ScalewayDomainV2beta1DnsZone update_dns_zone(dns_zone, inline_object47)
+> crate::models::ScalewayDomainV2beta1DnsZone update_dns_zone(dns_zone, inline_object58)
 Update a DNS zone
 
 Update the name and/or the organizations for a DNS zone.
@@ -364,7 +364,7 @@ Update the name and/or the organizations for a DNS zone.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to update | [required] |
-**inline_object47** | [**InlineObject47**](InlineObject47.md) |  | [required] |
+**inline_object58** | [**InlineObject58**](InlineObject58.md) |  | [required] |
 
 ### Return type
 

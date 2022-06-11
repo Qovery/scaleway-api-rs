@@ -91,7 +91,7 @@ pub async fn export_raw_dns_zone(
 pub async fn import_provider_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object49: crate::models::InlineObject49,
+    inline_object60: crate::models::InlineObject60,
 ) -> Result<
     crate::models::ScalewayDomainV2beta1ImportProviderDnsZoneResponse,
     Error<ImportProviderDnsZoneError>,
@@ -118,7 +118,7 @@ pub async fn import_provider_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object49);
+    local_var_req_builder = local_var_req_builder.json(&inline_object60);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -144,7 +144,7 @@ pub async fn import_provider_dns_zone(
 pub async fn import_raw_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object51: crate::models::InlineObject51,
+    inline_object62: crate::models::InlineObject62,
 ) -> Result<
     crate::models::ScalewayDomainV2beta1ImportRawDnsZoneResponse,
     Error<ImportRawDnsZoneError>,
@@ -171,7 +171,7 @@ pub async fn import_raw_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object51);
+    local_var_req_builder = local_var_req_builder.json(&inline_object62);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

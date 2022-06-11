@@ -10,20 +10,23 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject51 {
-    #[serde(rename = "content", skip_serializing_if = "Option::is_none")]
-    pub content: Option<String>,
-    #[serde(rename = "project_id", skip_serializing_if = "Option::is_none")]
-    pub project_id: Option<String>,
-    #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-    pub format: Option<crate::models::ScalewayDomainV2beta1RawFormat>,
+    /// Description to associate with the Flexible IP, max 255 characters
+    #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    /// Tags to associate with the Flexible IP
+    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
+    /// Reverse DNS value
+    #[serde(rename = "reverse", skip_serializing_if = "Option::is_none")]
+    pub reverse: Option<String>,
 }
 
 impl InlineObject51 {
     pub fn new() -> InlineObject51 {
         InlineObject51 {
-            content: None,
-            project_id: None,
-            format: None,
+            description: None,
+            tags: None,
+            reverse: None,
         }
     }
 }

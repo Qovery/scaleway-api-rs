@@ -10,13 +10,31 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject50 {
-    /// The new DNS zone nameservers
-    #[serde(rename = "ns", skip_serializing_if = "Option::is_none")]
-    pub ns: Option<Vec<crate::models::ScalewayDomainV2beta1Nameserver>>,
+    /// ID of the project to associate with the Flexible IP
+    #[serde(rename = "project_id")]
+    pub project_id: String,
+    /// Description to associate with the Flexible IP, max 255 characters
+    #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    /// Tags to associate to the Flexible IP
+    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
+    /// Server ID on which to attach the created Flexible IP
+    #[serde(rename = "server_id", skip_serializing_if = "Option::is_none")]
+    pub server_id: Option<String>,
+    /// Reverse DNS value
+    #[serde(rename = "reverse", skip_serializing_if = "Option::is_none")]
+    pub reverse: Option<String>,
 }
 
 impl InlineObject50 {
-    pub fn new() -> InlineObject50 {
-        InlineObject50 { ns: None }
+    pub fn new(project_id: String) -> InlineObject50 {
+        InlineObject50 {
+            project_id,
+            description: None,
+            tags: None,
+            server_id: None,
+            reverse: None,
+        }
     }
 }

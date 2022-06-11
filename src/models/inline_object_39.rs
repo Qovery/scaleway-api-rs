@@ -10,31 +10,37 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject39 {
-    /// ID of the project to associate with the Flexible IP
-    #[serde(rename = "project_id")]
-    pub project_id: String,
-    /// Description to associate with the Flexible IP, max 255 characters
+    /// Device name
+    #[serde(rename = "name")]
+    pub name: String,
+    /// ID of the device's hub
+    #[serde(rename = "hub_id")]
+    pub hub_id: String,
+    /// Allow plain and server-authenticated SSL connections in addition to mutually-authenticated ones
+    #[serde(rename = "allow_insecure", skip_serializing_if = "Option::is_none")]
+    pub allow_insecure: Option<bool>,
+    /// Allow multiple physical devices to connect with this device's credentials
+    #[serde(
+        rename = "allow_multiple_connections",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub allow_multiple_connections: Option<bool>,
+    #[serde(rename = "message_filters", skip_serializing_if = "Option::is_none")]
+    pub message_filters: Option<Box<crate::models::IotV1RegionsRegionDevicesMessageFilters>>,
+    /// Device description
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    /// Tags to associate to the Flexible IP
-    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
-    pub tags: Option<Vec<String>>,
-    /// Server ID on which to attach the created Flexible IP
-    #[serde(rename = "server_id", skip_serializing_if = "Option::is_none")]
-    pub server_id: Option<String>,
-    /// Reverse DNS value
-    #[serde(rename = "reverse", skip_serializing_if = "Option::is_none")]
-    pub reverse: Option<String>,
 }
 
 impl InlineObject39 {
-    pub fn new(project_id: String) -> InlineObject39 {
+    pub fn new(name: String, hub_id: String) -> InlineObject39 {
         InlineObject39 {
-            project_id,
+            name,
+            hub_id,
+            allow_insecure: None,
+            allow_multiple_connections: None,
+            message_filters: None,
             description: None,
-            tags: None,
-            server_id: None,
-            reverse: None,
         }
     }
 }

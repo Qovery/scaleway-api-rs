@@ -150,6 +150,42 @@ Class | Method | HTTP request | Description
 *InstanceSettingsApi* | [**add_instance_settings**](docs/InstanceSettingsApi.md#add_instance_settings) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/settings | Add an instance setting
 *InstanceSettingsApi* | [**delete_instance_settings**](docs/InstanceSettingsApi.md#delete_instance_settings) | **DELETE** /rdb/v1/regions/{region}/instances/{instance_id}/settings | Delete an instance setting
 *InstanceSettingsApi* | [**set_instance_settings**](docs/InstanceSettingsApi.md#set_instance_settings) | **PUT** /rdb/v1/regions/{region}/instances/{instance_id}/settings | Set a given instance setting
+*IoTCloudTwinsApi* | [**delete_twin_document**](docs/IoTCloudTwinsApi.md#delete_twin_document) | **DELETE** /iot/v1/regions/{region}/twins/{twin_id}/documents/{document_name} | BETA - Delete a Cloud Twin Document
+*IoTCloudTwinsApi* | [**delete_twin_documents**](docs/IoTCloudTwinsApi.md#delete_twin_documents) | **DELETE** /iot/v1/regions/{region}/twins/{twin_id} | BETA - Delete all the documents of a Cloud Twin
+*IoTCloudTwinsApi* | [**get_twin_document**](docs/IoTCloudTwinsApi.md#get_twin_document) | **GET** /iot/v1/regions/{region}/twins/{twin_id}/documents/{document_name} | BETA - Get a Cloud Twin Document
+*IoTCloudTwinsApi* | [**list_twin_documents**](docs/IoTCloudTwinsApi.md#list_twin_documents) | **GET** /iot/v1/regions/{region}/twins/{twin_id} | BETA - List the documents of a Cloud Twin
+*IoTCloudTwinsApi* | [**patch_twin_document**](docs/IoTCloudTwinsApi.md#patch_twin_document) | **PATCH** /iot/v1/regions/{region}/twins/{twin_id}/documents/{document_name} | BETA - Patch a Cloud Twin Document
+*IoTCloudTwinsApi* | [**put_twin_document**](docs/IoTCloudTwinsApi.md#put_twin_document) | **PUT** /iot/v1/regions/{region}/twins/{twin_id}/documents/{document_name} | BETA - Update a Cloud Twin Document
+*IoTDevicesApi* | [**create_device**](docs/IoTDevicesApi.md#create_device) | **POST** /iot/v1/regions/{region}/devices | Add a device
+*IoTDevicesApi* | [**delete_device**](docs/IoTDevicesApi.md#delete_device) | **DELETE** /iot/v1/regions/{region}/devices/{device_id} | Remove a device
+*IoTDevicesApi* | [**disable_device**](docs/IoTDevicesApi.md#disable_device) | **POST** /iot/v1/regions/{region}/devices/{device_id}/disable | Disable a device
+*IoTDevicesApi* | [**enable_device**](docs/IoTDevicesApi.md#enable_device) | **POST** /iot/v1/regions/{region}/devices/{device_id}/enable | Enable a device
+*IoTDevicesApi* | [**get_device**](docs/IoTDevicesApi.md#get_device) | **GET** /iot/v1/regions/{region}/devices/{device_id} | Get a device
+*IoTDevicesApi* | [**get_device_certificate**](docs/IoTDevicesApi.md#get_device_certificate) | **GET** /iot/v1/regions/{region}/devices/{device_id}/certificate | Get a device's certificate
+*IoTDevicesApi* | [**get_device_metrics**](docs/IoTDevicesApi.md#get_device_metrics) | **GET** /iot/v1/regions/{region}/devices/{device_id}/metrics | Get a device's metrics
+*IoTDevicesApi* | [**list_devices**](docs/IoTDevicesApi.md#list_devices) | **GET** /iot/v1/regions/{region}/devices | List devices
+*IoTDevicesApi* | [**renew_device_certificate**](docs/IoTDevicesApi.md#renew_device_certificate) | **POST** /iot/v1/regions/{region}/devices/{device_id}/renew-certificate | Renew a device certificate
+*IoTDevicesApi* | [**set_device_certificate**](docs/IoTDevicesApi.md#set_device_certificate) | **PUT** /iot/v1/regions/{region}/devices/{device_id}/certificate | Set a custom certificate on a device
+*IoTDevicesApi* | [**update_device**](docs/IoTDevicesApi.md#update_device) | **PATCH** /iot/v1/regions/{region}/devices/{device_id} | Update a device
+*IoTHubsApi* | [**create_hub**](docs/IoTHubsApi.md#create_hub) | **POST** /iot/v1/regions/{region}/hubs | Create a hub
+*IoTHubsApi* | [**delete_hub**](docs/IoTHubsApi.md#delete_hub) | **DELETE** /iot/v1/regions/{region}/hubs/{hub_id} | Delete a hub
+*IoTHubsApi* | [**disable_hub**](docs/IoTHubsApi.md#disable_hub) | **POST** /iot/v1/regions/{region}/hubs/{hub_id}/disable | Disable a hub
+*IoTHubsApi* | [**enable_hub**](docs/IoTHubsApi.md#enable_hub) | **POST** /iot/v1/regions/{region}/hubs/{hub_id}/enable | Enable a hub
+*IoTHubsApi* | [**get_hub**](docs/IoTHubsApi.md#get_hub) | **GET** /iot/v1/regions/{region}/hubs/{hub_id} | Get a hub
+*IoTHubsApi* | [**get_hub_ca**](docs/IoTHubsApi.md#get_hub_ca) | **GET** /iot/v1/regions/{region}/hubs/{hub_id}/ca | Get the certificate authority of a hub
+*IoTHubsApi* | [**get_hub_metrics**](docs/IoTHubsApi.md#get_hub_metrics) | **GET** /iot/v1/regions/{region}/hubs/{hub_id}/metrics | Get a hub's metrics
+*IoTHubsApi* | [**list_hubs**](docs/IoTHubsApi.md#list_hubs) | **GET** /iot/v1/regions/{region}/hubs | List hubs
+*IoTHubsApi* | [**set_hub_ca**](docs/IoTHubsApi.md#set_hub_ca) | **POST** /iot/v1/regions/{region}/hubs/{hub_id}/ca | Set the certificate authority of a hub
+*IoTHubsApi* | [**update_hub**](docs/IoTHubsApi.md#update_hub) | **PATCH** /iot/v1/regions/{region}/hubs/{hub_id} | Update a hub
+*IoTNetworksApi* | [**create_network**](docs/IoTNetworksApi.md#create_network) | **POST** /iot/v1/regions/{region}/networks | Create a new Network
+*IoTNetworksApi* | [**delete_network**](docs/IoTNetworksApi.md#delete_network) | **DELETE** /iot/v1/regions/{region}/networks/{network_id} | Delete a Network
+*IoTNetworksApi* | [**get_network**](docs/IoTNetworksApi.md#get_network) | **GET** /iot/v1/regions/{region}/networks/{network_id} | Retrieve a specific Network
+*IoTNetworksApi* | [**list_networks**](docs/IoTNetworksApi.md#list_networks) | **GET** /iot/v1/regions/{region}/networks | List the Networks
+*IoTRoutesApi* | [**create_route**](docs/IoTRoutesApi.md#create_route) | **POST** /iot/v1/regions/{region}/routes | Create a route
+*IoTRoutesApi* | [**delete_route**](docs/IoTRoutesApi.md#delete_route) | **DELETE** /iot/v1/regions/{region}/routes/{route_id} | Delete a route
+*IoTRoutesApi* | [**get_route**](docs/IoTRoutesApi.md#get_route) | **GET** /iot/v1/regions/{region}/routes/{route_id} | Get a route
+*IoTRoutesApi* | [**list_routes**](docs/IoTRoutesApi.md#list_routes) | **GET** /iot/v1/regions/{region}/routes | List routes
+*IoTRoutesApi* | [**update_route**](docs/IoTRoutesApi.md#update_route) | **PATCH** /iot/v1/regions/{region}/routes/{route_id} | Update a route
 *NamespacesApi* | [**create_namespace**](docs/NamespacesApi.md#create_namespace) | **POST** /registry/v1/regions/{region}/namespaces | Create a new namespace
 *NamespacesApi* | [**delete_namespace**](docs/NamespacesApi.md#delete_namespace) | **DELETE** /registry/v1/regions/{region}/namespaces/{namespace_id} | Delete an existing namespace
 *NamespacesApi* | [**get_namespace**](docs/NamespacesApi.md#get_namespace) | **GET** /registry/v1/regions/{region}/namespaces/{namespace_id} | Get a namespace
@@ -218,6 +254,9 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [DomainV2beta1DnsZonesDnsZoneImportProviderOnlineV1](docs/DomainV2beta1DnsZonesDnsZoneImportProviderOnlineV1.md)
+ - [GoogleProtobufValue](docs/GoogleProtobufValue.md)
+ - [GoogleProtobufValueListValue](docs/GoogleProtobufValueListValue.md)
+ - [GoogleProtobufValueStructValue](docs/GoogleProtobufValueStructValue.md)
  - [InlineObject](docs/InlineObject.md)
  - [InlineObject1](docs/InlineObject1.md)
  - [InlineObject10](docs/InlineObject10.md)
@@ -269,10 +308,34 @@ Class | Method | HTTP request | Description
  - [InlineObject52](docs/InlineObject52.md)
  - [InlineObject53](docs/InlineObject53.md)
  - [InlineObject54](docs/InlineObject54.md)
+ - [InlineObject55](docs/InlineObject55.md)
+ - [InlineObject56](docs/InlineObject56.md)
+ - [InlineObject57](docs/InlineObject57.md)
+ - [InlineObject58](docs/InlineObject58.md)
+ - [InlineObject59](docs/InlineObject59.md)
  - [InlineObject6](docs/InlineObject6.md)
+ - [InlineObject60](docs/InlineObject60.md)
+ - [InlineObject61](docs/InlineObject61.md)
+ - [InlineObject62](docs/InlineObject62.md)
+ - [InlineObject63](docs/InlineObject63.md)
+ - [InlineObject64](docs/InlineObject64.md)
+ - [InlineObject65](docs/InlineObject65.md)
  - [InlineObject7](docs/InlineObject7.md)
  - [InlineObject8](docs/InlineObject8.md)
  - [InlineObject9](docs/InlineObject9.md)
+ - [IotV1RegionsRegionDevicesDeviceIdMessageFilters](docs/IotV1RegionsRegionDevicesDeviceIdMessageFilters.md)
+ - [IotV1RegionsRegionDevicesMessageFilters](docs/IotV1RegionsRegionDevicesMessageFilters.md)
+ - [IotV1RegionsRegionDevicesMessageFiltersPublish](docs/IotV1RegionsRegionDevicesMessageFiltersPublish.md)
+ - [IotV1RegionsRegionDevicesMessageFiltersSubscribe](docs/IotV1RegionsRegionDevicesMessageFiltersSubscribe.md)
+ - [IotV1RegionsRegionHubsTwinsGraphiteConfig](docs/IotV1RegionsRegionHubsTwinsGraphiteConfig.md)
+ - [IotV1RegionsRegionRoutesDbConfig](docs/IotV1RegionsRegionRoutesDbConfig.md)
+ - [IotV1RegionsRegionRoutesRestConfig](docs/IotV1RegionsRegionRoutesRestConfig.md)
+ - [IotV1RegionsRegionRoutesRouteIdDbConfig](docs/IotV1RegionsRegionRoutesRouteIdDbConfig.md)
+ - [IotV1RegionsRegionRoutesRouteIdRestConfig](docs/IotV1RegionsRegionRoutesRouteIdRestConfig.md)
+ - [IotV1RegionsRegionRoutesRouteIdS3Config](docs/IotV1RegionsRegionRoutesRouteIdS3Config.md)
+ - [IotV1RegionsRegionRoutesS3Config](docs/IotV1RegionsRegionRoutesS3Config.md)
+ - [IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData](docs/IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData.md)
+ - [IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData1](docs/IotV1RegionsRegionTwinsTwinIdDocumentsDocumentNameData1.md)
  - [K8sV1RegionsRegionClustersAutoUpgrade](docs/K8sV1RegionsRegionClustersAutoUpgrade.md)
  - [K8sV1RegionsRegionClustersAutoUpgradeMaintenanceWindow](docs/K8sV1RegionsRegionClustersAutoUpgradeMaintenanceWindow.md)
  - [K8sV1RegionsRegionClustersAutoscalerConfig](docs/K8sV1RegionsRegionClustersAutoscalerConfig.md)
@@ -348,6 +411,37 @@ Class | Method | HTTP request | Description
  - [ScalewayFlexibleIpV1alpha1ListFlexibleIpsResponse](docs/ScalewayFlexibleIpV1alpha1ListFlexibleIpsResponse.md)
  - [ScalewayFlexibleIpV1alpha1MacAddressStatus](docs/ScalewayFlexibleIpV1alpha1MacAddressStatus.md)
  - [ScalewayFlexibleIpV1alpha1MacAddressType](docs/ScalewayFlexibleIpV1alpha1MacAddressType.md)
+ - [ScalewayIotV1CreateDeviceResponse](docs/ScalewayIotV1CreateDeviceResponse.md)
+ - [ScalewayIotV1CreateDeviceResponseCertificate](docs/ScalewayIotV1CreateDeviceResponseCertificate.md)
+ - [ScalewayIotV1CreateDeviceResponseDevice](docs/ScalewayIotV1CreateDeviceResponseDevice.md)
+ - [ScalewayIotV1CreateNetworkResponse](docs/ScalewayIotV1CreateNetworkResponse.md)
+ - [ScalewayIotV1CreateNetworkResponseNetwork](docs/ScalewayIotV1CreateNetworkResponseNetwork.md)
+ - [ScalewayIotV1Device](docs/ScalewayIotV1Device.md)
+ - [ScalewayIotV1DeviceMessageFiltersRulePolicy](docs/ScalewayIotV1DeviceMessageFiltersRulePolicy.md)
+ - [ScalewayIotV1GetDeviceCertificateResponse](docs/ScalewayIotV1GetDeviceCertificateResponse.md)
+ - [ScalewayIotV1GetDeviceMetricsResponse](docs/ScalewayIotV1GetDeviceMetricsResponse.md)
+ - [ScalewayIotV1GetHubCaResponse](docs/ScalewayIotV1GetHubCaResponse.md)
+ - [ScalewayIotV1GetHubMetricsResponse](docs/ScalewayIotV1GetHubMetricsResponse.md)
+ - [ScalewayIotV1Hub](docs/ScalewayIotV1Hub.md)
+ - [ScalewayIotV1ListDevicesResponse](docs/ScalewayIotV1ListDevicesResponse.md)
+ - [ScalewayIotV1ListHubsResponse](docs/ScalewayIotV1ListHubsResponse.md)
+ - [ScalewayIotV1ListNetworksResponse](docs/ScalewayIotV1ListNetworksResponse.md)
+ - [ScalewayIotV1ListRoutesResponse](docs/ScalewayIotV1ListRoutesResponse.md)
+ - [ScalewayIotV1ListTwinDocumentsResponse](docs/ScalewayIotV1ListTwinDocumentsResponse.md)
+ - [ScalewayIotV1ListTwinDocumentsResponseDocumentSummary](docs/ScalewayIotV1ListTwinDocumentsResponseDocumentSummary.md)
+ - [ScalewayIotV1Network](docs/ScalewayIotV1Network.md)
+ - [ScalewayIotV1RenewDeviceCertificateResponse](docs/ScalewayIotV1RenewDeviceCertificateResponse.md)
+ - [ScalewayIotV1Route](docs/ScalewayIotV1Route.md)
+ - [ScalewayIotV1RouteDatabaseConfigEngine](docs/ScalewayIotV1RouteDatabaseConfigEngine.md)
+ - [ScalewayIotV1RouteDbConfig](docs/ScalewayIotV1RouteDbConfig.md)
+ - [ScalewayIotV1RouteRestConfig](docs/ScalewayIotV1RouteRestConfig.md)
+ - [ScalewayIotV1RouteRestConfigHttpVerb](docs/ScalewayIotV1RouteRestConfigHttpVerb.md)
+ - [ScalewayIotV1RouteS3Config](docs/ScalewayIotV1RouteS3Config.md)
+ - [ScalewayIotV1RouteS3ConfigS3Strategy](docs/ScalewayIotV1RouteS3ConfigS3Strategy.md)
+ - [ScalewayIotV1RouteSummary](docs/ScalewayIotV1RouteSummary.md)
+ - [ScalewayIotV1SetDeviceCertificateResponse](docs/ScalewayIotV1SetDeviceCertificateResponse.md)
+ - [ScalewayIotV1TwinDocument](docs/ScalewayIotV1TwinDocument.md)
+ - [ScalewayIotV1TwinDocumentData](docs/ScalewayIotV1TwinDocumentData.md)
  - [ScalewayK8sV1Cluster](docs/ScalewayK8sV1Cluster.md)
  - [ScalewayK8sV1ClusterAutoUpgrade](docs/ScalewayK8sV1ClusterAutoUpgrade.md)
  - [ScalewayK8sV1ClusterAutoscalerConfig](docs/ScalewayK8sV1ClusterAutoscalerConfig.md)
@@ -417,7 +511,9 @@ Class | Method | HTTP request | Description
  - [ScalewayRegistryV1Namespace](docs/ScalewayRegistryV1Namespace.md)
  - [ScalewayRegistryV1Tag](docs/ScalewayRegistryV1Tag.md)
  - [ScalewayStdFile](docs/ScalewayStdFile.md)
+ - [ScalewayStdMapStringStringValue](docs/ScalewayStdMapStringStringValue.md)
  - [ScalewayStdServiceInfo](docs/ScalewayStdServiceInfo.md)
+ - [ScalewayStdStringsValue](docs/ScalewayStdStringsValue.md)
  - [ScalewayStdTimeSeries](docs/ScalewayStdTimeSeries.md)
  - [ScalewayStdTimeSeriesPoint](docs/ScalewayStdTimeSeriesPoint.md)
  - [ScalewayVpcV1ListPrivateNetworksResponse](docs/ScalewayVpcV1ListPrivateNetworksResponse.md)

@@ -10,22 +10,15 @@
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InlineObject53 {
-    /// Whether or not to recreate the DNS zone
-    #[serde(rename = "recreate_dns_zone", skip_serializing_if = "Option::is_none")]
-    pub recreate_dns_zone: Option<bool>,
-    /// Whether or not to recreate the sub DNS zone
-    #[serde(
-        rename = "recreate_sub_dns_zone",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub recreate_sub_dns_zone: Option<bool>,
+    /// Flexible IPs need to be attached to the same server.
+    #[serde(rename = "duplicate_from_fip_id")]
+    pub duplicate_from_fip_id: String,
 }
 
 impl InlineObject53 {
-    pub fn new() -> InlineObject53 {
+    pub fn new(duplicate_from_fip_id: String) -> InlineObject53 {
         InlineObject53 {
-            recreate_dns_zone: None,
-            recreate_sub_dns_zone: None,
+            duplicate_from_fip_id,
         }
     }
 }
