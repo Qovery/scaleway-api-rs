@@ -42,7 +42,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_offers
 
-> crate::models::ScalewayBaremetalV1ListOffersResponse list_offers(zone, page, page_size)
+> crate::models::ScalewayBaremetalV1ListOffersResponse list_offers(zone, page, page_size, subscription_period)
 List offers
 
 List all available server offers.
@@ -53,8 +53,9 @@ List all available server offers.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Number of offers per page |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Number of offers per page |  |[default to 20]
+**subscription_period** | Option<**String**> | Period of subscription to filter offers |  |[default to unknown_subscription_period]
 
 ### Return type
 

@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 ## create_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup create_database_backup(region, inline_object7)
+> crate::models::ScalewayRdbV1DatabaseBackup create_database_backup(region, create_database_backup_request)
 Create a database backup
 
 ### Parameters
@@ -25,7 +25,7 @@ Create a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object7** | [**InlineObject7**](InlineObject7.md) |  | [required] |
+**create_database_backup_request** | [**CreateDatabaseBackupRequest**](CreateDatabaseBackupRequest.md) |  | [required] |
 
 ### Return type
 
@@ -147,8 +147,8 @@ Name | Type | Description  | Required | Notes
 **instance_id** | Option<**String**> | UUID of the instance |  |
 **organization_id** | Option<**String**> | Organization ID the database backups belongs to |  |
 **project_id** | Option<**String**> | Project ID the database backups belongs to |  |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 
 ### Return type
 
@@ -168,7 +168,7 @@ Name | Type | Description  | Required | Notes
 
 ## restore_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup restore_database_backup(region, database_backup_id, inline_object9)
+> crate::models::ScalewayRdbV1DatabaseBackup restore_database_backup(region, database_backup_id, restore_database_backup_request)
 Restore a database backup
 
 ### Parameters
@@ -178,7 +178,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **database_backup_id** | **String** | Backup of a logical database | [required] |
-**inline_object9** | [**InlineObject9**](InlineObject9.md) |  | [required] |
+**restore_database_backup_request** | [**RestoreDatabaseBackupRequest**](RestoreDatabaseBackupRequest.md) |  | [required] |
 
 ### Return type
 
@@ -198,7 +198,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup update_database_backup(region, database_backup_id, inline_object8)
+> crate::models::ScalewayRdbV1DatabaseBackup update_database_backup(region, database_backup_id, update_database_backup_request)
 Update a database backup
 
 ### Parameters
@@ -208,7 +208,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **database_backup_id** | **String** | UUID of the database backup to update | [required] |
-**inline_object8** | [**InlineObject8**](InlineObject8.md) |  | [required] |
+**update_database_backup_request** | [**UpdateDatabaseBackupRequest**](UpdateDatabaseBackupRequest.md) |  | [required] |
 
 ### Return type
 

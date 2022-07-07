@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 ## create_cluster
 
-> crate::models::ScalewayK8sV1Cluster create_cluster(region, inline_object31)
+> crate::models::ScalewayK8sV1Cluster create_cluster(region, create_cluster_request)
 Create a new cluster
 
 This method allows to create a new Kubernetes cluster on an account.
@@ -29,7 +29,7 @@ This method allows to create a new Kubernetes cluster on an account.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object31** | [**InlineObject31**](InlineObject31.md) |  | [required] |
+**create_cluster_request** | [**CreateClusterRequest**](CreateClusterRequest.md) |  | [required] |
 
 ### Return type
 
@@ -188,8 +188,8 @@ Name | Type | Description  | Required | Notes
 **organization_id** | Option<**String**> | The organization ID on which to filter the returned clusters |  |
 **project_id** | Option<**String**> | The project ID on which to filter the returned clusters |  |
 **order_by** | Option<**String**> | The sort order of the returned clusters |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned clusters |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of clusters per page |  |[default to 20]
+**page** | Option<**i64**> | The page number for the returned clusters |  |[default to 1]
+**page_size** | Option<**i64**> | The maximum number of clusters per page |  |[default to 20]
 **name** | Option<**String**> | The name on which to filter the returned clusters |  |
 **status** | Option<**String**> | The status on which to filter the returned clusters |  |[default to unknown]
 **_type** | Option<**String**> | The type on which to filter the returned clusters |  |
@@ -244,7 +244,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_cluster
 
-> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, inline_object32)
+> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, update_cluster_request)
 Update a cluster
 
 This method allows to update a specific Kubernetes cluster. Note that this method is not made to upgrade a Kubernetes cluster.
@@ -256,7 +256,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster to update | [required] |
-**inline_object32** | [**InlineObject32**](InlineObject32.md) |  | [required] |
+**update_cluster_request** | [**UpdateClusterRequest**](UpdateClusterRequest.md) |  | [required] |
 
 ### Return type
 
@@ -276,7 +276,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_cluster
 
-> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, inline_object34)
+> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, upgrade_cluster_request)
 Upgrade a cluster
 
 This method allows to upgrade a specific Kubernetes cluster and/or its associated pools to a specific and supported Kubernetes version.
@@ -288,7 +288,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | The ID of the cluster to upgrade | [required] |
-**inline_object34** | [**InlineObject34**](InlineObject34.md) |  | [required] |
+**upgrade_cluster_request** | [**UpgradeClusterRequest**](UpgradeClusterRequest.md) |  | [required] |
 
 ### Return type
 

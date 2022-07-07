@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -10,16 +10,29 @@
 
 /// ScalewayBaremetalV1ServerInstall : Configuration of installation
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct ScalewayBaremetalV1ServerInstall {
+    /// ID of the OS
     #[serde(rename = "os_id", skip_serializing_if = "Option::is_none")]
     pub os_id: Option<String>,
+    /// Host defined in the server install
     #[serde(rename = "hostname", skip_serializing_if = "Option::is_none")]
     pub hostname: Option<String>,
+    /// SSH public key IDs defined in the server install
     #[serde(rename = "ssh_key_ids", skip_serializing_if = "Option::is_none")]
     pub ssh_key_ids: Option<Vec<String>>,
+    /// Status of the server install
     #[serde(rename = "status", skip_serializing_if = "Option::is_none")]
-    pub status: Option<crate::models::ScalewayBaremetalV1ServerInstallStatus>,
+    pub status: Option<Status>,
+    /// User defined in the server install or the default one if none were specified
+    #[serde(rename = "user", skip_serializing_if = "Option::is_none")]
+    pub user: Option<String>,
+    /// Service user defined in the server install or the default one if none were specified
+    #[serde(rename = "service_user", skip_serializing_if = "Option::is_none")]
+    pub service_user: Option<String>,
+    /// The address of the installed service
+    #[serde(rename = "service_url", skip_serializing_if = "Option::is_none")]
+    pub service_url: Option<String>,
 }
 
 impl ScalewayBaremetalV1ServerInstall {
@@ -30,6 +43,30 @@ impl ScalewayBaremetalV1ServerInstall {
             hostname: None,
             ssh_key_ids: None,
             status: None,
+            user: None,
+            service_user: None,
+            service_url: None,
         }
+    }
+}
+
+/// Status of the server install
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum Status {
+    #[serde(rename = "unknown")]
+    Unknown,
+    #[serde(rename = "to_install")]
+    ToInstall,
+    #[serde(rename = "installing")]
+    Installing,
+    #[serde(rename = "completed")]
+    Completed,
+    #[serde(rename = "error")]
+    Error,
+}
+
+impl Default for Status {
+    fn default() -> Status {
+        Self::Unknown
     }
 }

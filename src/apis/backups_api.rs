@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -13,49 +13,49 @@ use reqwest;
 use super::{configuration, Error};
 use crate::apis::ResponseContent;
 
-/// struct for typed errors of method `create_database_backup`
+/// struct for typed errors of method [`create_database_backup`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CreateDatabaseBackupError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_database_backup`
+/// struct for typed errors of method [`delete_database_backup`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteDatabaseBackupError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `export_database_backup`
+/// struct for typed errors of method [`export_database_backup`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ExportDatabaseBackupError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_database_backup`
+/// struct for typed errors of method [`get_database_backup`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetDatabaseBackupError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_database_backups`
+/// struct for typed errors of method [`list_database_backups`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListDatabaseBackupsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `restore_database_backup`
+/// struct for typed errors of method [`restore_database_backup`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum RestoreDatabaseBackupError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_database_backup`
+/// struct for typed errors of method [`update_database_backup`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateDatabaseBackupError {
@@ -65,23 +65,25 @@ pub enum UpdateDatabaseBackupError {
 pub async fn create_database_backup(
     configuration: &configuration::Configuration,
     region: &str,
-    inline_object7: crate::models::InlineObject7,
+    create_database_backup_request: crate::models::CreateDatabaseBackupRequest,
 ) -> Result<crate::models::ScalewayRdbV1DatabaseBackup, Error<CreateDatabaseBackupError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -89,7 +91,7 @@ pub async fn create_database_backup(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object7);
+    local_var_req_builder = local_var_req_builder.json(&create_database_backup_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -116,22 +118,24 @@ pub async fn delete_database_backup(
     region: &str,
     database_backup_id: &str,
 ) -> Result<crate::models::ScalewayRdbV1DatabaseBackup, Error<DeleteDatabaseBackupError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups/{database_backup_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         database_backup_id = crate::apis::urlencode(database_backup_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -166,22 +170,24 @@ pub async fn export_database_backup(
     database_backup_id: &str,
     body: serde_json::Value,
 ) -> Result<crate::models::ScalewayRdbV1DatabaseBackup, Error<ExportDatabaseBackupError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups/{database_backup_id}/export",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         database_backup_id = crate::apis::urlencode(database_backup_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -216,22 +222,24 @@ pub async fn get_database_backup(
     region: &str,
     database_backup_id: &str,
 ) -> Result<crate::models::ScalewayRdbV1DatabaseBackup, Error<GetDatabaseBackupError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups/{database_backup_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         database_backup_id = crate::apis::urlencode(database_backup_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -268,15 +276,17 @@ pub async fn list_database_backups(
     instance_id: Option<&str>,
     organization_id: Option<&str>,
     project_id: Option<&str>,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
 ) -> Result<crate::models::ScalewayRdbV1ListDatabaseBackupsResponse, Error<ListDatabaseBackupsError>>
 {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region)
     );
     let mut local_var_req_builder =
@@ -310,11 +320,11 @@ pub async fn list_database_backups(
         local_var_req_builder =
             local_var_req_builder.query(&[("page_size", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -347,24 +357,26 @@ pub async fn restore_database_backup(
     configuration: &configuration::Configuration,
     region: &str,
     database_backup_id: &str,
-    inline_object9: crate::models::InlineObject9,
+    restore_database_backup_request: crate::models::RestoreDatabaseBackupRequest,
 ) -> Result<crate::models::ScalewayRdbV1DatabaseBackup, Error<RestoreDatabaseBackupError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups/{database_backup_id}/restore",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         database_backup_id = crate::apis::urlencode(database_backup_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -372,7 +384,7 @@ pub async fn restore_database_backup(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object9);
+    local_var_req_builder = local_var_req_builder.json(&restore_database_backup_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -398,24 +410,26 @@ pub async fn update_database_backup(
     configuration: &configuration::Configuration,
     region: &str,
     database_backup_id: &str,
-    inline_object8: crate::models::InlineObject8,
+    update_database_backup_request: crate::models::UpdateDatabaseBackupRequest,
 ) -> Result<crate::models::ScalewayRdbV1DatabaseBackup, Error<UpdateDatabaseBackupError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/backups/{database_backup_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         database_backup_id = crate::apis::urlencode(database_backup_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -423,7 +437,7 @@ pub async fn update_database_backup(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object8);
+    local_var_req_builder = local_var_req_builder.json(&update_database_backup_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

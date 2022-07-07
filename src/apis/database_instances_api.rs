@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -13,84 +13,112 @@ use reqwest;
 use super::{configuration, Error};
 use crate::apis::ResponseContent;
 
-/// struct for typed errors of method `clone_instance`
+/// struct for typed errors of method [`clone_instance`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CloneInstanceError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `create_instance`
+/// struct for typed errors of method [`create_instance`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CreateInstanceError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_instance`
+/// struct for typed errors of method [`delete_instance`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteInstanceError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_instance`
+/// struct for typed errors of method [`get_instance`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetInstanceError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_instance_certificate`
+/// struct for typed errors of method [`get_instance_certificate`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetInstanceCertificateError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_instance_log`
+/// struct for typed errors of method [`get_instance_log`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetInstanceLogError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_instance_metrics`
+/// struct for typed errors of method [`get_instance_metrics`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetInstanceMetricsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_instance_logs`
+/// struct for typed errors of method [`list_instance_logs`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListInstanceLogsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_instances`
+/// struct for typed errors of method [`list_instance_logs_details`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ListInstanceLogsDetailsError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`list_instances`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListInstancesError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `prepare_instance_logs`
+/// struct for typed errors of method [`prepare_instance_logs`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum PrepareInstanceLogsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_instance`
+/// struct for typed errors of method [`purge_instance_logs`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum PurgeInstanceLogsError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`renew_instance_certificate`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RenewInstanceCertificateError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`restart_instance`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RestartInstanceError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`update_instance`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateInstanceError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `upgrade_instance`
+/// struct for typed errors of method [`upgrade_instance`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpgradeInstanceError {
@@ -101,24 +129,26 @@ pub async fn clone_instance(
     configuration: &configuration::Configuration,
     region: &str,
     instance_id: &str,
-    inline_object15: crate::models::InlineObject15,
+    clone_instance_request: crate::models::CloneInstanceRequest,
 ) -> Result<crate::models::ScalewayRdbV1Instance, Error<CloneInstanceError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}/clone",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -126,7 +156,7 @@ pub async fn clone_instance(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object15);
+    local_var_req_builder = local_var_req_builder.json(&clone_instance_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -151,23 +181,25 @@ pub async fn clone_instance(
 pub async fn create_instance(
     configuration: &configuration::Configuration,
     region: &str,
-    inline_object10: crate::models::InlineObject10,
+    create_instance_request: crate::models::CreateInstanceRequest,
 ) -> Result<crate::models::ScalewayRdbV1Instance, Error<CreateInstanceError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -175,7 +207,7 @@ pub async fn create_instance(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object10);
+    local_var_req_builder = local_var_req_builder.json(&create_instance_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -202,22 +234,24 @@ pub async fn delete_instance(
     region: &str,
     instance_id: &str,
 ) -> Result<crate::models::ScalewayRdbV1Instance, Error<DeleteInstanceError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -251,22 +285,24 @@ pub async fn get_instance(
     region: &str,
     instance_id: &str,
 ) -> Result<crate::models::ScalewayRdbV1Instance, Error<GetInstanceError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -300,22 +336,24 @@ pub async fn get_instance_certificate(
     region: &str,
     instance_id: &str,
 ) -> Result<crate::models::ScalewayStdFile, Error<GetInstanceCertificateError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}/certificate",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -349,22 +387,24 @@ pub async fn get_instance_log(
     region: &str,
     instance_log_id: &str,
 ) -> Result<crate::models::ScalewayRdbV1InstanceLog, Error<GetInstanceLogError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/logs/{instance_log_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_log_id = crate::apis::urlencode(instance_log_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -402,11 +442,13 @@ pub async fn get_instance_metrics(
     end_date: Option<String>,
     metric_name: Option<&str>,
 ) -> Result<crate::models::ScalewayRdbV1InstanceMetrics, Error<GetInstanceMetricsError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}/metrics",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
@@ -425,11 +467,11 @@ pub async fn get_instance_metrics(
         local_var_req_builder =
             local_var_req_builder.query(&[("metric_name", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -464,11 +506,13 @@ pub async fn list_instance_logs(
     instance_id: &str,
     order_by: Option<&str>,
 ) -> Result<crate::models::ScalewayRdbV1ListInstanceLogsResponse, Error<ListInstanceLogsError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}/logs",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
@@ -479,11 +523,11 @@ pub async fn list_instance_logs(
         local_var_req_builder =
             local_var_req_builder.query(&[("order_by", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -512,6 +556,60 @@ pub async fn list_instance_logs(
     }
 }
 
+pub async fn list_instance_logs_details(
+    configuration: &configuration::Configuration,
+    region: &str,
+    instance_id: &str,
+) -> Result<
+    crate::models::ScalewayRdbV1ListInstanceLogsDetailsResponse,
+    Error<ListInstanceLogsDetailsError>,
+> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/rdb/v1/regions/{region}/instances/{instance_id}/logs-details",
+        local_var_configuration.base_path,
+        region = crate::apis::urlencode(region),
+        instance_id = crate::apis::urlencode(instance_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<ListInstanceLogsDetailsError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
 pub async fn list_instances(
     configuration: &configuration::Configuration,
     region: &str,
@@ -520,29 +618,39 @@ pub async fn list_instances(
     order_by: Option<&str>,
     organization_id: Option<&str>,
     project_id: Option<&str>,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
 ) -> Result<crate::models::ScalewayRdbV1ListInstancesResponse, Error<ListInstancesError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
     if let Some(ref local_var_str) = tags {
-        local_var_req_builder = local_var_req_builder.query(&[(
-            "tags",
-            &local_var_str
-                .iter()
-                .map(|p| p.to_string())
-                .collect::<Vec<String>>()
-                .join(",")
-                ,
-        )]);
+        local_var_req_builder = match "multi" {
+            "multi" => local_var_req_builder.query(
+                &local_var_str
+                    .iter()
+                    .map(|p| ("tags".to_owned(), p.to_string()))
+                    .collect::<Vec<(std::string::String, std::string::String)>>(),
+            ),
+            _ => local_var_req_builder.query(&[(
+                "tags",
+                &local_var_str
+                    .iter()
+                    .map(|p| p.to_string())
+                    .collect::<Vec<String>>()
+                    .join(",")
+                    ,
+            )]),
+        };
     }
     if let Some(ref local_var_str) = name {
         local_var_req_builder =
@@ -568,11 +676,11 @@ pub async fn list_instances(
         local_var_req_builder =
             local_var_req_builder.query(&[("page_size", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -606,25 +714,27 @@ pub async fn prepare_instance_logs(
     configuration: &configuration::Configuration,
     region: &str,
     instance_id: &str,
-    inline_object17: crate::models::InlineObject17,
+    prepare_instance_logs_request: crate::models::PrepareInstanceLogsRequest,
 ) -> Result<crate::models::ScalewayRdbV1PrepareInstanceLogsResponse, Error<PrepareInstanceLogsError>>
 {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}/prepare-logs",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -632,7 +742,7 @@ pub async fn prepare_instance_logs(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object17);
+    local_var_req_builder = local_var_req_builder.json(&prepare_instance_logs_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -654,28 +764,30 @@ pub async fn prepare_instance_logs(
     }
 }
 
-pub async fn update_instance(
+pub async fn purge_instance_logs(
     configuration: &configuration::Configuration,
     region: &str,
     instance_id: &str,
-    inline_object11: crate::models::InlineObject11,
-) -> Result<crate::models::ScalewayRdbV1Instance, Error<UpdateInstanceError>> {
-    let local_var_client = &configuration.client;
+    purge_instance_logs_request: crate::models::PurgeInstanceLogsRequest,
+) -> Result<(), Error<PurgeInstanceLogsError>> {
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
-        "{}/rdb/v1/regions/{region}/instances/{instance_id}",
-        configuration.base_path,
+        "{}/rdb/v1/regions/{region}/instances/{instance_id}/purge-logs",
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -683,7 +795,166 @@ pub async fn update_instance(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object11);
+    local_var_req_builder = local_var_req_builder.json(&purge_instance_logs_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        Ok(())
+    } else {
+        let local_var_entity: Option<PurgeInstanceLogsError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+pub async fn renew_instance_certificate(
+    configuration: &configuration::Configuration,
+    region: &str,
+    instance_id: &str,
+    body: serde_json::Value,
+) -> Result<(), Error<RenewInstanceCertificateError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/rdb/v1/regions/{region}/instances/{instance_id}/renew-certificate",
+        local_var_configuration.base_path,
+        region = crate::apis::urlencode(region),
+        instance_id = crate::apis::urlencode(instance_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+    local_var_req_builder = local_var_req_builder.json(&body);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        Ok(())
+    } else {
+        let local_var_entity: Option<RenewInstanceCertificateError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+pub async fn restart_instance(
+    configuration: &configuration::Configuration,
+    region: &str,
+    instance_id: &str,
+    body: serde_json::Value,
+) -> Result<crate::models::ScalewayRdbV1Instance, Error<RestartInstanceError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/rdb/v1/regions/{region}/instances/{instance_id}/restart",
+        local_var_configuration.base_path,
+        region = crate::apis::urlencode(region),
+        instance_id = crate::apis::urlencode(instance_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+    local_var_req_builder = local_var_req_builder.json(&body);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<RestartInstanceError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+pub async fn update_instance(
+    configuration: &configuration::Configuration,
+    region: &str,
+    instance_id: &str,
+    update_instance_request: crate::models::UpdateInstanceRequest,
+) -> Result<crate::models::ScalewayRdbV1Instance, Error<UpdateInstanceError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/rdb/v1/regions/{region}/instances/{instance_id}",
+        local_var_configuration.base_path,
+        region = crate::apis::urlencode(region),
+        instance_id = crate::apis::urlencode(instance_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+    local_var_req_builder = local_var_req_builder.json(&update_instance_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -710,24 +981,26 @@ pub async fn upgrade_instance(
     configuration: &configuration::Configuration,
     region: &str,
     instance_id: &str,
-    inline_object23: crate::models::InlineObject23,
+    upgrade_instance_request: crate::models::UpgradeInstanceRequest,
 ) -> Result<crate::models::ScalewayRdbV1Instance, Error<UpgradeInstanceError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/rdb/v1/regions/{region}/instances/{instance_id}/upgrade",
-        configuration.base_path,
+        local_var_configuration.base_path,
         region = crate::apis::urlencode(region),
         instance_id = crate::apis::urlencode(instance_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -735,7 +1008,7 @@ pub async fn upgrade_instance(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object23);
+    local_var_req_builder = local_var_req_builder.json(&upgrade_instance_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

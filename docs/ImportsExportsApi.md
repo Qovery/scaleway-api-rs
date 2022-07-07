@@ -43,7 +43,7 @@ Name | Type | Description  | Required | Notes
 
 ## import_provider_dns_zone
 
-> crate::models::ScalewayDomainV2beta1ImportProviderDnsZoneResponse import_provider_dns_zone(dns_zone, inline_object60)
+> crate::models::ScalewayDomainV2beta1ImportProviderDnsZoneResponse import_provider_dns_zone(dns_zone, import_provider_dns_zone_request)
 Import provider DNS zone
 
 Import and replace records from a given provider format with default NS.
@@ -54,7 +54,7 @@ Import and replace records from a given provider format with default NS.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** |  | [required] |
-**inline_object60** | [**InlineObject60**](InlineObject60.md) |  | [required] |
+**import_provider_dns_zone_request** | [**ImportProviderDnsZoneRequest**](ImportProviderDnsZoneRequest.md) |  | [required] |
 
 ### Return type
 
@@ -74,7 +74,7 @@ Name | Type | Description  | Required | Notes
 
 ## import_raw_dns_zone
 
-> crate::models::ScalewayDomainV2beta1ImportRawDnsZoneResponse import_raw_dns_zone(dns_zone, inline_object62)
+> crate::models::ScalewayDomainV2beta1ImportRawDnsZoneResponse import_raw_dns_zone(dns_zone, import_raw_dns_zone_request)
 Import raw DNS zone
 
 Import and replace records from a given provider format with default NS.
@@ -85,7 +85,7 @@ Import and replace records from a given provider format with default NS.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** | The DNS zone to import | [required] |
-**inline_object62** | [**InlineObject62**](InlineObject62.md) |  | [required] |
+**import_raw_dns_zone_request** | [**ImportRawDnsZoneRequest**](ImportRawDnsZoneRequest.md) |  | [required] |
 
 ### Return type
 

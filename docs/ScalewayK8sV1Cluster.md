@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | Option<**String**> | The ID of the cluster | [optional]
+**_type** | Option<**String**> | The type of the cluster | [optional]
 **name** | Option<**String**> | The name of the cluster | [optional]
 **status** | Option<**String**> | The status of the cluster | [optional][default to Status_Unknown]
 **version** | Option<**String**> | The Kubernetes version of the cluster | [optional]

@@ -11,8 +11,8 @@ Name | Type | Description | Notes
 **property_type** | Option<**String**> | Setting type | [optional][default to PropertyType_BOOLEAN]
 **unit** | Option<**String**> | Setting base unit | [optional]
 **string_constraint** | Option<**String**> | Validation regex for string type settings | [optional]
-**int_min** | Option<**f32**> | Minimum value for int types | [optional]
-**int_max** | Option<**f32**> | Maximum value for int types | [optional]
+**int_min** | Option<**i64**> | Minimum value for int types | [optional]
+**int_max** | Option<**i64**> | Maximum value for int types | [optional]
 **float_min** | Option<[**crate::models::ScalewayRdbV1EngineSettingFloatMin**](scaleway_rdb_v1_EngineSetting_float_min.md)> |  | [optional]
 **float_max** | Option<[**crate::models::ScalewayRdbV1EngineSettingFloatMax**](scaleway_rdb_v1_EngineSetting_float_max.md)> |  | [optional]
 

@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## create_network
 
-> crate::models::ScalewayIotV1CreateNetworkResponse create_network(region, inline_object45)
+> crate::models::ScalewayIotV1CreateNetworkResponse create_network(region, create_network_request)
 Create a new Network
 
 ### Parameters
@@ -22,7 +22,7 @@ Create a new Network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object45** | [**InlineObject45**](InlineObject45.md) |  | [required] |
+**create_network_request** | [**CreateNetworkRequest**](CreateNetworkRequest.md) |  | [required] |
 
 ### Return type
 
@@ -109,8 +109,8 @@ List the Networks
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size. The maximum value is 100 |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size. The maximum value is 100 |  |[default to 20]
 **order_by** | Option<**String**> | Ordering of requested routes |  |[default to name_asc]
 **name** | Option<**String**> | Filter on Network name |  |
 **hub_id** | Option<**String**> | Filter on the hub |  |

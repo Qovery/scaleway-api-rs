@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -13,84 +13,84 @@ use reqwest;
 use super::{configuration, Error};
 use crate::apis::ResponseContent;
 
-/// struct for typed errors of method `clone_dns_zone`
+/// struct for typed errors of method [`clone_dns_zone`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CloneDnsZoneError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `create_dns_zone`
+/// struct for typed errors of method [`create_dns_zone`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CreateDnsZoneError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `create_ssl_certificate`
+/// struct for typed errors of method [`create_ssl_certificate`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CreateSslCertificateError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_dns_zone`
+/// struct for typed errors of method [`delete_dns_zone`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteDnsZoneError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_dns_zone_tsig_key`
+/// struct for typed errors of method [`delete_dns_zone_tsig_key`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteDnsZoneTsigKeyError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_ssl_certificate`
+/// struct for typed errors of method [`delete_ssl_certificate`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteSslCertificateError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_dns_zone_tsig_key`
+/// struct for typed errors of method [`get_dns_zone_tsig_key`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetDnsZoneTsigKeyError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_ssl_certificate`
+/// struct for typed errors of method [`get_ssl_certificate`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetSslCertificateError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_dns_zones`
+/// struct for typed errors of method [`list_dns_zones`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListDnsZonesError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_ssl_certificates`
+/// struct for typed errors of method [`list_ssl_certificates`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListSslCertificatesError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `refresh_dns_zone`
+/// struct for typed errors of method [`refresh_dns_zone`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum RefreshDnsZoneError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_dns_zone`
+/// struct for typed errors of method [`update_dns_zone`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateDnsZoneError {
@@ -101,23 +101,25 @@ pub enum UpdateDnsZoneError {
 pub async fn clone_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object59: crate::models::InlineObject59,
+    clone_dns_zone_request: crate::models::CloneDnsZoneRequest,
 ) -> Result<crate::models::ScalewayDomainV2beta1DnsZone, Error<CloneDnsZoneError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/dns-zones/{dns_zone}/clone",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -125,7 +127,7 @@ pub async fn clone_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object59);
+    local_var_req_builder = local_var_req_builder.json(&clone_dns_zone_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -150,19 +152,24 @@ pub async fn clone_dns_zone(
 /// Create a new DNS zone.
 pub async fn create_dns_zone(
     configuration: &configuration::Configuration,
-    inline_object57: crate::models::InlineObject57,
+    create_dns_zone_request: crate::models::CreateDnsZoneRequest,
 ) -> Result<crate::models::ScalewayDomainV2beta1DnsZone, Error<CreateDnsZoneError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
-    let local_var_uri_str = format!("{}/domain/v2beta1/dns-zones", configuration.base_path);
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/domain/v2beta1/dns-zones",
+        local_var_configuration.base_path
+    );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -170,7 +177,7 @@ pub async fn create_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object57);
+    local_var_req_builder = local_var_req_builder.json(&create_dns_zone_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -194,22 +201,24 @@ pub async fn create_dns_zone(
 
 pub async fn create_ssl_certificate(
     configuration: &configuration::Configuration,
-    inline_object65: crate::models::InlineObject65,
+    create_ssl_certificate_request: crate::models::CreateSslCertificateRequest,
 ) -> Result<crate::models::ScalewayDomainV2beta1SslCertificate, Error<CreateSslCertificateError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/ssl-certificates",
-        configuration.base_path
+        local_var_configuration.base_path
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -217,7 +226,7 @@ pub async fn create_ssl_certificate(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object65);
+    local_var_req_builder = local_var_req_builder.json(&create_ssl_certificate_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -245,22 +254,25 @@ pub async fn delete_dns_zone(
     dns_zone: &str,
     project_id: &str,
 ) -> Result<serde_json::Value, Error<DeleteDnsZoneError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/dns-zones/{dns_zone}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
+    //not nullable
     local_var_req_builder = local_var_req_builder.query(&[("project_id", &project_id.to_string())]);
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -293,21 +305,23 @@ pub async fn delete_dns_zone_tsig_key(
     configuration: &configuration::Configuration,
     dns_zone: &str,
 ) -> Result<(), Error<DeleteDnsZoneTsigKeyError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/dns-zones/{dns_zone}/tsig-key",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -340,21 +354,23 @@ pub async fn delete_ssl_certificate(
     configuration: &configuration::Configuration,
     dns_zone: &str,
 ) -> Result<serde_json::Value, Error<DeleteSslCertificateError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/ssl-certificates/{dns_zone}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -391,21 +407,23 @@ pub async fn get_dns_zone_tsig_key(
     crate::models::ScalewayDomainV2beta1GetDnsZoneTsigKeyResponse,
     Error<GetDnsZoneTsigKeyError>,
 > {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/dns-zones/{dns_zone}/tsig-key",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -438,21 +456,23 @@ pub async fn get_ssl_certificate(
     configuration: &configuration::Configuration,
     dns_zone: &str,
 ) -> Result<crate::models::ScalewayDomainV2beta1SslCertificate, Error<GetSslCertificateError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/ssl-certificates/{dns_zone}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -487,14 +507,19 @@ pub async fn list_dns_zones(
     organization_id: Option<&str>,
     project_id: Option<&str>,
     order_by: Option<&str>,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
     domain: Option<&str>,
     dns_zone: Option<&str>,
 ) -> Result<crate::models::ScalewayDomainV2beta1ListDnsZonesResponse, Error<ListDnsZonesError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
-    let local_var_uri_str = format!("{}/domain/v2beta1/dns-zones", configuration.base_path);
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/domain/v2beta1/dns-zones",
+        local_var_configuration.base_path
+    );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
@@ -526,11 +551,11 @@ pub async fn list_dns_zones(
         local_var_req_builder =
             local_var_req_builder.query(&[("dns_zone", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -562,18 +587,20 @@ pub async fn list_dns_zones(
 pub async fn list_ssl_certificates(
     configuration: &configuration::Configuration,
     dns_zone: Option<&str>,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
     project_id: Option<&str>,
 ) -> Result<
     crate::models::ScalewayDomainV2beta1ListSslCertificatesResponse,
     Error<ListSslCertificatesError>,
 > {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/ssl-certificates",
-        configuration.base_path
+        local_var_configuration.base_path
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -594,11 +621,11 @@ pub async fn list_ssl_certificates(
         local_var_req_builder =
             local_var_req_builder.query(&[("project_id", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -631,24 +658,26 @@ pub async fn list_ssl_certificates(
 pub async fn refresh_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object64: crate::models::InlineObject64,
+    refresh_dns_zone_request: crate::models::RefreshDnsZoneRequest,
 ) -> Result<crate::models::ScalewayDomainV2beta1RefreshDnsZoneResponse, Error<RefreshDnsZoneError>>
 {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/dns-zones/{dns_zone}/refresh",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -656,7 +685,7 @@ pub async fn refresh_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object64);
+    local_var_req_builder = local_var_req_builder.json(&refresh_dns_zone_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -682,23 +711,25 @@ pub async fn refresh_dns_zone(
 pub async fn update_dns_zone(
     configuration: &configuration::Configuration,
     dns_zone: &str,
-    inline_object58: crate::models::InlineObject58,
+    update_dns_zone_request: crate::models::UpdateDnsZoneRequest,
 ) -> Result<crate::models::ScalewayDomainV2beta1DnsZone, Error<UpdateDnsZoneError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/domain/v2beta1/dns-zones/{dns_zone}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         dns_zone = crate::apis::urlencode(dns_zone)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -706,7 +737,7 @@ pub async fn update_dns_zone(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object58);
+    local_var_req_builder = local_var_req_builder.json(&update_dns_zone_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

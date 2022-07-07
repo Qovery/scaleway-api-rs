@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **created_at** | Option<**String**> | Date of creation of the server | [optional]
 **status** | Option<**String**> | Status of the server | [optional][default to Status_Unknown]
 **offer_id** | Option<**String**> | Offer ID of the server | [optional]
+**offer_name** | Option<**String**> | Offer name of the server | [optional]
 **tags** | Option<**Vec<String>**> | Array of customs tags attached to the server | [optional]
 **ips** | Option<[**Vec<crate::models::ScalewayBaremetalV1Ip>**](scaleway.baremetal.v1.IP.md)> | Array of IPs attached to the server | [optional]
 **domain** | Option<**String**> | Domain of the server | [optional]
@@ -20,6 +21,8 @@ Name | Type | Description | Notes
 **zone** | Option<**String**> | The zone in which is the server | [optional]
 **install** | Option<[**crate::models::ScalewayBaremetalV1ServerInstall**](scaleway_baremetal_v1_Server_install.md)> |  | [optional]
 **ping_status** | Option<**String**> | Server status of ping | [optional][default to PingStatus_Unknown]
+**options** | Option<[**Vec<crate::models::ScalewayBaremetalV1ServerOption>**](scaleway.baremetal.v1.Server.Option.md)> | Options enabled on server | [optional]
+**rescue_server** | Option<[**crate::models::ScalewayBaremetalV1ServerRescueServer**](scaleway_baremetal_v1_Server_rescue_server.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

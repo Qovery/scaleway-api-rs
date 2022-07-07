@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## create_user
 
-> crate::models::ScalewayRdbV1User create_user(region, instance_id, inline_object24)
+> crate::models::ScalewayRdbV1User create_user(region, instance_id, create_user_request)
 Create a user on a given instance
 
 ### Parameters
@@ -23,7 +23,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want to create a user in | [required] |
-**inline_object24** | [**InlineObject24**](InlineObject24.md) |  | [required] |
+**create_user_request** | [**CreateUserRequest**](CreateUserRequest.md) |  | [required] |
 
 ### Return type
 
@@ -85,8 +85,8 @@ Name | Type | Description  | Required | Notes
 **instance_id** | **String** | UUID of the instance | [required] |
 **name** | Option<**String**> | Name of the user |  |
 **order_by** | Option<**String**> | Criteria to use when ordering users listing |  |[default to name_asc]
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 
 ### Return type
 
@@ -106,7 +106,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_user
 
-> crate::models::ScalewayRdbV1User update_user(region, instance_id, name, inline_object25)
+> crate::models::ScalewayRdbV1User update_user(region, instance_id, name, update_user_request)
 Update a user on a given instance
 
 ### Parameters
@@ -117,7 +117,7 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance the user belongs to | [required] |
 **name** | **String** | Name of the database user | [required] |
-**inline_object25** | [**InlineObject25**](InlineObject25.md) |  | [required] |
+**update_user_request** | [**UpdateUserRequest**](UpdateUserRequest.md) |  | [required] |
 
 ### Return type
 

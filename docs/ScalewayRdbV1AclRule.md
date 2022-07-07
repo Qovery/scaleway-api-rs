@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ip** | Option<**String**> | (IP network) | [optional]
-**port** | Option<**f32**> |  | [optional]
+**port** | Option<**i64**> |  | [optional]
 **protocol** | Option<[**crate::models::ScalewayRdbV1AclRuleProtocol**](scaleway.rdb.v1.ACLRule.Protocol.md)> |  | [optional]
 **direction** | Option<[**crate::models::ScalewayRdbV1AclRuleDirection**](scaleway.rdb.v1.ACLRule.Direction.md)> |  | [optional]
 **action** | Option<[**crate::models::ScalewayRdbV1AclRuleAction**](scaleway.rdb.v1.ACLRule.Action.md)> |  | [optional]

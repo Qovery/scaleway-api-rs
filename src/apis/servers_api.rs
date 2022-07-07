@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -13,90 +13,110 @@ use reqwest;
 use super::{configuration, Error};
 use crate::apis::ResponseContent;
 
-/// struct for typed errors of method `create_server`
+/// struct for typed errors of method [`add_option_server`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum AddOptionServerError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`create_server`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum CreateServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `delete_server`
+/// struct for typed errors of method [`delete_option_server`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DeleteOptionServerError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`delete_server`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum DeleteServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_server`
+/// struct for typed errors of method [`get_server`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `get_server_metrics`
+/// struct for typed errors of method [`get_server_metrics`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetServerMetricsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `install_server`
+/// struct for typed errors of method [`install_server`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum InstallServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_server_events`
+/// struct for typed errors of method [`list_server_events`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListServerEventsError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `list_servers`
+/// struct for typed errors of method [`list_servers`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ListServersError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_ip`
+/// struct for typed errors of method [`update_ip`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateIpError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method `update_server`
+/// struct for typed errors of method [`update_server`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum UpdateServerError {
     UnknownValue(serde_json::Value),
 }
 
-/// Create a new baremetal server. Once the server is created, you probably want to install an OS.
-pub async fn create_server(
+/// Add an option to a specific server.
+pub async fn add_option_server(
     configuration: &configuration::Configuration,
     zone: &str,
-    inline_object: crate::models::InlineObject,
-) -> Result<crate::models::ScalewayBaremetalV1Server, Error<CreateServerError>> {
-    let local_var_client = &configuration.client;
+    server_id: &str,
+    option_id: &str,
+    add_option_server_request: crate::models::AddOptionServerRequest,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<AddOptionServerError>> {
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
-        "{}/baremetal/v1/zones/{zone}/servers",
-        configuration.base_path,
-        zone = crate::apis::urlencode(zone)
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}",
+        local_var_configuration.base_path,
+        zone = crate::apis::urlencode(zone),
+        server_id = crate::apis::urlencode(server_id),
+        option_id = crate::apis::urlencode(option_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -104,7 +124,59 @@ pub async fn create_server(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object);
+    local_var_req_builder = local_var_req_builder.json(&add_option_server_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<AddOptionServerError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Create a new elastic metal server. Once the server is created, you probably want to install an OS.
+pub async fn create_server(
+    configuration: &configuration::Configuration,
+    zone: &str,
+    create_server_request: crate::models::CreateServerRequest,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<CreateServerError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/baremetal/v1/zones/{zone}/servers",
+        local_var_configuration.base_path,
+        zone = crate::apis::urlencode(zone)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+    local_var_req_builder = local_var_req_builder.json(&create_server_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -126,28 +198,84 @@ pub async fn create_server(
     }
 }
 
+/// Delete an option from a specific server.
+pub async fn delete_option_server(
+    configuration: &configuration::Configuration,
+    zone: &str,
+    server_id: &str,
+    option_id: &str,
+) -> Result<crate::models::ScalewayBaremetalV1Server, Error<DeleteOptionServerError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+    // GDU
+    let local_var_uri_str = format!(
+        "{}/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}",
+        local_var_configuration.base_path,
+        zone = crate::apis::urlencode(zone),
+        server_id = crate::apis::urlencode(server_id),
+        option_id = crate::apis::urlencode(option_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
+        let local_var_key = local_var_apikey.key.clone();
+        let local_var_value = match local_var_apikey.prefix {
+            Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
+            None => local_var_key,
+        };
+        local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<DeleteOptionServerError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
 /// Delete the server associated with the given ID.
 pub async fn delete_server(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
 ) -> Result<crate::models::ScalewayBaremetalV1Server, Error<DeleteServerError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -182,22 +310,24 @@ pub async fn get_server(
     zone: &str,
     server_id: &str,
 ) -> Result<crate::models::ScalewayBaremetalV1Server, Error<GetServerError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -233,22 +363,24 @@ pub async fn get_server_metrics(
     server_id: &str,
 ) -> Result<crate::models::ScalewayBaremetalV1GetServerMetricsResponse, Error<GetServerMetricsError>>
 {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}/metrics",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -282,24 +414,26 @@ pub async fn install_server(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-    inline_object3: crate::models::InlineObject3,
+    install_server_request: crate::models::InstallServerRequest,
 ) -> Result<crate::models::ScalewayBaremetalV1Server, Error<InstallServerError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}/install",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -307,7 +441,7 @@ pub async fn install_server(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object3);
+    local_var_req_builder = local_var_req_builder.json(&install_server_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -334,16 +468,18 @@ pub async fn list_server_events(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
     order_by: Option<&str>,
 ) -> Result<crate::models::ScalewayBaremetalV1ListServerEventsResponse, Error<ListServerEventsError>>
 {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}/events",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
@@ -362,11 +498,11 @@ pub async fn list_server_events(
         local_var_req_builder =
             local_var_req_builder.query(&[("order_by", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -395,24 +531,27 @@ pub async fn list_server_events(
     }
 }
 
-/// List baremetal servers for organization.
+/// List elastic metal servers for organization.
 pub async fn list_servers(
     configuration: &configuration::Configuration,
     zone: &str,
-    page: Option<f32>,
-    page_size: Option<f32>,
+    page: Option<i64>,
+    page_size: Option<i64>,
     order_by: Option<&str>,
     tags: Option<Vec<String>>,
     status: Option<Vec<String>>,
     name: Option<&str>,
     organization_id: Option<&str>,
     project_id: Option<&str>,
+    option_id: Option<&str>,
 ) -> Result<crate::models::ScalewayBaremetalV1ListServersResponse, Error<ListServersError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone)
     );
     let mut local_var_req_builder =
@@ -431,26 +570,42 @@ pub async fn list_servers(
             local_var_req_builder.query(&[("order_by", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_str) = tags {
-        local_var_req_builder = local_var_req_builder.query(&[(
-            "tags",
-            &local_var_str
-                .iter()
-                .map(|p| p.to_string())
-                .collect::<Vec<String>>()
-                .join(",")
-                ,
-        )]);
+        local_var_req_builder = match "multi" {
+            "multi" => local_var_req_builder.query(
+                &local_var_str
+                    .iter()
+                    .map(|p| ("tags".to_owned(), p.to_string()))
+                    .collect::<Vec<(std::string::String, std::string::String)>>(),
+            ),
+            _ => local_var_req_builder.query(&[(
+                "tags",
+                &local_var_str
+                    .iter()
+                    .map(|p| p.to_string())
+                    .collect::<Vec<String>>()
+                    .join(",")
+                    ,
+            )]),
+        };
     }
     if let Some(ref local_var_str) = status {
-        local_var_req_builder = local_var_req_builder.query(&[(
-            "status",
-            &local_var_str
-                .iter()
-                .map(|p| p.to_string())
-                .collect::<Vec<String>>()
-                .join(",")
-                ,
-        )]);
+        local_var_req_builder = match "multi" {
+            "multi" => local_var_req_builder.query(
+                &local_var_str
+                    .iter()
+                    .map(|p| ("status".to_owned(), p.to_string()))
+                    .collect::<Vec<(std::string::String, std::string::String)>>(),
+            ),
+            _ => local_var_req_builder.query(&[(
+                "status",
+                &local_var_str
+                    .iter()
+                    .map(|p| p.to_string())
+                    .collect::<Vec<String>>()
+                    .join(",")
+                    ,
+            )]),
+        };
     }
     if let Some(ref local_var_str) = name {
         local_var_req_builder =
@@ -464,11 +619,15 @@ pub async fn list_servers(
         local_var_req_builder =
             local_var_req_builder.query(&[("project_id", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_str) = option_id {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("option_id", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -503,13 +662,15 @@ pub async fn update_ip(
     zone: &str,
     server_id: &str,
     ip_id: &str,
-    inline_object4: crate::models::InlineObject4,
+    update_ip_request: crate::models::UpdateIpRequest,
 ) -> Result<crate::models::ScalewayBaremetalV1Ip, Error<UpdateIpError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id),
         ip_id = crate::apis::urlencode(ip_id)
@@ -517,11 +678,11 @@ pub async fn update_ip(
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -529,7 +690,7 @@ pub async fn update_ip(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object4);
+    local_var_req_builder = local_var_req_builder.json(&update_ip_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -555,24 +716,26 @@ pub async fn update_server(
     configuration: &configuration::Configuration,
     zone: &str,
     server_id: &str,
-    inline_object1: crate::models::InlineObject1,
+    update_server_request: crate::models::UpdateServerRequest,
 ) -> Result<crate::models::ScalewayBaremetalV1Server, Error<UpdateServerError>> {
-    let local_var_client = &configuration.client;
+    let local_var_configuration = configuration;
 
+    let local_var_client = &local_var_configuration.client;
+    // GDU
     let local_var_uri_str = format!(
         "{}/baremetal/v1/zones/{zone}/servers/{server_id}",
-        configuration.base_path,
+        local_var_configuration.base_path,
         zone = crate::apis::urlencode(zone),
         server_id = crate::apis::urlencode(server_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
 
-    if let Some(ref local_var_user_agent) = configuration.user_agent {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_apikey) = configuration.api_key {
+    if let Some(ref local_var_apikey) = local_var_configuration.api_key {
         let local_var_key = local_var_apikey.key.clone();
         let local_var_value = match local_var_apikey.prefix {
             Some(ref local_var_prefix) => format!("{} {}", local_var_prefix, local_var_key),
@@ -580,7 +743,7 @@ pub async fn update_server(
         };
         local_var_req_builder = local_var_req_builder.header("X-Auth-Token", local_var_value);
     };
-    local_var_req_builder = local_var_req_builder.json(&inline_object1);
+    local_var_req_builder = local_var_req_builder.json(&update_server_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

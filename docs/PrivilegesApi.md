@@ -22,8 +22,8 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance | [required] |
 **order_by** | Option<**String**> | Criteria to use when ordering privileges listing |  |[default to user_name_asc]
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 **database_name** | Option<**String**> | Name of the database |  |
 **user_name** | Option<**String**> | Name of the user |  |
 
@@ -45,7 +45,7 @@ Name | Type | Description  | Required | Notes
 
 ## set_privilege
 
-> crate::models::ScalewayRdbV1Privilege set_privilege(region, instance_id, inline_object18)
+> crate::models::ScalewayRdbV1Privilege set_privilege(region, instance_id, set_privilege_request)
 Set privileges of a given user for a given database on a given instance
 
 ### Parameters
@@ -55,7 +55,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance | [required] |
-**inline_object18** | [**InlineObject18**](InlineObject18.md) |  | [required] |
+**set_privilege_request** | [**SetPrivilegeRequest**](SetPrivilegeRequest.md) |  | [required] |
 
 ### Return type
 

@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## create_instance_from_snapshot
 
-> crate::models::ScalewayRdbV1Instance create_instance_from_snapshot(region, snapshot_id, inline_object27)
+> crate::models::ScalewayRdbV1Instance create_instance_from_snapshot(region, snapshot_id, create_instance_from_snapshot_request)
 Create a new instance from a given snapshot
 
 ### Parameters
@@ -25,7 +25,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **snapshot_id** | **String** | Block snapshot of the instance | [required] |
-**inline_object27** | [**InlineObject27**](InlineObject27.md) |  | [required] |
+**create_instance_from_snapshot_request** | [**CreateInstanceFromSnapshotRequest**](CreateInstanceFromSnapshotRequest.md) |  | [required] |
 
 ### Return type
 
@@ -45,7 +45,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_snapshot
 
-> crate::models::ScalewayRdbV1Snapshot create_snapshot(region, instance_id, inline_object22)
+> crate::models::ScalewayRdbV1Snapshot create_snapshot(region, instance_id, create_snapshot_request)
 Create an instance snapshot
 
 ### Parameters
@@ -55,7 +55,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance | [required] |
-**inline_object22** | [**InlineObject22**](InlineObject22.md) |  | [required] |
+**create_snapshot_request** | [**CreateSnapshotRequest**](CreateSnapshotRequest.md) |  | [required] |
 
 ### Return type
 
@@ -147,8 +147,8 @@ Name | Type | Description  | Required | Notes
 **instance_id** | Option<**String**> | UUID of the instance |  |
 **organization_id** | Option<**String**> | Organization ID the snapshots belongs to |  |
 **project_id** | Option<**String**> | Project ID the snapshots belongs to |  |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 
 ### Return type
 
@@ -168,7 +168,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_snapshot
 
-> crate::models::ScalewayRdbV1Snapshot update_snapshot(region, snapshot_id, inline_object26)
+> crate::models::ScalewayRdbV1Snapshot update_snapshot(region, snapshot_id, update_snapshot_request)
 Update an instance snapshot
 
 ### Parameters
@@ -178,7 +178,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **snapshot_id** | **String** | UUID of the snapshot to update | [required] |
-**inline_object26** | [**InlineObject26**](InlineObject26.md) |  | [required] |
+**update_snapshot_request** | [**UpdateSnapshotRequest**](UpdateSnapshotRequest.md) |  | [required] |
 
 ### Return type
 
