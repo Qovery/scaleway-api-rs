@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **available_container_runtimes** | Option<[**Vec<crate::models::ScalewayK8sV1Runtime>**](scaleway.k8s.v1.Runtime.md)> | The supported container runtimes for this version | [optional]
 **available_feature_gates** | Option<**Vec<String>**> | The supported feature gates for this version | [optional]
 **available_admission_plugins** | Option<**Vec<String>**> | The supported admission plugins for this version | [optional]
-**available_kubelet_args** | Option<[**::std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)> | The supported kubelet arguments for this version | [optional]
+**available_kubelet_args** | Option<[**crate::models::ScalewayK8sV1VersionAvailableKubeletArgs**](scaleway_k8s_v1_Version_available_kubelet_args.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

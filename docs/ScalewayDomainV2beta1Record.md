@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **data** | Option<**String**> |  | [optional]
 **name** | Option<**String**> |  | [optional]
-**priority** | Option<**f32**> |  | [optional]
-**ttl** | Option<**f32**> |  | [optional]
+**priority** | Option<**i64**> |  | [optional]
+**ttl** | Option<**i64**> |  | [optional]
 **_type** | Option<[**crate::models::ScalewayDomainV2beta1RecordType**](scaleway.domain.v2beta1.Record.Type.md)> |  | [optional]
 **comment** | Option<**String**> |  | [optional]
 **geo_ip_config** | Option<[**crate::models::ScalewayDomainV2beta1RecordGeoIpConfig**](scaleway_domain_v2beta1_Record_geo_ip_config.md)> |  | [optional]

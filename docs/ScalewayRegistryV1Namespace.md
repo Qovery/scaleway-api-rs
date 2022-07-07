@@ -13,10 +13,10 @@ Name | Type | Description | Notes
 **status_message** | Option<**String**> | Namespace status details | [optional]
 **endpoint** | Option<**String**> | Endpoint reachable by docker | [optional]
 **is_public** | Option<**bool**> | Namespace visibility policy | [optional]
-**size** | Option<**f32**> | Total size of the namespace, calculated as the sum of the size of all images in the namespace (in bytes) | [optional]
+**size** | Option<**i64**> | Total size of the namespace, calculated as the sum of the size of all images in the namespace (in bytes) | [optional]
 **created_at** | Option<**String**> | Creation date | [optional]
 **updated_at** | Option<**String**> | Last modification date, from the user or the service | [optional]
-**image_count** | Option<**f32**> | Number of images in the namespace | [optional]
+**image_count** | Option<**i64**> | Number of images in the namespace | [optional]
 **region** | Option<**String**> | Region the namespace belongs to | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

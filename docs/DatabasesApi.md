@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## create_database
 
-> crate::models::ScalewayRdbV1Database create_database(region, instance_id, inline_object16)
+> crate::models::ScalewayRdbV1Database create_database(region, instance_id, create_database_request)
 Create a database in a given instance
 
 ### Parameters
@@ -22,7 +22,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance where to create the database | [required] |
-**inline_object16** | [**InlineObject16**](InlineObject16.md) |  | [required] |
+**create_database_request** | [**CreateDatabaseRequest**](CreateDatabaseRequest.md) |  | [required] |
 
 ### Return type
 
@@ -86,8 +86,8 @@ Name | Type | Description  | Required | Notes
 **managed** | Option<**bool**> | Whether or not the database is managed |  |
 **owner** | Option<**String**> | User that owns this database |  |
 **order_by** | Option<**String**> | Criteria to use when ordering database listing |  |[default to name_asc]
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 
 ### Return type
 

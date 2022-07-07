@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 ## create_device
 
-> crate::models::ScalewayIotV1CreateDeviceResponse create_device(region, inline_object39)
+> crate::models::ScalewayIotV1CreateDeviceResponse create_device(region, create_device_request)
 Add a device
 
 ### Parameters
@@ -29,7 +29,7 @@ Add a device
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object39** | [**InlineObject39**](InlineObject39.md) |  | [required] |
+**create_device_request** | [**CreateDeviceRequest**](CreateDeviceRequest.md) |  | [required] |
 
 ### Return type
 
@@ -235,8 +235,8 @@ List devices
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size. The maximum value is 100 |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size. The maximum value is 100 |  |[default to 20]
 **order_by** | Option<**String**> | Ordering of requested devices |  |[default to name_asc]
 **name** | Option<**String**> | Filter on the name |  |
 **hub_id** | Option<**String**> | Filter on the hub |  |
@@ -291,7 +291,7 @@ Name | Type | Description  | Required | Notes
 
 ## set_device_certificate
 
-> crate::models::ScalewayIotV1SetDeviceCertificateResponse set_device_certificate(region, device_id, inline_object41)
+> crate::models::ScalewayIotV1SetDeviceCertificateResponse set_device_certificate(region, device_id, set_device_certificate_request)
 Set a custom certificate on a device
 
 ### Parameters
@@ -301,7 +301,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **device_id** | **String** | Device ID | [required] |
-**inline_object41** | [**InlineObject41**](InlineObject41.md) |  | [required] |
+**set_device_certificate_request** | [**SetDeviceCertificateRequest**](SetDeviceCertificateRequest.md) |  | [required] |
 
 ### Return type
 
@@ -321,7 +321,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_device
 
-> crate::models::ScalewayIotV1Device update_device(region, device_id, inline_object40)
+> crate::models::ScalewayIotV1Device update_device(region, device_id, update_device_request)
 Update a device
 
 ### Parameters
@@ -331,7 +331,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **device_id** | **String** | Device ID | [required] |
-**inline_object40** | [**InlineObject40**](InlineObject40.md) |  | [required] |
+**update_device_request** | [**UpdateDeviceRequest**](UpdateDeviceRequest.md) |  | [required] |
 
 ### Return type
 

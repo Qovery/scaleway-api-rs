@@ -13,8 +13,10 @@ Method | HTTP request | Description
 
 ## add_instance_acl_rules
 
-> crate::models::ScalewayRdbV1AddInstanceAclRulesResponse add_instance_acl_rules(region, instance_id, inline_object13)
+> crate::models::ScalewayRdbV1AddInstanceAclRulesResponse add_instance_acl_rules(region, instance_id, add_instance_acl_rules_request)
 Add an ACL instance to a given instance
+
+Add an additional ACL rule to a database instance.
 
 ### Parameters
 
@@ -23,7 +25,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want to add acl rules to | [required] |
-**inline_object13** | [**InlineObject13**](InlineObject13.md) |  | [required] |
+**add_instance_acl_rules_request** | [**AddInstanceAclRulesRequest**](AddInstanceAclRulesRequest.md) |  | [required] |
 
 ### Return type
 
@@ -43,7 +45,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_instance_acl_rules
 
-> crate::models::ScalewayRdbV1DeleteInstanceAclRulesResponse delete_instance_acl_rules(region, instance_id, inline_object14)
+> crate::models::ScalewayRdbV1DeleteInstanceAclRulesResponse delete_instance_acl_rules(region, instance_id, delete_instance_acl_rules_request)
 Delete ACL rules of a given instance
 
 ### Parameters
@@ -53,7 +55,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want to delete an ACL rules from | [required] |
-**inline_object14** | [**InlineObject14**](InlineObject14.md) |  | [required] |
+**delete_instance_acl_rules_request** | [**DeleteInstanceAclRulesRequest**](DeleteInstanceAclRulesRequest.md) |  | [required] |
 
 ### Return type
 
@@ -83,8 +85,8 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 
 ### Return type
 
@@ -104,8 +106,10 @@ Name | Type | Description  | Required | Notes
 
 ## set_instance_acl_rules
 
-> crate::models::ScalewayRdbV1SetInstanceAclRulesResponse set_instance_acl_rules(region, instance_id, inline_object12)
+> crate::models::ScalewayRdbV1SetInstanceAclRulesResponse set_instance_acl_rules(region, instance_id, set_instance_acl_rules_request)
 Set ACL rules for a given instance
+
+Replace all the ACL rules of a database instance.
 
 ### Parameters
 
@@ -114,7 +118,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance where the ACL rules has to be set | [required] |
-**inline_object12** | [**InlineObject12**](InlineObject12.md) |  | [required] |
+**set_instance_acl_rules_request** | [**SetInstanceAclRulesRequest**](SetInstanceAclRulesRequest.md) |  | [required] |
 
 ### Return type
 

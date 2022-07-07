@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **name** | Option<**String**> | The name of the node | [optional]
 **public_ip_v4** | Option<**String**> | The public IPv4 address of the node (IPv4 address) | [optional]
 **public_ip_v6** | Option<**String**> | The public IPv6 address of the node (IPv6 address) | [optional]
-**conditions** | Option<[**::std::collections::HashMap<String, serde_json::Value>**](serde_json::Value.md)> | These conditions contains the Node Problem Detector conditions, as well as some in house conditions. | [optional]
+**conditions** | Option<[**crate::models::ScalewayK8sV1NodeConditions**](scaleway_k8s_v1_Node_conditions.md)> |  | [optional]
 **status** | Option<**String**> | The status of the node | [optional][default to Status_Unknown]
 **created_at** | Option<**String**> | The date at which the node was created | [optional]
 **updated_at** | Option<**String**> | The date at which the node was last updated | [optional]

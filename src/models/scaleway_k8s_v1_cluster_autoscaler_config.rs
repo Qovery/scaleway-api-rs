@@ -1,7 +1,7 @@
 /*
- * Bare metal API
+ * Elastic metal API
  *
- * # Introduction  Bare metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  This is the `v1` documentation, the `v1alpha1` version is available [here](/en/products/baremetal/api/v1alpha1).  ## Technical Limitations  - Bare metal is only available in `fr-par-2` zone  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  - The list of OS is limited, you can install your own using the following tutorial: https://www.scaleway.com/en/docs/bare-metal-server-installation-kvm-over-ip/  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - BMC access: Baseboard Management Controller (BMC) allows you to remotely access the low-level parameters of your dedicated server. For instance, your KVM-IP management console could be accessed with it.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my ssh key id ?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+ * # Introduction  Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance. Dedicated servers could be used for large workloads, big data, those requiring more security, ….  ## Technical Limitations  - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones  - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)  ## Features  - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)  - Start/Stop/Reboot  - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.  - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)  - IPv6, all servers are available with an IPv6 /128  - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint  - Basic monitoring with ping status  - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))  - IP failovers are not available in api v1, use the api v1alpha1  ## FAQ  ### How can I get my SSH key id?  You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials  ### How can I add my server to a private network?  See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
  *
  * The version of the OpenAPI document: v1
  *
@@ -10,7 +10,7 @@
 
 /// ScalewayK8sV1ClusterAutoscalerConfig : The autoscaler config for the cluster
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct ScalewayK8sV1ClusterAutoscalerConfig {
     /// Disable the cluster autoscaler
     #[serde(
@@ -47,7 +47,7 @@ pub struct ScalewayK8sV1ClusterAutoscalerConfig {
         rename = "expendable_pods_priority_cutoff",
         skip_serializing_if = "Option::is_none"
     )]
-    pub expendable_pods_priority_cutoff: Option<f32>,
+    pub expendable_pods_priority_cutoff: Option<i64>,
     /// How long a node should be unneeded before it is eligible for scale down
     #[serde(
         rename = "scale_down_unneeded_time",
@@ -59,13 +59,13 @@ pub struct ScalewayK8sV1ClusterAutoscalerConfig {
         rename = "scale_down_utilization_threshold",
         skip_serializing_if = "Option::is_none"
     )]
-    pub scale_down_utilization_threshold: Option<f32>,
+    pub scale_down_utilization_threshold: Option<i64>,
     /// Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node
     #[serde(
         rename = "max_graceful_termination_sec",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_graceful_termination_sec: Option<f32>,
+    pub max_graceful_termination_sec: Option<i64>,
 }
 
 impl ScalewayK8sV1ClusterAutoscalerConfig {
@@ -94,6 +94,12 @@ pub enum Estimator {
     #[serde(rename = "binpacking")]
     Binpacking,
 }
+
+impl Default for Estimator {
+    fn default() -> Estimator {
+        Self::UnknownEstimator
+    }
+}
 /// Type of node group expander to be used in scale up
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Expander {
@@ -109,4 +115,10 @@ pub enum Expander {
     Priority,
     #[serde(rename = "price")]
     Price,
+}
+
+impl Default for Expander {
+    fn default() -> Expander {
+        Self::UnknownExpander
+    }
 }

@@ -18,9 +18,12 @@ Name | Type | Description | Notes
 **settings** | Option<[**Vec<crate::models::ScalewayRdbV1InstanceSetting>**](scaleway.rdb.v1.InstanceSetting.md)> | Advanced settings of the instance | [optional]
 **backup_schedule** | Option<[**crate::models::ScalewayRdbV1InstanceBackupSchedule**](scaleway_rdb_v1_Instance_backup_schedule.md)> |  | [optional]
 **is_ha_cluster** | Option<**bool**> | Whether or not High-Availability is enabled | [optional]
-**read_replicas** | Option<[**Vec<crate::models::ScalewayRdbV1Endpoint>**](scaleway.rdb.v1.Endpoint.md)> | Read replicas of the instance | [optional]
 **node_type** | Option<**String**> | Node type of the instance | [optional]
 **init_settings** | Option<[**Vec<crate::models::ScalewayRdbV1InstanceSetting>**](scaleway.rdb.v1.InstanceSetting.md)> | List of engine settings to be set at database initialisation | [optional]
+**endpoints** | Option<[**Vec<crate::models::ScalewayRdbV1Endpoint>**](scaleway.rdb.v1.Endpoint.md)> | List of instance endpoints | [optional]
+**logs_policy** | Option<[**crate::models::UpdateInstanceRequestLogsPolicy**](UpdateInstance_request_logs_policy.md)> |  | [optional]
+**backup_same_region** | Option<**bool**> | Store logical backups in the same region as the database instance | [optional]
+**maintenances** | Option<[**Vec<crate::models::ScalewayRdbV1Maintenance>**](scaleway.rdb.v1.Maintenance.md)> | List of instance maintenances | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

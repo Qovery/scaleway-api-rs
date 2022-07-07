@@ -12,8 +12,12 @@ Method | HTTP request | Description
 [**get_instance_log**](DatabaseInstancesApi.md#get_instance_log) | **GET** /rdb/v1/regions/{region}/logs/{instance_log_id} | Get specific logs of a given instance
 [**get_instance_metrics**](DatabaseInstancesApi.md#get_instance_metrics) | **GET** /rdb/v1/regions/{region}/instances/{instance_id}/metrics | Get instance metrics
 [**list_instance_logs**](DatabaseInstancesApi.md#list_instance_logs) | **GET** /rdb/v1/regions/{region}/instances/{instance_id}/logs | List available logs of a given instance
+[**list_instance_logs_details**](DatabaseInstancesApi.md#list_instance_logs_details) | **GET** /rdb/v1/regions/{region}/instances/{instance_id}/logs-details | List remote instances logs details
 [**list_instances**](DatabaseInstancesApi.md#list_instances) | **GET** /rdb/v1/regions/{region}/instances | List instances
 [**prepare_instance_logs**](DatabaseInstancesApi.md#prepare_instance_logs) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/prepare-logs | Prepare logs of a given instance
+[**purge_instance_logs**](DatabaseInstancesApi.md#purge_instance_logs) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/purge-logs | Purge remote instances logs
+[**renew_instance_certificate**](DatabaseInstancesApi.md#renew_instance_certificate) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/renew-certificate | Renew the TLS certificate of an instance
+[**restart_instance**](DatabaseInstancesApi.md#restart_instance) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/restart | Restart an instance
 [**update_instance**](DatabaseInstancesApi.md#update_instance) | **PATCH** /rdb/v1/regions/{region}/instances/{instance_id} | Update an instance
 [**upgrade_instance**](DatabaseInstancesApi.md#upgrade_instance) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/upgrade | Upgrade an instance to an higher instance type
 
@@ -21,7 +25,7 @@ Method | HTTP request | Description
 
 ## clone_instance
 
-> crate::models::ScalewayRdbV1Instance clone_instance(region, instance_id, inline_object15)
+> crate::models::ScalewayRdbV1Instance clone_instance(region, instance_id, clone_instance_request)
 Clone an instance
 
 ### Parameters
@@ -31,7 +35,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want to clone | [required] |
-**inline_object15** | [**InlineObject15**](InlineObject15.md) |  | [required] |
+**clone_instance_request** | [**CloneInstanceRequest**](CloneInstanceRequest.md) |  | [required] |
 
 ### Return type
 
@@ -51,7 +55,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_instance
 
-> crate::models::ScalewayRdbV1Instance create_instance(region, inline_object10)
+> crate::models::ScalewayRdbV1Instance create_instance(region, create_instance_request)
 Create an instance
 
 ### Parameters
@@ -60,7 +64,7 @@ Create an instance
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object10** | [**InlineObject10**](InlineObject10.md) |  | [required] |
+**create_instance_request** | [**CreateInstanceRequest**](CreateInstanceRequest.md) |  | [required] |
 
 ### Return type
 
@@ -258,6 +262,35 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## list_instance_logs_details
+
+> crate::models::ScalewayRdbV1ListInstanceLogsDetailsResponse list_instance_logs_details(region, instance_id)
+List remote instances logs details
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**instance_id** | **String** | UUID of the instance you want logs of | [required] |
+
+### Return type
+
+[**crate::models::ScalewayRdbV1ListInstanceLogsDetailsResponse**](scaleway.rdb.v1.ListInstanceLogsDetailsResponse.md)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## list_instances
 
 > crate::models::ScalewayRdbV1ListInstancesResponse list_instances(region, tags, name, order_by, organization_id, project_id, page, page_size)
@@ -274,8 +307,8 @@ Name | Type | Description  | Required | Notes
 **order_by** | Option<**String**> | Criteria to use when ordering instance listing |  |[default to created_at_asc]
 **organization_id** | Option<**String**> | Please use `project_id` instead |  |
 **project_id** | Option<**String**> | Project ID to list the instance of |  |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**page** | Option<**i64**> | Page number |  |[default to 1]
+**page_size** | Option<**i64**> | Page size |  |[default to 20]
 
 ### Return type
 
@@ -295,7 +328,7 @@ Name | Type | Description  | Required | Notes
 
 ## prepare_instance_logs
 
-> crate::models::ScalewayRdbV1PrepareInstanceLogsResponse prepare_instance_logs(region, instance_id, inline_object17)
+> crate::models::ScalewayRdbV1PrepareInstanceLogsResponse prepare_instance_logs(region, instance_id, prepare_instance_logs_request)
 Prepare logs of a given instance
 
 Prepare your instance logs. Logs will be grouped on a minimum interval of a day.
@@ -307,7 +340,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want logs of | [required] |
-**inline_object17** | [**InlineObject17**](InlineObject17.md) |  | [required] |
+**prepare_instance_logs_request** | [**PrepareInstanceLogsRequest**](PrepareInstanceLogsRequest.md) |  | [required] |
 
 ### Return type
 
@@ -325,9 +358,99 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## purge_instance_logs
+
+> purge_instance_logs(region, instance_id, purge_instance_logs_request)
+Purge remote instances logs
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**instance_id** | **String** | UUID of the instance you want logs of | [required] |
+**purge_instance_logs_request** | [**PurgeInstanceLogsRequest**](PurgeInstanceLogsRequest.md) |  | [required] |
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## renew_instance_certificate
+
+> renew_instance_certificate(region, instance_id, body)
+Renew the TLS certificate of an instance
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**instance_id** | **String** | UUID of the instance you want logs of | [required] |
+**body** | **serde_json::Value** |  | [required] |
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## restart_instance
+
+> crate::models::ScalewayRdbV1Instance restart_instance(region, instance_id, body)
+Restart an instance
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**instance_id** | **String** | UUID of the instance you want to restart | [required] |
+**body** | **serde_json::Value** |  | [required] |
+
+### Return type
+
+[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## update_instance
 
-> crate::models::ScalewayRdbV1Instance update_instance(region, instance_id, inline_object11)
+> crate::models::ScalewayRdbV1Instance update_instance(region, instance_id, update_instance_request)
 Update an instance
 
 ### Parameters
@@ -337,7 +460,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance to update | [required] |
-**inline_object11** | [**InlineObject11**](InlineObject11.md) |  | [required] |
+**update_instance_request** | [**UpdateInstanceRequest**](UpdateInstanceRequest.md) |  | [required] |
 
 ### Return type
 
@@ -357,7 +480,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_instance
 
-> crate::models::ScalewayRdbV1Instance upgrade_instance(region, instance_id, inline_object23)
+> crate::models::ScalewayRdbV1Instance upgrade_instance(region, instance_id, upgrade_instance_request)
 Upgrade an instance to an higher instance type
 
 Upgrade your current `node_type` or enable high availability on your standalone database instance.
@@ -369,7 +492,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance you want to upgrade | [required] |
-**inline_object23** | [**InlineObject23**](InlineObject23.md) |  | [required] |
+**upgrade_instance_request** | [**UpgradeInstanceRequest**](UpgradeInstanceRequest.md) |  | [required] |
 
 ### Return type
 
