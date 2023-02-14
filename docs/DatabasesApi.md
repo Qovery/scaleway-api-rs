@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## create_database
 
-> crate::models::ScalewayRdbV1Database create_database(region, instance_id, create_database_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabase create_database(region, instance_id, create_database_request)
 Create a database in a given instance
 
 ### Parameters
@@ -26,7 +26,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Database**](scaleway.rdb.v1.Database.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabase**](scaleway.rdb.v1.Database.md)
 
 ### Authorization
 
@@ -72,7 +72,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_databases
 
-> crate::models::ScalewayRdbV1ListDatabasesResponse list_databases(region, instance_id, name, managed, owner, order_by, page, page_size)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListDatabasesResponse list_databases(region, instance_id, name, managed, owner, order_by, page, page_size)
 List all database in a given instance
 
 ### Parameters
@@ -86,12 +86,12 @@ Name | Type | Description  | Required | Notes
 **managed** | Option<**bool**> | Whether or not the database is managed |  |
 **owner** | Option<**String**> | User that owns this database |  |
 **order_by** | Option<**String**> | Criteria to use when ordering database listing |  |[default to name_asc]
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Page size |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Page size |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListDatabasesResponse**](scaleway.rdb.v1.ListDatabasesResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListDatabasesResponse**](scaleway.rdb.v1.ListDatabasesResponse.md)
 
 ### Authorization
 

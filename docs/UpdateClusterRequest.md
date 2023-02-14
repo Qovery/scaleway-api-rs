@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **tags** | Option<**Vec<String>**> | The new tags associated with the cluster | [optional]
 **autoscaler_config** | Option<[**crate::models::UpdateClusterRequestAutoscalerConfig**](UpdateCluster_request_autoscaler_config.md)> |  | [optional]
 **enable_dashboard** | Option<**bool**> | The new value of the Kubernetes Dashboard enablement | [optional]
-**ingress** | Option<**String**> | The new Ingress Controller for the cluster | [optional][default to Ingress_UnknownIngress]
+**ingress** | Option<**String**> | The new Ingress Controller for the cluster | [optional][default to UnknownIngress]
 **auto_upgrade** | Option<[**crate::models::UpdateClusterRequestAutoUpgrade**](UpdateCluster_request_auto_upgrade.md)> |  | [optional]
 **feature_gates** | Option<**Vec<String>**> | List of feature gates to enable | [optional]
 **admission_plugins** | Option<**Vec<String>**> | List of admission plugins to enable | [optional]

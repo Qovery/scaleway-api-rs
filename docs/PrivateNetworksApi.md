@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, create_private_network_request)
+> crate::models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork create_private_network(zone, create_private_network_request)
 Create a private network
 
 ### Parameters
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1PrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
+[**crate::models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
 
 ### Authorization
 
@@ -72,7 +72,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork get_private_network(zone, private_network_id)
+> crate::models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork get_private_network(zone, private_network_id)
 Get a private network
 
 ### Parameters
@@ -85,7 +85,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1PrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
+[**crate::models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
 
 ### Authorization
 
@@ -101,7 +101,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_private_networks
 
-> crate::models::ScalewayVpcV1ListPrivateNetworksResponse list_private_networks(zone, order_by, page, page_size, name, tags, organization_id, project_id)
+> crate::models::ScalewayPeriodVpcPeriodV1PeriodListPrivateNetworksResponse list_private_networks(zone, order_by, page, page_size, name, tags, organization_id, project_id, private_network_ids)
 List private networks
 
 ### Parameters
@@ -111,16 +111,17 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **order_by** | Option<**String**> | The sort order of the returned private networks |  |[default to created_at_asc]
-**page** | Option<**i64**> | The page number for the returned private networks |  |[default to 1]
-**page_size** | Option<**i64**> | The maximum number of private networks per page |  |[default to 20]
+**page** | Option<**i32**> | The page number for the returned private networks |  |[default to 1]
+**page_size** | Option<**i32**> | The maximum number of private networks per page |  |[default to 20]
 **name** | Option<**String**> | Filter private networks with names containing this string |  |
 **tags** | Option<[**Vec<String>**](String.md)> | Filter private networks with one or more matching tags |  |
 **organization_id** | Option<**String**> | The organization ID on which to filter the returned private networks |  |
 **project_id** | Option<**String**> | The project ID on which to filter the returned private networks |  |
+**private_network_ids** | Option<[**Vec<String>**](String.md)> | The PrivateNetwork IDs on which to filter the returned private networks (UUID format) |  |
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1ListPrivateNetworksResponse**](scaleway.vpc.v1.ListPrivateNetworksResponse.md)
+[**crate::models::ScalewayPeriodVpcPeriodV1PeriodListPrivateNetworksResponse**](scaleway.vpc.v1.ListPrivateNetworksResponse.md)
 
 ### Authorization
 
@@ -136,7 +137,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, update_private_network_request)
+> crate::models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork update_private_network(zone, private_network_id, update_private_network_request)
 Update private network
 
 ### Parameters
@@ -150,7 +151,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1PrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
+[**crate::models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
 
 ### Authorization
 

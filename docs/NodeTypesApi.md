@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## list_node_types
 
-> crate::models::ScalewayRdbV1ListNodeTypesResponse list_node_types(region, include_disabled_types, page, page_size)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListNodeTypesResponse list_node_types(region, include_disabled_types, page, page_size)
 List available node types
 
 ### Parameters
@@ -20,12 +20,12 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **include_disabled_types** | Option<**bool**> | Whether or not to include disabled types |  |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Page size |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Page size |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListNodeTypesResponse**](scaleway.rdb.v1.ListNodeTypesResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListNodeTypesResponse**](scaleway.rdb.v1.ListNodeTypesResponse.md)
 
 ### Authorization
 

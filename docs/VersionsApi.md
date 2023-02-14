@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 ## get_dns_zone_version_diff
 
-> crate::models::ScalewayDomainV2beta1GetDnsZoneVersionDiffResponse get_dns_zone_version_diff(dns_zone_version_id)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodGetDnsZoneVersionDiffResponse get_dns_zone_version_diff(dns_zone_version_id)
 Get DNS zone version diff
 
 Get all differences from a previous DNS zone version.
@@ -29,7 +29,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1GetDnsZoneVersionDiffResponse**](scaleway.domain.v2beta1.GetDNSZoneVersionDiffResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodGetDnsZoneVersionDiffResponse**](scaleway.domain.v2beta1.GetDNSZoneVersionDiffResponse.md)
 
 ### Authorization
 
@@ -45,7 +45,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_version
 
-> crate::models::ScalewayK8sV1Version get_version(region, version_name)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodVersion get_version(region, version_name)
 Get details about a specific version
 
 This method allows to get a specific Kubernetes version and the details about the version.
@@ -60,7 +60,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Version**](scaleway.k8s.v1.Version.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodVersion**](scaleway.k8s.v1.Version.md)
 
 ### Authorization
 
@@ -76,7 +76,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_version_records
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneVersionRecordsResponse list_dns_zone_version_records(dns_zone_version_id, page, page_size)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionRecordsResponse list_dns_zone_version_records(dns_zone_version_id, page, page_size)
 List DNS zone version records
 
 Get a list of records from a previous DNS zone version.
@@ -87,12 +87,12 @@ Get a list of records from a previous DNS zone version.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone_version_id** | **String** | (UUID format) | [required] |
-**page** | Option<**i64**> | The page number for the returned DNS zones versions records |  |[default to 1]
-**page_size** | Option<**i64**> | The maximum number of DNS zones versions records per page |  |[default to 20]
+**page** | Option<**i32**> | The page number for the returned DNS zones versions records |  |[default to 1]
+**page_size** | Option<**i32**> | The maximum number of DNS zones versions records per page |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ListDnsZoneVersionRecordsResponse**](scaleway.domain.v2beta1.ListDNSZoneVersionRecordsResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionRecordsResponse**](scaleway.domain.v2beta1.ListDNSZoneVersionRecordsResponse.md)
 
 ### Authorization
 
@@ -108,7 +108,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_versions
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneVersionsResponse list_dns_zone_versions(dns_zone, page, page_size)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionsResponse list_dns_zone_versions(dns_zone, page, page_size)
 List DNS zone versions
 
 Get a list of DNS zone versions.<br/> The maximum version count is 100.<br/> If the count reaches this limit, the oldest version will be deleted after each new modification. 
@@ -119,12 +119,12 @@ Get a list of DNS zone versions.<br/> The maximum version count is 100.<br/> If 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** |  | [required] |
-**page** | Option<**i64**> | The page number for the returned DNS zones versions |  |[default to 1]
-**page_size** | Option<**i64**> | The maximum number of DNS zones versions per page |  |[default to 20]
+**page** | Option<**i32**> | The page number for the returned DNS zones versions |  |[default to 1]
+**page_size** | Option<**i32**> | The maximum number of DNS zones versions per page |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ListDnsZoneVersionsResponse**](scaleway.domain.v2beta1.ListDNSZoneVersionsResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionsResponse**](scaleway.domain.v2beta1.ListDNSZoneVersionsResponse.md)
 
 ### Authorization
 
@@ -140,7 +140,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_versions
 
-> crate::models::ScalewayK8sV1ListVersionsResponse list_versions(region)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodListVersionsResponse list_versions(region)
 List all available versions
 
 This method allows to list all available versions for the creation of a new Kubernetes cluster.
@@ -154,7 +154,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1ListVersionsResponse**](scaleway.k8s.v1.ListVersionsResponse.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodListVersionsResponse**](scaleway.k8s.v1.ListVersionsResponse.md)
 
 ### Authorization
 

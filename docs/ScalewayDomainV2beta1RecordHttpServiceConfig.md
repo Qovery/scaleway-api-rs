@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **must_contain** | Option<**String**> |  | [optional]
 **url** | Option<**String**> |  | [optional]
 **user_agent** | Option<**String**> |  | [optional]
-**strategy** | Option<[**crate::models::ScalewayDomainV2beta1RecordHttpServiceConfigStrategy**](scaleway.domain.v2beta1.Record.HTTPServiceConfig.Strategy.md)> |  | [optional]
+**strategy** | Option<[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodRecordPeriodHttpServiceConfigPeriodStrategy**](scaleway.domain.v2beta1.Record.HTTPServiceConfig.Strategy.md)> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## get_option
 
-> crate::models::ScalewayBaremetalV1Option get_option(zone, option_id)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodOption get_option(zone, option_id)
 Get option
 
 Return specific option for the given ID.
@@ -28,7 +28,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Option**](scaleway.baremetal.v1.Option.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodOption**](scaleway.baremetal.v1.Option.md)
 
 ### Authorization
 
@@ -44,7 +44,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_options
 
-> crate::models::ScalewayBaremetalV1ListOptionsResponse list_options(zone, page, page_size, offer_id, name)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodListOptionsResponse list_options(zone, page, page_size, offer_id, name)
 List options
 
 List all options matching with filters.
@@ -55,14 +55,14 @@ List all options matching with filters.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Number of options per page |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Number of options per page |  |[default to 20]
 **offer_id** | Option<**String**> | Filter options by offer_id |  |
 **name** | Option<**String**> | Filter options by name |  |
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1ListOptionsResponse**](scaleway.baremetal.v1.ListOptionsResponse.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodListOptionsResponse**](scaleway.baremetal.v1.ListOptionsResponse.md)
 
 ### Authorization
 
@@ -78,7 +78,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_settings
 
-> crate::models::ScalewayBaremetalV1ListSettingsResponse list_settings(zone, project_id, page, page_size, order_by)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodListSettingsResponse list_settings(zone, project_id, page, page_size, order_by)
 List all settings
 
 Return all settings for a project ID.
@@ -90,13 +90,13 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **project_id** | Option<**String**> | ID of the project (UUID format) | [required] |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Set the maximum list size |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Set the maximum list size |  |[default to 20]
 **order_by** | Option<**String**> | Order the response |  |[default to created_at_asc]
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1ListSettingsResponse**](scaleway.baremetal.v1.ListSettingsResponse.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodListSettingsResponse**](scaleway.baremetal.v1.ListSettingsResponse.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_setting
 
-> crate::models::ScalewayBaremetalV1Setting update_setting(zone, setting_id, update_setting_request)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodSetting update_setting(zone, setting_id, update_setting_request)
 Update setting
 
 Update a setting for a project ID (enable or disable).
@@ -128,7 +128,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Setting**](scaleway.baremetal.v1.Setting.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodSetting**](scaleway.baremetal.v1.Setting.md)
 
 ### Authorization
 
