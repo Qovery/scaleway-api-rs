@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## list_database_engines
 
-> crate::models::ScalewayRdbV1ListDatabaseEnginesResponse list_database_engines(region, page, page_size)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseEnginesResponse list_database_engines(region, name, version, page, page_size)
 List available database engines
 
 ### Parameters
@@ -19,12 +19,14 @@ List available database engines
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Page size |  |[default to 20]
+**name** | Option<**String**> | Name of the Database Engine |  |
+**version** | Option<**String**> | Version of the Database Engine |  |
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Page size |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListDatabaseEnginesResponse**](scaleway.rdb.v1.ListDatabaseEnginesResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseEnginesResponse**](scaleway.rdb.v1.ListDatabaseEnginesResponse.md)
 
 ### Authorization
 

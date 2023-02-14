@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## create_endpoint
 
-> crate::models::ScalewayRdbV1Endpoint create_endpoint(region, instance_id, create_endpoint_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodEndpoint create_endpoint(region, instance_id, create_endpoint_request)
 Create a new instance endpoint
 
 ### Parameters
@@ -26,7 +26,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Endpoint**](scaleway.rdb.v1.Endpoint.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodEndpoint**](scaleway.rdb.v1.Endpoint.md)
 
 ### Authorization
 
@@ -51,7 +51,7 @@ Delete an instance endpoint
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**endpoint_id** | **String** | UUID of the endpoint you want to delete | [required] |
+**endpoint_id** | **String** | This endpoint can also be used to delete a read replica endpoint. | [required] |
 
 ### Return type
 
@@ -71,7 +71,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_endpoint
 
-> crate::models::ScalewayRdbV1Endpoint get_endpoint(region, endpoint_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodEndpoint get_endpoint(region, endpoint_id)
 Get an instance endpoint
 
 ### Parameters
@@ -84,7 +84,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Endpoint**](scaleway.rdb.v1.Endpoint.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodEndpoint**](scaleway.rdb.v1.Endpoint.md)
 
 ### Authorization
 

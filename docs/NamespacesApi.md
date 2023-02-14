@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## create_namespace
 
-> crate::models::ScalewayRegistryV1Namespace create_namespace(region, create_namespace_request)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace create_namespace(region, create_namespace_request)
 Create a new namespace
 
 ### Parameters
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
@@ -43,7 +43,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_namespace
 
-> crate::models::ScalewayRegistryV1Namespace delete_namespace(region, namespace_id)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace delete_namespace(region, namespace_id)
 Delete an existing namespace
 
 Delete the namespace associated with the given id.
@@ -58,7 +58,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
@@ -74,7 +74,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_namespace
 
-> crate::models::ScalewayRegistryV1Namespace get_namespace(region, namespace_id)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace get_namespace(region, namespace_id)
 Get a namespace
 
 Get the namespace associated with the given id.
@@ -89,7 +89,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
@@ -105,7 +105,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_namespaces
 
-> crate::models::ScalewayRegistryV1ListNamespacesResponse list_namespaces(region, page, page_size, order_by, organization_id, project_id, name)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodListNamespacesResponse list_namespaces(region, page, page_size, order_by, organization_id, project_id, name)
 List all your namespaces
 
 ### Parameters
@@ -114,8 +114,8 @@ List all your namespaces
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**i64**> | A positive integer to choose the page to display |  |[default to 1]
-**page_size** | Option<**i64**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
+**page** | Option<**i32**> | A positive integer to choose the page to display |  |[default to 1]
+**page_size** | Option<**i32**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
 **order_by** | Option<**String**> | Field by which to order the display of Images |  |[default to created_at_asc]
 **organization_id** | Option<**String**> | Filter by Organization ID |  |
 **project_id** | Option<**String**> | Filter by Project ID |  |
@@ -123,7 +123,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1ListNamespacesResponse**](scaleway.registry.v1.ListNamespacesResponse.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodListNamespacesResponse**](scaleway.registry.v1.ListNamespacesResponse.md)
 
 ### Authorization
 
@@ -139,7 +139,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_namespace
 
-> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, update_namespace_request)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace update_namespace(region, namespace_id, update_namespace_request)
 Update an existing namespace
 
 Update the namespace associated with the given id.
@@ -155,7 +155,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 

@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**frequency** | Option<**i64**> |  | [optional]
-**retention** | Option<**i64**> |  | [optional]
+**frequency** | Option<**i32**> |  | [optional]
+**retention** | Option<**i32**> |  | [optional]
 **disabled** | Option<**bool**> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

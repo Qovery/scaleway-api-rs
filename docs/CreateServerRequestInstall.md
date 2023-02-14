@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**os_id** | **String** | ID of the OS to install on the server | 
-**hostname** | **String** | Hostname of the server | 
-**ssh_key_ids** | **Vec<String>** | SSH key IDs authorized on the server | 
+**os_id** | Option<**String**> | ID of the OS to install on the server | [optional]
+**hostname** | Option<**String**> | Hostname of the server | [optional]
+**ssh_key_ids** | Option<**Vec<String>**> | SSH key IDs authorized on the server | [optional]
 **user** | Option<**String**> | User used for the installation | [optional]
 **password** | Option<**String**> | Password used for the installation | [optional]
 **service_user** | Option<**String**> | User used for the service to install | [optional]

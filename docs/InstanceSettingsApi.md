@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## add_instance_settings
 
-> crate::models::ScalewayRdbV1AddInstanceSettingsResponse add_instance_settings(region, instance_id, add_instance_settings_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodAddInstanceSettingsResponse add_instance_settings(region, instance_id, add_instance_settings_request)
 Add an instance setting
 
 ### Parameters
@@ -26,7 +26,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1AddInstanceSettingsResponse**](scaleway.rdb.v1.AddInstanceSettingsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodAddInstanceSettingsResponse**](scaleway.rdb.v1.AddInstanceSettingsResponse.md)
 
 ### Authorization
 
@@ -42,7 +42,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_instance_settings
 
-> crate::models::ScalewayRdbV1DeleteInstanceSettingsResponse delete_instance_settings(region, instance_id, delete_instance_settings_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDeleteInstanceSettingsResponse delete_instance_settings(region, instance_id, delete_instance_settings_request)
 Delete an instance setting
 
 ### Parameters
@@ -56,7 +56,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DeleteInstanceSettingsResponse**](scaleway.rdb.v1.DeleteInstanceSettingsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDeleteInstanceSettingsResponse**](scaleway.rdb.v1.DeleteInstanceSettingsResponse.md)
 
 ### Authorization
 
@@ -72,7 +72,7 @@ Name | Type | Description  | Required | Notes
 
 ## set_instance_settings
 
-> crate::models::ScalewayRdbV1SetInstanceSettingsResponse set_instance_settings(region, instance_id, set_instance_settings_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodSetInstanceSettingsResponse set_instance_settings(region, instance_id, set_instance_settings_request)
 Set a given instance setting
 
 ### Parameters
@@ -86,7 +86,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1SetInstanceSettingsResponse**](scaleway.rdb.v1.SetInstanceSettingsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodSetInstanceSettingsResponse**](scaleway.rdb.v1.SetInstanceSettingsResponse.md)
 
 ### Authorization
 

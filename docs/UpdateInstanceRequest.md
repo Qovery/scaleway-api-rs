@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**backup_schedule_frequency** | Option<**i64**> | In hours | [optional]
-**backup_schedule_retention** | Option<**i64**> | In days | [optional]
+**backup_schedule_frequency** | Option<**i32**> | In hours | [optional]
+**backup_schedule_retention** | Option<**i32**> | In days | [optional]
 **is_backup_schedule_disabled** | Option<**bool**> | Whether or not the backup schedule is disabled | [optional]
 **name** | Option<**String**> | Name of the instance | [optional]
 **tags** | Option<**Vec<String>**> | Tags of a given instance | [optional]

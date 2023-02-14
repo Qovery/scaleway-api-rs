@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## reboot_server
 
-> crate::models::ScalewayBaremetalV1Server reboot_server(zone, server_id, reboot_server_request)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodServer reboot_server(zone, server_id, reboot_server_request)
 Reboot an elastic metal server
 
 Reboot the server associated with the given ID, use boot param to reboot in rescue.
@@ -28,7 +28,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Server**](scaleway.baremetal.v1.Server.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodServer**](scaleway.baremetal.v1.Server.md)
 
 ### Authorization
 
@@ -44,7 +44,7 @@ Name | Type | Description  | Required | Notes
 
 ## start_server
 
-> crate::models::ScalewayBaremetalV1Server start_server(zone, server_id, reboot_server_request)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodServer start_server(zone, server_id, reboot_server_request)
 Start an elastic metal server
 
 Start the server associated with the given ID.
@@ -60,7 +60,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Server**](scaleway.baremetal.v1.Server.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodServer**](scaleway.baremetal.v1.Server.md)
 
 ### Authorization
 
@@ -76,7 +76,7 @@ Name | Type | Description  | Required | Notes
 
 ## stop_server
 
-> crate::models::ScalewayBaremetalV1Server stop_server(zone, server_id, body)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodServer stop_server(zone, server_id, body)
 Stop an elastic metal server
 
 Stop the server associated with the given ID.
@@ -92,7 +92,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Server**](scaleway.baremetal.v1.Server.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodServer**](scaleway.baremetal.v1.Server.md)
 
 ### Authorization
 

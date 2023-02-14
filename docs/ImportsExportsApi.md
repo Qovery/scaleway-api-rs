@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## export_raw_dns_zone
 
-> crate::models::ScalewayStdFile export_raw_dns_zone(dns_zone, format)
+> crate::models::ScalewayPeriodStdPeriodFile export_raw_dns_zone(dns_zone, format)
 Export raw DNS zone
 
 Get a DNS zone in a given format with default NS.
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayStdFile**](scaleway.std.File.md)
+[**crate::models::ScalewayPeriodStdPeriodFile**](scaleway.std.File.md)
 
 ### Authorization
 
@@ -43,7 +43,7 @@ Name | Type | Description  | Required | Notes
 
 ## import_provider_dns_zone
 
-> crate::models::ScalewayDomainV2beta1ImportProviderDnsZoneResponse import_provider_dns_zone(dns_zone, import_provider_dns_zone_request)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodImportProviderDnsZoneResponse import_provider_dns_zone(dns_zone, import_provider_dns_zone_request)
 Import provider DNS zone
 
 Import and replace records from a given provider format with default NS.
@@ -58,7 +58,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ImportProviderDnsZoneResponse**](scaleway.domain.v2beta1.ImportProviderDNSZoneResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodImportProviderDnsZoneResponse**](scaleway.domain.v2beta1.ImportProviderDNSZoneResponse.md)
 
 ### Authorization
 
@@ -74,7 +74,7 @@ Name | Type | Description  | Required | Notes
 
 ## import_raw_dns_zone
 
-> crate::models::ScalewayDomainV2beta1ImportRawDnsZoneResponse import_raw_dns_zone(dns_zone, import_raw_dns_zone_request)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodImportRawDnsZoneResponse import_raw_dns_zone(dns_zone, import_raw_dns_zone_request)
 Import raw DNS zone
 
 Import and replace records from a given provider format with default NS.
@@ -89,7 +89,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ImportRawDnsZoneResponse**](scaleway.domain.v2beta1.ImportRawDNSZoneResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodImportRawDnsZoneResponse**](scaleway.domain.v2beta1.ImportRawDNSZoneResponse.md)
 
 ### Authorization
 

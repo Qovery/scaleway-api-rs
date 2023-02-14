@@ -19,13 +19,13 @@ Method | HTTP request | Description
 [**renew_instance_certificate**](DatabaseInstancesApi.md#renew_instance_certificate) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/renew-certificate | Renew the TLS certificate of an instance
 [**restart_instance**](DatabaseInstancesApi.md#restart_instance) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/restart | Restart an instance
 [**update_instance**](DatabaseInstancesApi.md#update_instance) | **PATCH** /rdb/v1/regions/{region}/instances/{instance_id} | Update an instance
-[**upgrade_instance**](DatabaseInstancesApi.md#upgrade_instance) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/upgrade | Upgrade an instance to an higher instance type
+[**upgrade_instance**](DatabaseInstancesApi.md#upgrade_instance) | **POST** /rdb/v1/regions/{region}/instances/{instance_id}/upgrade | Upgrade an instance
 
 
 
 ## clone_instance
 
-> crate::models::ScalewayRdbV1Instance clone_instance(region, instance_id, clone_instance_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance clone_instance(region, instance_id, clone_instance_request)
 Clone an instance
 
 ### Parameters
@@ -39,7 +39,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 
@@ -55,7 +55,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_instance
 
-> crate::models::ScalewayRdbV1Instance create_instance(region, create_instance_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance create_instance(region, create_instance_request)
 Create an instance
 
 ### Parameters
@@ -68,7 +68,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 
@@ -84,7 +84,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_instance
 
-> crate::models::ScalewayRdbV1Instance delete_instance(region, instance_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance delete_instance(region, instance_id)
 Delete an instance
 
 ### Parameters
@@ -97,7 +97,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 
@@ -113,7 +113,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_instance
 
-> crate::models::ScalewayRdbV1Instance get_instance(region, instance_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance get_instance(region, instance_id)
 Get an instance
 
 ### Parameters
@@ -126,7 +126,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 
@@ -142,7 +142,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_instance_certificate
 
-> crate::models::ScalewayStdFile get_instance_certificate(region, instance_id)
+> crate::models::ScalewayPeriodStdPeriodFile get_instance_certificate(region, instance_id)
 Get the TLS certificate of an instance
 
 ### Parameters
@@ -155,7 +155,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayStdFile**](scaleway.std.File.md)
+[**crate::models::ScalewayPeriodStdPeriodFile**](scaleway.std.File.md)
 
 ### Authorization
 
@@ -171,7 +171,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_instance_log
 
-> crate::models::ScalewayRdbV1InstanceLog get_instance_log(region, instance_log_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstanceLog get_instance_log(region, instance_log_id)
 Get specific logs of a given instance
 
 ### Parameters
@@ -184,7 +184,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1InstanceLog**](scaleway.rdb.v1.InstanceLog.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstanceLog**](scaleway.rdb.v1.InstanceLog.md)
 
 ### Authorization
 
@@ -200,7 +200,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_instance_metrics
 
-> crate::models::ScalewayRdbV1InstanceMetrics get_instance_metrics(region, instance_id, start_date, end_date, metric_name)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstanceMetrics get_instance_metrics(region, instance_id, start_date, end_date, metric_name)
 Get instance metrics
 
 Get database instance metrics.
@@ -212,13 +212,13 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance | [required] |
-**start_date** | Option<**String**> | Start date to gather metrics from |  |
-**end_date** | Option<**String**> | End date to gather metrics from |  |
+**start_date** | Option<**String**> | Start date to gather metrics from (RFC 3339 format) |  |
+**end_date** | Option<**String**> | End date to gather metrics from (RFC 3339 format) |  |
 **metric_name** | Option<**String**> | Name of the metric to gather |  |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1InstanceMetrics**](scaleway.rdb.v1.InstanceMetrics.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstanceMetrics**](scaleway.rdb.v1.InstanceMetrics.md)
 
 ### Authorization
 
@@ -234,7 +234,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_instance_logs
 
-> crate::models::ScalewayRdbV1ListInstanceLogsResponse list_instance_logs(region, instance_id, order_by)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListInstanceLogsResponse list_instance_logs(region, instance_id, order_by)
 List available logs of a given instance
 
 ### Parameters
@@ -248,7 +248,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListInstanceLogsResponse**](scaleway.rdb.v1.ListInstanceLogsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListInstanceLogsResponse**](scaleway.rdb.v1.ListInstanceLogsResponse.md)
 
 ### Authorization
 
@@ -264,7 +264,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_instance_logs_details
 
-> crate::models::ScalewayRdbV1ListInstanceLogsDetailsResponse list_instance_logs_details(region, instance_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListInstanceLogsDetailsResponse list_instance_logs_details(region, instance_id)
 List remote instances logs details
 
 ### Parameters
@@ -277,7 +277,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListInstanceLogsDetailsResponse**](scaleway.rdb.v1.ListInstanceLogsDetailsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListInstanceLogsDetailsResponse**](scaleway.rdb.v1.ListInstanceLogsDetailsResponse.md)
 
 ### Authorization
 
@@ -293,7 +293,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_instances
 
-> crate::models::ScalewayRdbV1ListInstancesResponse list_instances(region, tags, name, order_by, organization_id, project_id, page, page_size)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListInstancesResponse list_instances(region, tags, name, order_by, organization_id, project_id, page, page_size)
 List instances
 
 ### Parameters
@@ -307,12 +307,12 @@ Name | Type | Description  | Required | Notes
 **order_by** | Option<**String**> | Criteria to use when ordering instance listing |  |[default to created_at_asc]
 **organization_id** | Option<**String**> | Please use `project_id` instead |  |
 **project_id** | Option<**String**> | Project ID to list the instance of |  |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Page size |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Page size |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListInstancesResponse**](scaleway.rdb.v1.ListInstancesResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListInstancesResponse**](scaleway.rdb.v1.ListInstancesResponse.md)
 
 ### Authorization
 
@@ -328,7 +328,7 @@ Name | Type | Description  | Required | Notes
 
 ## prepare_instance_logs
 
-> crate::models::ScalewayRdbV1PrepareInstanceLogsResponse prepare_instance_logs(region, instance_id, prepare_instance_logs_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodPrepareInstanceLogsResponse prepare_instance_logs(region, instance_id, prepare_instance_logs_request)
 Prepare logs of a given instance
 
 Prepare your instance logs. Logs will be grouped on a minimum interval of a day.
@@ -344,7 +344,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1PrepareInstanceLogsResponse**](scaleway.rdb.v1.PrepareInstanceLogsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodPrepareInstanceLogsResponse**](scaleway.rdb.v1.PrepareInstanceLogsResponse.md)
 
 ### Authorization
 
@@ -420,7 +420,7 @@ Name | Type | Description  | Required | Notes
 
 ## restart_instance
 
-> crate::models::ScalewayRdbV1Instance restart_instance(region, instance_id, body)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance restart_instance(region, instance_id, body)
 Restart an instance
 
 ### Parameters
@@ -434,7 +434,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 
@@ -450,7 +450,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_instance
 
-> crate::models::ScalewayRdbV1Instance update_instance(region, instance_id, update_instance_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance update_instance(region, instance_id, update_instance_request)
 Update an instance
 
 ### Parameters
@@ -464,7 +464,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 
@@ -480,10 +480,10 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_instance
 
-> crate::models::ScalewayRdbV1Instance upgrade_instance(region, instance_id, upgrade_instance_request)
-Upgrade an instance to an higher instance type
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance upgrade_instance(region, instance_id, upgrade_instance_request)
+Upgrade an instance
 
-Upgrade your current `node_type` or enable high availability on your standalone database instance.
+Upgrade your current instance specifications like node type, high availability, volume, or db engine version.
 
 ### Parameters
 
@@ -496,7 +496,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Instance**](scaleway.rdb.v1.Instance.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodInstance**](scaleway.rdb.v1.Instance.md)
 
 ### Authorization
 

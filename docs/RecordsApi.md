@@ -44,7 +44,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneNameserversResponse list_dns_zone_nameservers(dns_zone, project_id)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneNameserversResponse list_dns_zone_nameservers(dns_zone, project_id)
 List DNS zone nameservers
 
 Returns a list of Nameservers and their optional glue records for a DNS zone.
@@ -59,7 +59,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ListDnsZoneNameserversResponse**](scaleway.domain.v2beta1.ListDNSZoneNameserversResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneNameserversResponse**](scaleway.domain.v2beta1.ListDNSZoneNameserversResponse.md)
 
 ### Authorization
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneRecordsResponse list_dns_zone_records(dns_zone, project_id, order_by, page, page_size, name, _type, id)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneRecordsResponse list_dns_zone_records(dns_zone, project_id, order_by, page, page_size, name, r#type, id)
 List DNS zone records
 
 Returns a list of DNS records of a DNS zone with default NS. You can filter the records by type and name. 
@@ -88,15 +88,15 @@ Name | Type | Description  | Required | Notes
 **dns_zone** | **String** | The DNS zone on which to filter the returned DNS zone records | [required] |
 **project_id** | Option<**String**> | The project ID on which to filter the returned DNS zone records |  |
 **order_by** | Option<**String**> | The sort order of the returned DNS zone records |  |[default to name_asc]
-**page** | Option<**i64**> | The page number for the returned DNS zone records |  |[default to 1]
-**page_size** | Option<**i64**> | The maximum number of DNS zone records per page |  |[default to 20]
+**page** | Option<**i32**> | The page number for the returned DNS zone records |  |[default to 1]
+**page_size** | Option<**i32**> | The maximum number of DNS zone records per page |  |[default to 20]
 **name** | Option<**String**> | The name on which to filter the returned DNS zone records |  |
-**_type** | Option<**String**> | The record type on which to filter the returned DNS zone records |  |[default to unknown]
+**r#type** | Option<**String**> | The record type on which to filter the returned DNS zone records |  |[default to unknown]
 **id** | Option<**String**> | The record ID on which to filter the returned DNS zone records |  |
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ListDnsZoneRecordsResponse**](scaleway.domain.v2beta1.ListDNSZoneRecordsResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneRecordsResponse**](scaleway.domain.v2beta1.ListDNSZoneRecordsResponse.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, update_dns_zone_nameservers_request)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, update_dns_zone_nameservers_request)
 Update DNS zone nameservers
 
 Update DNS zone nameservers and set optional glue records.
@@ -127,7 +127,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse**](scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneNameserversResponse**](scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse.md)
 
 ### Authorization
 
@@ -143,7 +143,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, update_dns_zone_records_request)
+> crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, update_dns_zone_records_request)
 Update DNS zone records
 
 Only available with default NS.<br/> Send a list of actions and records.  Action can be:  - add:   - Add new record   - Can be more specific and add a new IP to an existing A record for example  - set:   - Edit a record   - Can be more specific and edit an IP from an existing A record for example  - delete:   - Delete a record   - Can be more specific and delete an IP from an existing A record for example  - clear:   - Delete all records from a DNS zone  All edits will be versioned. 
@@ -158,7 +158,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse**](scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse.md)
+[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneRecordsResponse**](scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse.md)
 
 ### Authorization
 

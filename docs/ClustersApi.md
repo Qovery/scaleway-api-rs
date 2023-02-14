@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 ## create_cluster
 
-> crate::models::ScalewayK8sV1Cluster create_cluster(region, create_cluster_request)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster create_cluster(region, create_cluster_request)
 Create a new cluster
 
 This method allows to create a new Kubernetes cluster on an account.
@@ -33,7 +33,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -49,7 +49,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_cluster
 
-> crate::models::ScalewayK8sV1Cluster delete_cluster(region, cluster_id, with_additional_resources)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster delete_cluster(region, cluster_id, with_additional_resources)
 Delete a cluster
 
 This method allows to delete a specific cluster and all its associated pools and nodes. Note that this method will not delete any Load Balancers or Block Volumes that are associated with the cluster.
@@ -65,7 +65,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -81,7 +81,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_cluster
 
-> crate::models::ScalewayK8sV1Cluster get_cluster(region, cluster_id)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster get_cluster(region, cluster_id)
 Get a cluster
 
 This method allows to get details about a specific Kubernetes cluster.
@@ -96,7 +96,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_cluster_kube_config
 
-> crate::models::ScalewayStdFile get_cluster_kube_config(region, cluster_id)
+> crate::models::ScalewayPeriodStdPeriodFile get_cluster_kube_config(region, cluster_id)
 Download the kubeconfig for a cluster
 
 This method allows to download the Kubernetes cluster config file (AKA kubeconfig) for a specific cluster in order to use it with, for instance, `kubectl`. Tips: add `?dl=1` at the end of the URL to directly get the base64 decoded kubeconfig. If not, the kubeconfig will be base64 encoded. 
@@ -127,7 +127,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayStdFile**](scaleway.std.File.md)
+[**crate::models::ScalewayPeriodStdPeriodFile**](scaleway.std.File.md)
 
 ### Authorization
 
@@ -143,7 +143,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_cluster_available_versions
 
-> crate::models::ScalewayK8sV1ListClusterAvailableVersionsResponse list_cluster_available_versions(region, cluster_id)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableVersionsResponse list_cluster_available_versions(region, cluster_id)
 List available versions for a cluster
 
 This method allows to list the versions that a specific Kubernetes cluster is allowed to upgrade to. Note that it will be every patch version greater than the actual one as well a one minor version ahead of the actual one. Upgrades skipping a minor version will not work.
@@ -158,7 +158,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1ListClusterAvailableVersionsResponse**](scaleway.k8s.v1.ListClusterAvailableVersionsResponse.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableVersionsResponse**](scaleway.k8s.v1.ListClusterAvailableVersionsResponse.md)
 
 ### Authorization
 
@@ -174,7 +174,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_clusters
 
-> crate::models::ScalewayK8sV1ListClustersResponse list_clusters(region, organization_id, project_id, order_by, page, page_size, name, status, _type)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodListClustersResponse list_clusters(region, organization_id, project_id, order_by, page, page_size, name, status, r#type)
 List all the clusters
 
 This method allows to list all the existing Kubernetes clusters in an account.
@@ -188,15 +188,15 @@ Name | Type | Description  | Required | Notes
 **organization_id** | Option<**String**> | The organization ID on which to filter the returned clusters |  |
 **project_id** | Option<**String**> | The project ID on which to filter the returned clusters |  |
 **order_by** | Option<**String**> | The sort order of the returned clusters |  |[default to created_at_asc]
-**page** | Option<**i64**> | The page number for the returned clusters |  |[default to 1]
-**page_size** | Option<**i64**> | The maximum number of clusters per page |  |[default to 20]
+**page** | Option<**i32**> | The page number for the returned clusters |  |[default to 1]
+**page_size** | Option<**i32**> | The maximum number of clusters per page |  |[default to 20]
 **name** | Option<**String**> | The name on which to filter the returned clusters |  |
 **status** | Option<**String**> | The status on which to filter the returned clusters |  |[default to unknown]
-**_type** | Option<**String**> | The type on which to filter the returned clusters |  |
+**r#type** | Option<**String**> | The type on which to filter the returned clusters |  |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1ListClustersResponse**](scaleway.k8s.v1.ListClustersResponse.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodListClustersResponse**](scaleway.k8s.v1.ListClustersResponse.md)
 
 ### Authorization
 
@@ -244,7 +244,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_cluster
 
-> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, update_cluster_request)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster update_cluster(region, cluster_id, update_cluster_request)
 Update a cluster
 
 This method allows to update a specific Kubernetes cluster. Note that this method is not made to upgrade a Kubernetes cluster.
@@ -260,7 +260,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -276,7 +276,7 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_cluster
 
-> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, upgrade_cluster_request)
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster upgrade_cluster(region, cluster_id, upgrade_cluster_request)
 Upgrade a cluster
 
 This method allows to upgrade a specific Kubernetes cluster and/or its associated pools to a specific and supported Kubernetes version.
@@ -292,7 +292,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 

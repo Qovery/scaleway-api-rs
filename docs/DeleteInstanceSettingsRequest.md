@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**setting_names** | Option<**Vec<String>**> | Settings names to delete | [optional]
+**setting_names** | **Vec<String>** | Settings names to delete | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

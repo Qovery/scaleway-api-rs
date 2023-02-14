@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 ## create_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup create_database_backup(region, create_database_backup_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup create_database_backup(region, create_database_backup_request)
 Create a database backup
 
 ### Parameters
@@ -29,7 +29,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -45,7 +45,7 @@ Name | Type | Description  | Required | Notes
 
 ## delete_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup delete_database_backup(region, database_backup_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup delete_database_backup(region, database_backup_id)
 Delete a database backup
 
 ### Parameters
@@ -58,7 +58,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -74,7 +74,7 @@ Name | Type | Description  | Required | Notes
 
 ## export_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup export_database_backup(region, database_backup_id, body)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup export_database_backup(region, database_backup_id, body)
 Export a database backup
 
 ### Parameters
@@ -88,7 +88,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -104,7 +104,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup get_database_backup(region, database_backup_id)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup get_database_backup(region, database_backup_id)
 Get a database backup
 
 ### Parameters
@@ -117,7 +117,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -133,7 +133,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_database_backups
 
-> crate::models::ScalewayRdbV1ListDatabaseBackupsResponse list_database_backups(region, name, order_by, instance_id, organization_id, project_id, page, page_size)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse list_database_backups(region, name, order_by, instance_id, organization_id, project_id, page, page_size)
 List database backups
 
 ### Parameters
@@ -147,12 +147,12 @@ Name | Type | Description  | Required | Notes
 **instance_id** | Option<**String**> | UUID of the instance |  |
 **organization_id** | Option<**String**> | Organization ID the database backups belongs to |  |
 **project_id** | Option<**String**> | Project ID the database backups belongs to |  |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Page size |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Page size |  |[default to 20]
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListDatabaseBackupsResponse**](scaleway.rdb.v1.ListDatabaseBackupsResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse**](scaleway.rdb.v1.ListDatabaseBackupsResponse.md)
 
 ### Authorization
 
@@ -168,7 +168,7 @@ Name | Type | Description  | Required | Notes
 
 ## restore_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup restore_database_backup(region, database_backup_id, restore_database_backup_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup restore_database_backup(region, database_backup_id, restore_database_backup_request)
 Restore a database backup
 
 ### Parameters
@@ -182,7 +182,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -198,7 +198,7 @@ Name | Type | Description  | Required | Notes
 
 ## update_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup update_database_backup(region, database_backup_id, update_database_backup_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup update_database_backup(region, database_backup_id, update_database_backup_request)
 Update a database backup
 
 ### Parameters
@@ -212,7 +212,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 

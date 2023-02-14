@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **content** | Option<**String**> |  | [optional]
 **project_id** | Option<**String**> |  | [optional]
-**format** | Option<[**crate::models::ScalewayDomainV2beta1RawFormat**](scaleway.domain.v2beta1.RawFormat.md)> |  | [optional]
+**format** | Option<[**crate::models::ScalewayPeriodDomainPeriodV2beta1PeriodRawFormat**](scaleway.domain.v2beta1.RawFormat.md)> |  | [optional]
 **bind_source** | Option<[**crate::models::ImportRawDnsZoneRequestBindSource**](ImportRawDNSZone_request_bind_source.md)> |  | [optional]
 **axfr_source** | Option<[**crate::models::ImportRawDnsZoneRequestAxfrSource**](ImportRawDNSZone_request_axfr_source.md)> |  | [optional]
 

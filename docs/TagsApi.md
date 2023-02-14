@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## delete_tag
 
-> crate::models::ScalewayRegistryV1Tag delete_tag(region, tag_id, force)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodTag delete_tag(region, tag_id, force)
 Delete a tag
 
 Delete the tag associated with the given id.
@@ -28,7 +28,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Tag**](scaleway.registry.v1.Tag.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodTag**](scaleway.registry.v1.Tag.md)
 
 ### Authorization
 
@@ -44,7 +44,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_tag
 
-> crate::models::ScalewayRegistryV1Tag get_tag(region, tag_id)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodTag get_tag(region, tag_id)
 Get a tag
 
 Get the tag associated with the given id.
@@ -59,7 +59,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Tag**](scaleway.registry.v1.Tag.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodTag**](scaleway.registry.v1.Tag.md)
 
 ### Authorization
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_tags
 
-> crate::models::ScalewayRegistryV1ListTagsResponse list_tags(region, image_id, page, page_size, order_by, name)
+> crate::models::ScalewayPeriodRegistryPeriodV1PeriodListTagsResponse list_tags(region, image_id, page, page_size, order_by, name)
 List all your tags
 
 ### Parameters
@@ -85,14 +85,14 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **image_id** | **String** | The unique ID of the image | [required] |
-**page** | Option<**i64**> | A positive integer to choose the page to display |  |[default to 1]
-**page_size** | Option<**i64**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
+**page** | Option<**i32**> | A positive integer to choose the page to display |  |[default to 1]
+**page_size** | Option<**i32**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
 **order_by** | Option<**String**> | Field by which to order the display of Images |  |[default to created_at_asc]
 **name** | Option<**String**> | Filter by the tag name (exact match) |  |
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1ListTagsResponse**](scaleway.registry.v1.ListTagsResponse.md)
+[**crate::models::ScalewayPeriodRegistryPeriodV1PeriodListTagsResponse**](scaleway.registry.v1.ListTagsResponse.md)
 
 ### Authorization
 

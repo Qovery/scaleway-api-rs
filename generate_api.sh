@@ -3,6 +3,13 @@
 # this script is used to generate the whole project from open api specs provided by Scaleway.
 set -e
 
+function join_by {
+  local d=${1-} f=${2-}
+  if shift 2; then
+    printf %s "$f" "${@/#/$d}"
+  fi
+}
+
 rm -rf docs || true
 rm -rf src || true
 rm README.md || true
@@ -12,27 +19,32 @@ mkdir .generation
 
 # add open spec API file here
 # =>
-wget -P .generation/ https://developers.scaleway.com/static/c78c1fb6947abf78efab65d4acc6dacd/scaleway.baremetal.v1.Api.yml
-wget -P .generation/ https://developers.scaleway.com/static/805c4e0fa44967438ff07c28d87fac04/scaleway.rdb.v1.Api.yml 
-wget -P .generation/ https://developers.scaleway.com/static/7f404aaae3cabd6b26f7e5f2a1e32e05/scaleway.registry.v1.Api.yml 
-wget -P .generation/ https://developers.scaleway.com/static/72af768aeae6f8e82ef2ea61b4e46975/scaleway.k8s.v1.Api.yml 
-wget -P .generation/ https://developers.scaleway.com/static/c6dfc13b6013041388d93a1f54f77abb/scaleway.vpc.v1.Api.yml 
-wget -P .generation/ https://developers.scaleway.com/static/72a2c7b853875ff3d1470f3453d8cd9d/scaleway.iot.v1.Api.yml 
-wget -P .generation/ https://developers.scaleway.com/static/0bc750daa510b57996c29662eb213213/scaleway.flexible_ip.v1alpha1.Api.yml 
-wget -P .generation/ https://developers.scaleway.com/static/e68e360c068c64e2fabb3de44f988646/scaleway.domain.v2beta1.Api.yml 
+apis=(
+  https://developers.scaleway.com/static/50fa035ee346239a0081bd35a9a42216/scaleway.instance.v1.Api.yml
+  https://developers.scaleway.com/static/ea0a7cfc643ebb19d0aa7e513239d0f8/scaleway.baremetal.v1.Api.yml
+  https://developers.scaleway.com/static/73f07c9471203f4a936ccd1c732336e6/scaleway.registry.v1.Api.yml
+  https://developers.scaleway.com/static/fdb3fd2472c3cd704cbb68ee1dcce3aa/scaleway.rdb.v1.Api.yml
+  https://developers.scaleway.com/static/c6a9ddee34be6ead98f400fd75bf09ae/scaleway.k8s.v1.Api.yml
+  https://developers.scaleway.com/static/b308ccdf3939490704988c9c0356c15b/scaleway.vpc.v1.Api.yml
+  https://developers.scaleway.com/static/c347b9a9ee7e44303ec37e6b438def45/scaleway.domain.v2beta1.Api.yml
+  https://developers.scaleway.com/static/9b33dabdafcbaaef7f079d1b0c51f887/scaleway.iam.v1alpha1.Api.yml
+  https://developers.scaleway.com/static/e10e8c13cd8bd9b49d61331dace3662a/scaleway.account.v2.Api.yml
+  https://developers.scaleway.com/static/59091ac98ce80e916aa85086412be11e/scaleway.billing.v2alpha1.Api.yml
+  https://developers.scaleway.com/static/ca958b69824091806259ae71d1cf0a23/scaleway.flexible_ip.v1alpha1.Api.yml
+)
+for i in "${apis[@]}"; do
+  wget -P .generation/ "$i"
+done
 
 # merging specs into one file
+json_files=$(ls .generation/ | tr '\n' ' ')
+json_array=( $json_files )
+inputs=$(join_by '"},{"inputFile": "./' "${json_array[@]}")
+inputs="{\"inputFile\": \"./${inputs}\"}"
 cat << EOM > .generation/openapi-merge.json
 {
   "inputs": [
-    {"inputFile": "./scaleway.baremetal.v1.Api.yml"},
-    {"inputFile": "./scaleway.rdb.v1.Api.yml"},
-    {"inputFile": "./scaleway.registry.v1.Api.yml"},
-    {"inputFile": "./scaleway.k8s.v1.Api.yml"},
-    {"inputFile": "./scaleway.vpc.v1.Api.yml"},
-    {"inputFile": "./scaleway.iot.v1.Api.yml"},
-    {"inputFile": "./scaleway.flexible_ip.v1alpha1.Api.yml"},
-    {"inputFile": "./scaleway.domain.v2beta1.Api.yml"}
+    $inputs
   ],
   "output": "consolidated-specs.yml"
 }

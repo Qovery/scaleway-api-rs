@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## get_offer
 
-> crate::models::ScalewayBaremetalV1Offer get_offer(zone, offer_id)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodOffer get_offer(zone, offer_id)
 Get offer
 
 Return specific offer for the given ID.
@@ -26,7 +26,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Offer**](scaleway.baremetal.v1.Offer.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodOffer**](scaleway.baremetal.v1.Offer.md)
 
 ### Authorization
 
@@ -42,7 +42,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_offers
 
-> crate::models::ScalewayBaremetalV1ListOffersResponse list_offers(zone, page, page_size, subscription_period)
+> crate::models::ScalewayPeriodBaremetalPeriodV1PeriodListOffersResponse list_offers(zone, page, page_size, subscription_period)
 List offers
 
 List all available server offers.
@@ -53,13 +53,13 @@ List all available server offers.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Number of offers per page |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Number of offers per page |  |[default to 20]
 **subscription_period** | Option<**String**> | Period of subscription to filter offers |  |[default to unknown_subscription_period]
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1ListOffersResponse**](scaleway.baremetal.v1.ListOffersResponse.md)
+[**crate::models::ScalewayPeriodBaremetalPeriodV1PeriodListOffersResponse**](scaleway.baremetal.v1.ListOffersResponse.md)
 
 ### Authorization
 

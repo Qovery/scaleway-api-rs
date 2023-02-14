@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## list_privileges
 
-> crate::models::ScalewayRdbV1ListPrivilegesResponse list_privileges(region, instance_id, order_by, page, page_size, database_name, user_name)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodListPrivilegesResponse list_privileges(region, instance_id, order_by, page, page_size, database_name, user_name)
 List privileges of a given user for a given database on a given instance
 
 ### Parameters
@@ -22,14 +22,14 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the instance | [required] |
 **order_by** | Option<**String**> | Criteria to use when ordering privileges listing |  |[default to user_name_asc]
-**page** | Option<**i64**> | Page number |  |[default to 1]
-**page_size** | Option<**i64**> | Page size |  |[default to 20]
+**page** | Option<**i32**> | Page number |  |[default to 1]
+**page_size** | Option<**i32**> | Page size |  |[default to 20]
 **database_name** | Option<**String**> | Name of the database |  |
 **user_name** | Option<**String**> | Name of the user |  |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListPrivilegesResponse**](scaleway.rdb.v1.ListPrivilegesResponse.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodListPrivilegesResponse**](scaleway.rdb.v1.ListPrivilegesResponse.md)
 
 ### Authorization
 
@@ -45,7 +45,7 @@ Name | Type | Description  | Required | Notes
 
 ## set_privilege
 
-> crate::models::ScalewayRdbV1Privilege set_privilege(region, instance_id, set_privilege_request)
+> crate::models::ScalewayPeriodRdbPeriodV1PeriodPrivilege set_privilege(region, instance_id, set_privilege_request)
 Set privileges of a given user for a given database on a given instance
 
 ### Parameters
@@ -59,7 +59,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1Privilege**](scaleway.rdb.v1.Privilege.md)
+[**crate::models::ScalewayPeriodRdbPeriodV1PeriodPrivilege**](scaleway.rdb.v1.Privilege.md)
 
 ### Authorization
 
