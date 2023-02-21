@@ -59,7 +59,7 @@ pub struct ScalewayK8sV1ClusterAutoscalerConfig {
         rename = "scale_down_utilization_threshold",
         skip_serializing_if = "Option::is_none"
     )]
-    pub scale_down_utilization_threshold: Option<i64>,
+    pub scale_down_utilization_threshold: Option<f32>,
     /// Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node
     #[serde(
         rename = "max_graceful_termination_sec",

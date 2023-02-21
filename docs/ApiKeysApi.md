@@ -98,7 +98,7 @@ Name | Type | Description  | Required | Notes
 
 ## list_api_keys
 
-> crate::models::ScalewayPeriodIamPeriodV1alpha1PeriodListApiKeysResponse list_api_keys(organization_id, order_by, page, page_size, application_id, user_id, editable)
+> crate::models::ScalewayPeriodIamPeriodV1alpha1PeriodListApiKeysResponse list_api_keys(organization_id, order_by, page, page_size, application_id, user_id, editable, expired, access_key, description, bearer_id, bearer_type)
 List API keys
 
 ### Parameters
@@ -113,6 +113,11 @@ Name | Type | Description  | Required | Notes
 **application_id** | Option<**String**> | ID of an application bearer |  |
 **user_id** | Option<**String**> | ID of a user bearer |  |
 **editable** | Option<**bool**> | Filter out editable API keys or not |  |
+**expired** | Option<**bool**> | Filter out expired API keys or not |  |
+**access_key** | Option<**String**> | Filter out by access key |  |
+**description** | Option<**String**> | Filter out by description |  |
+**bearer_id** | Option<**String**> | Filter out by bearer ID |  |
+**bearer_type** | Option<**String**> | Filter out by type of bearer |  |[default to unknown_bearer_type]
 
 ### Return type
 

@@ -15,7 +15,7 @@ pub struct ScalewayBaremetalV1OfferPricePerMonth {
     #[serde(rename = "currency_code", skip_serializing_if = "Option::is_none")]
     pub currency_code: Option<String>,
     #[serde(rename = "units", skip_serializing_if = "Option::is_none")]
-    pub units: Option<i32>,
+    pub units: Option<i64>,
     #[serde(rename = "nanos", skip_serializing_if = "Option::is_none")]
     pub nanos: Option<i32>,
 }

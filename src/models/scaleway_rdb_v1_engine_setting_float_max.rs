@@ -13,7 +13,7 @@
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ScalewayRdbV1EngineSettingFloatMax {
     #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
-    pub value: Option<i64>,
+    pub value: Option<f32>,
 }
 
 impl ScalewayRdbV1EngineSettingFloatMax {

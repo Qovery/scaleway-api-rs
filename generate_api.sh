@@ -20,17 +20,17 @@ mkdir .generation
 # add open spec API file here
 # =>
 apis=(
-  https://developers.scaleway.com/static/50fa035ee346239a0081bd35a9a42216/scaleway.instance.v1.Api.yml
-  https://developers.scaleway.com/static/ea0a7cfc643ebb19d0aa7e513239d0f8/scaleway.baremetal.v1.Api.yml
-  https://developers.scaleway.com/static/73f07c9471203f4a936ccd1c732336e6/scaleway.registry.v1.Api.yml
-  https://developers.scaleway.com/static/fdb3fd2472c3cd704cbb68ee1dcce3aa/scaleway.rdb.v1.Api.yml
-  https://developers.scaleway.com/static/c6a9ddee34be6ead98f400fd75bf09ae/scaleway.k8s.v1.Api.yml
-  https://developers.scaleway.com/static/b308ccdf3939490704988c9c0356c15b/scaleway.vpc.v1.Api.yml
-  https://developers.scaleway.com/static/c347b9a9ee7e44303ec37e6b438def45/scaleway.domain.v2beta1.Api.yml
-  https://developers.scaleway.com/static/9b33dabdafcbaaef7f079d1b0c51f887/scaleway.iam.v1alpha1.Api.yml
-  https://developers.scaleway.com/static/e10e8c13cd8bd9b49d61331dace3662a/scaleway.account.v2.Api.yml
-  https://developers.scaleway.com/static/59091ac98ce80e916aa85086412be11e/scaleway.billing.v2alpha1.Api.yml
-  https://developers.scaleway.com/static/ca958b69824091806259ae71d1cf0a23/scaleway.flexible_ip.v1alpha1.Api.yml
+  https://developers.scaleway.com/static/abea1f03df43785d42d43fb613494c7d/scaleway.instance.v1.Api.yml
+  https://developers.scaleway.com/static/b4f0df3880468cf8ec7b4d67a3b094b2/scaleway.baremetal.v1.Api.yml
+  https://developers.scaleway.com/static/41774d1984ba771f55939f80b75ebafb/scaleway.registry.v1.Api.yml
+  https://developers.scaleway.com/static/77d5770fdbf691ac3b8e01c302c8aba4/scaleway.rdb.v1.Api.yml
+  https://developers.scaleway.com/static/64746a0346bf0d5fd9ea237f2a875031/scaleway.k8s.v1.Api.yml
+  https://developers.scaleway.com/static/1be1e71800c33373cec0aae9f44d843a/scaleway.vpc.v1.Api.yml
+  https://developers.scaleway.com/static/8318de7a5ffda3e04eeaa012e22eada9/scaleway.domain.v2beta1.Api.yml
+  https://developers.scaleway.com/static/40454d8c524dbc4f6fb33148e2e10087/scaleway.iam.v1alpha1.Api.yml
+  https://developers.scaleway.com/static/ef71d5e750dfa42e203cd95867121062/scaleway.account.v2.Api.yml
+  https://developers.scaleway.com/static/2fa5e51f29d14b3c316e09c3d8f0724d/scaleway.billing.v2alpha1.Api.yml
+  https://developers.scaleway.com/static/58c95122aec43b8fa90b23c71fd5d15f/scaleway.flexible_ip.v1alpha1.Api.yml
 )
 for i in "${apis[@]}"; do
   wget -P .generation/ "$i"
@@ -63,7 +63,7 @@ cat templates/README.prepend.md README.md > README.consolidated.md
 mv README.consolidated.md README.md
 
 # remove useless objects
-rm -rf .generation
+# rm -rf .generation (keep it because Scaleway remove them so we can't 
 find . -type d -name '.openapi-generator' -exec rm -rf {} +
 
 # cargo fmt and clippy

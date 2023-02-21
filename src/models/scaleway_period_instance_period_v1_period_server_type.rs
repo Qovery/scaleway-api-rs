@@ -12,10 +12,10 @@
 pub struct ScalewayPeriodInstancePeriodV1PeriodServerType {
     /// Estimated monthly price, for a 30 days month, in Euro
     #[serde(rename = "monthly_price", skip_serializing_if = "Option::is_none")]
-    pub monthly_price: Option<i64>,
+    pub monthly_price: Option<f32>,
     /// Hourly price in Euro
     #[serde(rename = "hourly_price", skip_serializing_if = "Option::is_none")]
-    pub hourly_price: Option<i64>,
+    pub hourly_price: Option<f32>,
     /// Alternative instance name if any
     #[serde(rename = "alt_names", skip_serializing_if = "Option::is_none")]
     pub alt_names: Option<Vec<String>>,

@@ -1,4 +1,4 @@
 packageName: "scaleway_api_rs"
-packageVersion: "0.1.6"
+packageVersion: "0.1.7"
 apiTests: true
 generateAliasAsModel: true

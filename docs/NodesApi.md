@@ -4,11 +4,44 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**create_external_node**](NodesApi.md#create_external_node) | **POST** /k8s/v1/regions/{region}/pools/{pool_id}/external-nodes | Create a Kosmos node
 [**delete_node**](NodesApi.md#delete_node) | **DELETE** /k8s/v1/regions/{region}/nodes/{node_id} | Delete a node in a cluster
 [**get_node**](NodesApi.md#get_node) | **GET** /k8s/v1/regions/{region}/nodes/{node_id} | Get a node in a cluster
 [**list_nodes**](NodesApi.md#list_nodes) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/nodes | List all the nodes in a cluster
 [**reboot_node**](NodesApi.md#reboot_node) | **POST** /k8s/v1/regions/{region}/nodes/{node_id}/reboot | Reboot a node in a cluster
 
+
+
+## create_external_node
+
+> crate::models::ScalewayPeriodK8sPeriodV1PeriodExternalNode create_external_node(region, pool_id, body)
+Create a Kosmos node
+
+This method returns metadata about a Kosmos node, it is not intended to be directly called by end users, rather by kapsule-node-agent.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**pool_id** | **String** |  | [required] |
+**body** | **serde_json::Value** |  | [required] |
+
+### Return type
+
+[**crate::models::ScalewayPeriodK8sPeriodV1PeriodExternalNode**](scaleway.k8s.v1.ExternalNode.md)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## delete_node

@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**monthly_price** | Option<**i64**> | Estimated monthly price, for a 30 days month, in Euro | [optional]
-**hourly_price** | Option<**i64**> | Hourly price in Euro | [optional]
+**monthly_price** | Option<**f32**> | Estimated monthly price, for a 30 days month, in Euro | [optional]
+**hourly_price** | Option<**f32**> | Hourly price in Euro | [optional]
 **alt_names** | Option<**Vec<String>**> | Alternative instance name if any | [optional]
 **per_volume_constraint** | Option<[**crate::models::ScalewayInstanceV1ServerTypePerVolumeConstraint**](scaleway_instance_v1_ServerType_per_volume_constraint.md)> |  | [optional]
 **volumes_constraint** | Option<[**crate::models::ScalewayInstanceV1ServerTypeVolumesConstraint**](scaleway_instance_v1_ServerType_volumes_constraint.md)> |  | [optional]

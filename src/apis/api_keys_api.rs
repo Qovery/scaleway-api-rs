@@ -204,6 +204,11 @@ pub async fn list_api_keys(
     application_id: Option<&str>,
     user_id: Option<&str>,
     editable: Option<bool>,
+    expired: Option<bool>,
+    access_key: Option<&str>,
+    description: Option<&str>,
+    bearer_id: Option<&str>,
+    bearer_type: Option<&str>,
 ) -> Result<
     crate::models::ScalewayPeriodIamPeriodV1alpha1PeriodListApiKeysResponse,
     Error<ListApiKeysError>,
@@ -246,6 +251,26 @@ pub async fn list_api_keys(
     if let Some(ref local_var_str) = editable {
         local_var_req_builder =
             local_var_req_builder.query(&[("editable", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = expired {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("expired", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = access_key {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("access_key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = description {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("description", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = bearer_id {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("bearer_id", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = bearer_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("bearer_type", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
