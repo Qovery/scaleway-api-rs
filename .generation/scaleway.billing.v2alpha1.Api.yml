@@ -1,0 +1,385 @@
+openapi: 3.0.0
+info:
+  title: Billing API
+  description: |
+    # Introduction
+
+    Manage the billing of your Scaleway Cloud projects.
+
+    ## Technical Limitations
+
+    - Before calling this API, you must have activated IAM on your account. See our documentation on [how to activate IAM](https://www.scaleway.com/en/docs/identity-and-access-management/iam/how-to/activate-iam/).
+
+
+    - You must also have appropriate IAM permissions to manage billing. If you are the Owner of the Organization, you will have these permissions automatically, otherwise you need a [policy](https://www.scaleway.com/en/docs/identity-and-access-management/iam/concepts/#policy) giving you the BillingManager permission set. If you were previously a Billing Administrator, you will automatically have been migrated to the BillingAdministrator group when you activated IAM, which gives you the appropriate permissions.
+
+
+    - To query consumption you need only BillingReadOnly permissions.
+
+
+    - Ensure that you have [created an API key](https://www.scaleway.com/en/docs/identity-and-access-management/iam/how-to/create-api-keys/), and that you have retrieved the Organization ID from your [Organization dashboard](https://console.scaleway.com/organization/settings) in the Scaleway console.
+  version: v2alpha1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: Consumption
+  description: |
+    The consumption represents the amount of money you have spent for the products you have consumed.
+    The value is not computed in real time.
+    The value of the consumption is a monetary value.
+- name: Invoices
+components:
+  schemas:
+    scaleway.billing.v2alpha1.GetConsumptionResponse:
+      type: object
+      properties:
+        consumptions:
+          type: array
+          description: Detailled consumptions list
+          items:
+            $ref: '#/components/schemas/scaleway.billing.v2alpha1.GetConsumptionResponse.Consumption'
+        updated_at:
+          type: string
+          description: Last consumption update date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - consumptions
+      - updated_at
+    scaleway.billing.v2alpha1.GetConsumptionResponse.Consumption:
+      type: object
+      properties:
+        value:
+          type: object
+          description: Monetary value of the consumption
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        description:
+          type: string
+          description: Description of the consumption
+        project_id:
+          type: string
+          description: Project ID of the consumption
+        category:
+          type: string
+          description: Category of the consumption
+        operation_path:
+          type: string
+          description: The unique identifier of the product
+      x-properties-order:
+      - value
+      - description
+      - project_id
+      - category
+      - operation_path
+    scaleway.billing.v2alpha1.Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Invoice id
+        start_date:
+          type: string
+          description: Billing period start date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        issued_date:
+          type: string
+          description: Date when the invoice was sent to the customer (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        due_date:
+          type: string
+          description: Payment date limit, set according Organization's payment term
+            (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        total_untaxed:
+          type: object
+          description: Total amount untaxed
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        total_taxed:
+          type: object
+          description: Total amount taxed
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        invoice_type:
+          type: string
+          description: Type of the invoice
+          enum:
+          - unknown_type
+          - periodic
+          - purchase
+          default: unknown_type
+        number:
+          type: integer
+          description: Invoice number
+          format: int32
+      x-properties-order:
+      - id
+      - start_date
+      - issued_date
+      - due_date
+      - total_untaxed
+      - total_taxed
+      - invoice_type
+      - number
+    scaleway.billing.v2alpha1.ListInvoicesResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: The total number of invoices
+          format: uint32
+        invoices:
+          type: array
+          description: The paginated returned invoices
+          items:
+            $ref: '#/components/schemas/scaleway.billing.v2alpha1.Invoice'
+      x-properties-order:
+      - total_count
+      - invoices
+    scaleway.std.File:
+      type: object
+      properties:
+        name:
+          type: string
+        content_type:
+          type: string
+        content:
+          type: string
+      x-properties-order:
+      - name
+      - content_type
+      - content
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /billing/v2alpha1/consumption:
+    get:
+      tags:
+      - Consumption
+      operationId: GetConsumption
+      summary: Consumption over the current month
+      description: |
+        The consumption represents the amount of money you have spent for the products you have consumed.
+        The value is not computed in real time.
+        The value of the consumption is a monetary value.
+      parameters:
+      - in: query
+        name: organization_id
+        description: Filter by organization ID (UUID format)
+        schema:
+          type: string
+          description: Filter by organization ID (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.billing.v2alpha1.GetConsumptionResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/billing/v2alpha1/consumption?organization_id=6170692e-7363-616c-6577-61792e636f6d"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/billing/v2alpha1/consumption" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            organization_id==6170692e-7363-616c-6577-61792e636f6d
+  /billing/v2alpha1/invoices:
+    get:
+      tags:
+      - Invoices
+      operationId: ListInvoices
+      summary: List invoices
+      description: List all your invoices filtering by start_date and invoice_type
+      parameters:
+      - in: query
+        name: organization_id
+        description: Filter invoices by organization ID (UUID format)
+        schema:
+          type: string
+          description: Filter invoices by organization ID (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+          nullable: true
+      - in: query
+        name: started_after
+        description: Filter invoices where invoice's start_date is greater or equal
+          to started_after (RFC 3339 format)
+        schema:
+          type: string
+          description: Filter invoices where invoice's start_date is greater or equal
+            to started_after (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      - in: query
+        name: started_before
+        description: Filter invoices where invoice's start_date is before started_before
+          (RFC 3339 format)
+        schema:
+          type: string
+          description: Filter invoices where invoice's start_date is before started_before
+            (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      - in: query
+        name: invoice_type
+        description: Type of the invoice, it can be 'periodic' or 'purchase'
+        schema:
+          type: string
+          description: Type of the invoice, it can be 'periodic' or 'purchase'
+          enum:
+          - unknown_type
+          - periodic
+          - purchase
+          default: unknown_type
+      - in: query
+        name: page
+        description: A positive integer to choose the page to return
+        schema:
+          type: integer
+          description: A positive integer to choose the page to return
+          default: 1
+      - in: query
+        name: page_size
+        description: A positive integer lower or equal to 100 to select the number
+          of items to return
+        schema:
+          type: integer
+          description: A positive integer lower or equal to 100 to select the number
+            of items to return
+          default: "20"
+      - in: query
+        name: order_by
+        description: How invoices are ordered in the response
+        schema:
+          type: string
+          description: How invoices are ordered in the response
+          enum:
+          - invoice_number_desc
+          - invoice_number_asc
+          - start_date_desc
+          - start_date_asc
+          - issued_date_desc
+          - issued_date_asc
+          - due_date_desc
+          - due_date_asc
+          - total_untaxed_desc
+          - total_untaxed_asc
+          - total_taxed_desc
+          - total_taxed_asc
+          - invoice_type_desc
+          - invoice_type_asc
+          default: invoice_number_desc
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.billing.v2alpha1.ListInvoicesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/billing/v2alpha1/invoices"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/billing/v2alpha1/invoices" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /billing/v2alpha1/invoices/{invoice_id}/download:
+    get:
+      tags:
+      - Invoices
+      operationId: DownloadInvoice
+      summary: Download invoice based on his number
+      parameters:
+      - in: path
+        name: invoice_id
+        description: Invoice ID (UUID format)
+        required: true
+        schema:
+          type: string
+          description: Invoice ID (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      - in: query
+        name: file_type
+        description: Wanted file type
+        schema:
+          type: string
+          description: Wanted file type
+          enum:
+          - pdf
+          default: pdf
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.std.File'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/billing/v2alpha1/invoices/{invoice_id}/download"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/billing/v2alpha1/invoices/{invoice_id}/download" \
+            X-Auth-Token:$SCW_SECRET_KEY

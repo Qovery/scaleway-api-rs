@@ -1,0 +1,2488 @@
+openapi: 3.0.0
+info:
+  title: IAM API
+  description: |
+    # Introduction
+
+    The IAM API allows you to manage SSH keys, Groups, API keys and more to come.
+  version: v1alpha1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: SSH Keys
+- name: Groups
+- name: API Keys
+- name: Users
+- name: Applications
+- name: Policies
+- name: Rules
+- name: Permission sets
+components:
+  schemas:
+    scaleway.iam.v1alpha1.APIKey:
+      type: object
+      properties:
+        access_key:
+          type: string
+          description: Access key of API key
+        secret_key:
+          type: string
+          description: Secret key of API Key
+          nullable: true
+        application_id:
+          type: string
+          description: ID of application bearer
+          x-one-of: bearer
+        user_id:
+          type: string
+          description: ID of user bearer
+          x-one-of: bearer
+        description:
+          type: string
+          description: Description of API key
+        created_at:
+          type: string
+          description: Creation date and time of API key (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last update date and time of API key (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        expires_at:
+          type: string
+          description: Expiration date and time of API key (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        default_project_id:
+          type: string
+          description: The default project ID specified for this API key
+        editable:
+          type: boolean
+          description: Whether or not the API key is editable
+        creation_ip:
+          type: string
+          description: IP Address of the device which created the API key
+      x-properties-order:
+      - access_key
+      - secret_key
+      - application_id
+      - user_id
+      - description
+      - created_at
+      - updated_at
+      - expires_at
+      - default_project_id
+      - editable
+      - creation_ip
+    scaleway.iam.v1alpha1.Application:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of application
+        name:
+          type: string
+          description: Name of application
+        description:
+          type: string
+          description: Description of the application
+        created_at:
+          type: string
+          description: Creation date of application (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last update date of application (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        organization_id:
+          type: string
+          description: ID of organization
+        editable:
+          type: boolean
+          description: Whether or not the application is editable
+        nb_api_keys:
+          type: integer
+          description: Number of API keys owned by the application
+          format: uint32
+      x-properties-order:
+      - id
+      - name
+      - description
+      - created_at
+      - updated_at
+      - organization_id
+      - editable
+      - nb_api_keys
+    scaleway.iam.v1alpha1.Group:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of group
+        created_at:
+          type: string
+          description: Creation date and time of group (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last update date and time of group (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        organization_id:
+          type: string
+          description: ID of organization linked to the group
+        name:
+          type: string
+          description: Name of group
+        description:
+          type: string
+          description: Description of the group
+        user_ids:
+          type: array
+          description: IDs of users attached to this group
+          items:
+            type: string
+        application_ids:
+          type: array
+          description: IDs of applications attached to this group
+          items:
+            type: string
+      x-properties-order:
+      - id
+      - created_at
+      - updated_at
+      - organization_id
+      - name
+      - description
+      - user_ids
+      - application_ids
+    scaleway.iam.v1alpha1.ListAPIKeysResponse:
+      type: object
+      properties:
+        api_keys:
+          type: array
+          description: List of API keys
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.APIKey'
+        total_count:
+          type: integer
+          description: Total count of API Keys
+          format: uint32
+      x-properties-order:
+      - api_keys
+      - total_count
+    scaleway.iam.v1alpha1.ListApplicationsResponse:
+      type: object
+      properties:
+        applications:
+          type: array
+          description: List of applications
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.Application'
+        total_count:
+          type: integer
+          description: Total count of applications
+          format: uint32
+      x-properties-order:
+      - applications
+      - total_count
+    scaleway.iam.v1alpha1.ListGroupsResponse:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: List of groups
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+        total_count:
+          type: integer
+          description: Total count of groups
+          format: uint32
+      x-properties-order:
+      - groups
+      - total_count
+    scaleway.iam.v1alpha1.ListPermissionSetsResponse:
+      type: object
+      properties:
+        permission_sets:
+          type: array
+          description: List of permission sets
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.PermissionSet'
+        total_count:
+          type: integer
+          description: Total count of permission sets
+          format: uint32
+      x-properties-order:
+      - permission_sets
+      - total_count
+    scaleway.iam.v1alpha1.ListPoliciesResponse:
+      type: object
+      properties:
+        policies:
+          type: array
+          description: List of policies
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.Policy'
+        total_count:
+          type: integer
+          description: Total count of policies
+          format: uint32
+      x-properties-order:
+      - policies
+      - total_count
+    scaleway.iam.v1alpha1.ListRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: Rules of the policy
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.Rule'
+        total_count:
+          type: integer
+          description: Total count of rules
+          format: uint32
+      x-properties-order:
+      - rules
+      - total_count
+    scaleway.iam.v1alpha1.ListSSHKeysResponse:
+      type: object
+      properties:
+        ssh_keys:
+          type: array
+          description: List of SSH keys
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.SSHKey'
+        total_count:
+          type: integer
+          description: Total count of SSH keys
+          format: uint32
+      x-properties-order:
+      - ssh_keys
+      - total_count
+    scaleway.iam.v1alpha1.ListUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          description: List of users
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.User'
+        total_count:
+          type: integer
+          description: Total count of users
+          format: uint32
+      x-properties-order:
+      - users
+      - total_count
+    scaleway.iam.v1alpha1.PermissionSet:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of permission set
+        name:
+          type: string
+          description: Name of permission set
+        scope_type:
+          type: string
+          description: Scope of permission set
+          enum:
+          - unknown_scope_type
+          - projects
+          - organization
+          - account_root_user
+          default: unknown_scope_type
+        description:
+          type: string
+          description: Description of permission set
+        categories:
+          type: array
+          description: Categories of permission set
+          nullable: true
+          items:
+            type: string
+      x-properties-order:
+      - id
+      - name
+      - scope_type
+      - description
+      - categories
+    scaleway.iam.v1alpha1.Policy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of policy
+        name:
+          type: string
+          description: Name of policy
+        description:
+          type: string
+          description: Description of policy
+        organization_id:
+          type: string
+          description: Organization ID of policy
+        created_at:
+          type: string
+          description: Creation date and time of policy (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last update date and time of policy (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        editable:
+          type: boolean
+          description: Editable status of policy
+        nb_rules:
+          type: integer
+          description: Number of rules of policy
+          format: uint32
+        nb_scopes:
+          type: integer
+          description: Number of scopes of policy
+          format: uint32
+        nb_permission_sets:
+          type: integer
+          description: Number of permission sets of policy
+          format: uint32
+        user_id:
+          type: string
+          description: ID of user, owner of the policy
+          x-one-of: principal
+        group_id:
+          type: string
+          description: ID of group, owner of the policy
+          x-one-of: principal
+        application_id:
+          type: string
+          description: ID of application, owner of the policy
+          x-one-of: principal
+        no_principal:
+          type: boolean
+          description: True when the policy do not belong to any principal
+          x-one-of: principal
+      x-properties-order:
+      - id
+      - name
+      - description
+      - organization_id
+      - created_at
+      - updated_at
+      - editable
+      - nb_rules
+      - nb_scopes
+      - nb_permission_sets
+      - user_id
+      - group_id
+      - application_id
+      - no_principal
+    scaleway.iam.v1alpha1.Rule:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of rule
+        permission_set_names:
+          type: array
+          description: Names of permission sets bound to the rule
+          nullable: true
+          items:
+            type: string
+        permission_sets_scope_type:
+          type: string
+          description: Permission_set_names have the same scope_type
+          enum:
+          - unknown_scope_type
+          - projects
+          - organization
+          - account_root_user
+          default: unknown_scope_type
+        project_ids:
+          type: array
+          description: List of project IDs scoped to the rule
+          nullable: true
+          x-one-of: scope
+          items:
+            type: string
+        organization_id:
+          type: string
+          description: ID of organization scoped to the rule
+          x-one-of: scope
+        account_root_user_id:
+          type: string
+          description: ID of account root user scoped to the rule
+          x-one-of: scope
+      x-properties-order:
+      - id
+      - permission_set_names
+      - permission_sets_scope_type
+      - project_ids
+      - organization_id
+      - account_root_user_id
+    scaleway.iam.v1alpha1.RuleSpecs:
+      type: object
+      properties:
+        permission_set_names:
+          type: array
+          description: Names of permission sets bound to the rule
+          nullable: true
+          items:
+            type: string
+        project_ids:
+          type: array
+          description: List of project IDs scoped to the rule
+          nullable: true
+          x-one-of: scope
+          items:
+            type: string
+        organization_id:
+          type: string
+          description: ID of organization scoped to the rule
+          x-one-of: scope
+      x-properties-order:
+      - permission_set_names
+      - project_ids
+      - organization_id
+    scaleway.iam.v1alpha1.SSHKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of SSH key
+        name:
+          type: string
+          description: Name of SSH key
+        public_key:
+          type: string
+          description: Public key of SSH key
+        fingerprint:
+          type: string
+          description: Fingerprint of SSH key
+        created_at:
+          type: string
+          description: Creation date of SSH key (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last update date of SSH key (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        organization_id:
+          type: string
+          description: ID of organization linked to the SSH key
+        project_id:
+          type: string
+          description: ID of project linked to the SSH key
+        disabled:
+          type: boolean
+          description: SSH key status
+      x-properties-order:
+      - id
+      - name
+      - public_key
+      - fingerprint
+      - created_at
+      - updated_at
+      - organization_id
+      - project_id
+      - disabled
+    scaleway.iam.v1alpha1.SetRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: Rules of policy
+          items:
+            $ref: '#/components/schemas/scaleway.iam.v1alpha1.Rule'
+      x-properties-order:
+      - rules
+    scaleway.iam.v1alpha1.User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of user
+        email:
+          type: string
+          description: Email of user
+        created_at:
+          type: string
+          description: Creation date of user (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last update date of user (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        organization_id:
+          type: string
+          description: ID of organization
+        deletable:
+          type: boolean
+          description: Deletion status of user. Owner user cannot be deleted
+        last_login_at:
+          type: string
+          description: Last login date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        type:
+          type: string
+          description: Type of the user
+          enum:
+          - unknown_type
+          - guest
+          - owner
+          default: unknown_type
+        two_factor_enabled:
+          type: boolean
+          description: 2FA enabled
+        status:
+          type: string
+          description: Status of invitation for the user
+          enum:
+          - unknown_status
+          - invitation_pending
+          - activated
+          default: unknown_status
+      x-properties-order:
+      - id
+      - email
+      - created_at
+      - updated_at
+      - organization_id
+      - deletable
+      - last_login_at
+      - type
+      - two_factor_enabled
+      - status
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /iam/v1alpha1/api-keys:
+    get:
+      tags:
+      - API Keys
+      operationId: ListAPIKeys
+      summary: List API keys
+      parameters:
+      - in: query
+        name: order_by
+        description: Criteria for sorting results
+        schema:
+          type: string
+          description: Criteria for sorting results
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - updated_at_asc
+          - updated_at_desc
+          - expires_at_asc
+          - expires_at_desc
+          - access_key_asc
+          - access_key_desc
+          default: created_at_asc
+      - in: query
+        name: page
+        description: Number of page. Value must be greater or equals to 1
+        schema:
+          type: integer
+          description: Number of page. Value must be greater or equals to 1
+          default: "1"
+      - in: query
+        name: page_size
+        description: Number of results per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of results per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: organization_id
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          description: ID of organization
+          nullable: true
+      - in: query
+        name: application_id
+        description: ID of an application bearer
+        schema:
+          type: string
+          description: ID of an application bearer
+          deprecated: true
+          nullable: true
+          x-one-of: bearer
+        deprecated: true
+      - in: query
+        name: user_id
+        description: ID of a user bearer
+        schema:
+          type: string
+          description: ID of a user bearer
+          deprecated: true
+          nullable: true
+          x-one-of: bearer
+        deprecated: true
+      - in: query
+        name: editable
+        description: Filter out editable API keys or not
+        schema:
+          type: boolean
+          description: Filter out editable API keys or not
+          nullable: true
+      - in: query
+        name: expired
+        description: Filter out expired API keys or not
+        schema:
+          type: boolean
+          description: Filter out expired API keys or not
+          nullable: true
+      - in: query
+        name: access_key
+        description: Filter out by access key
+        schema:
+          type: string
+          description: Filter out by access key
+          nullable: true
+      - in: query
+        name: description
+        description: Filter out by description
+        schema:
+          type: string
+          description: Filter out by description
+          nullable: true
+      - in: query
+        name: bearer_id
+        description: Filter out by bearer ID
+        schema:
+          type: string
+          description: Filter out by bearer ID
+          nullable: true
+      - in: query
+        name: bearer_type
+        description: Filter out by type of bearer
+        schema:
+          type: string
+          description: Filter out by type of bearer
+          enum:
+          - unknown_bearer_type
+          - user
+          - application
+          default: unknown_bearer_type
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListAPIKeysResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/api-keys?organization_id=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/api-keys" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            organization_id==string
+    post:
+      tags:
+      - API Keys
+      operationId: CreateAPIKey
+      summary: Create an API key
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.APIKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                application_id:
+                  type: string
+                  description: ID of application principal
+                  x-one-of: bearer
+                user_id:
+                  type: string
+                  description: ID of user principal
+                  x-one-of: bearer
+                expires_at:
+                  type: string
+                  description: Expiration date of the API key (RFC 3339 format)
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+                default_project_id:
+                  type: string
+                  description: The default project ID to use with object storage
+                  nullable: true
+                description:
+                  type: string
+                  description: The description of the API key (max length is 200 chars)
+              x-properties-order:
+              - application_id
+              - user_id
+              - expires_at
+              - default_project_id
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"description":"string"}' \
+            "https://api.scaleway.com/iam/v1alpha1/api-keys"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/api-keys" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            description="string"
+  /iam/v1alpha1/api-keys/{access_key}:
+    get:
+      tags:
+      - API Keys
+      operationId: GetAPIKey
+      summary: Get an API key
+      parameters:
+      - in: path
+        name: access_key
+        description: Access key to search for
+        required: true
+        schema:
+          type: string
+          description: Access key to search for
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.APIKey'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/api-keys/{access_key}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/api-keys/{access_key}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - API Keys
+      operationId: UpdateAPIKey
+      summary: Update an API key
+      parameters:
+      - in: path
+        name: access_key
+        description: Access key to update
+        required: true
+        schema:
+          type: string
+          description: Access key to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.APIKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_project_id:
+                  type: string
+                  description: The new default project ID to set
+                  nullable: true
+                description:
+                  type: string
+                  description: The new description to update
+                  nullable: true
+              x-properties-order:
+              - default_project_id
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/api-keys/{access_key}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/iam/v1alpha1/api-keys/{access_key}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - API Keys
+      operationId: DeleteAPIKey
+      summary: Delete an API key
+      parameters:
+      - in: path
+        name: access_key
+        description: Access key to delete
+        required: true
+        schema:
+          type: string
+          description: Access key to delete
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/api-keys/{access_key}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/iam/v1alpha1/api-keys/{access_key}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/applications:
+    get:
+      tags:
+      - Applications
+      operationId: ListApplications
+      summary: List applications of an organization
+      parameters:
+      - in: query
+        name: order_by
+        description: Criteria for sorting results
+        schema:
+          type: string
+          description: Criteria for sorting results
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - updated_at_asc
+          - updated_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: page_size
+        description: Number of results per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of results per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: page
+        description: Number of page. Value must be greater to 1
+        schema:
+          type: integer
+          description: Number of page. Value must be greater to 1
+          default: "1"
+      - in: query
+        name: name
+        description: Name of application to filter
+        schema:
+          type: string
+          description: Name of application to filter
+          nullable: true
+      - in: query
+        name: organization_id
+        description: ID of organization to filter
+        required: true
+        schema:
+          type: string
+          description: ID of organization to filter
+          nullable: true
+      - in: query
+        name: editable
+        description: Filter out editable applications or not
+        schema:
+          type: boolean
+          description: Filter out editable applications or not
+          nullable: true
+      - in: query
+        name: application_ids
+        description: Filter out by a list of ID
+        schema:
+          type: array
+          description: Filter out by a list of ID
+          items:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListApplicationsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/applications?application_ids=[string]&organization_id=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/applications" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            application_ids==[string] \
+            organization_id==string
+    post:
+      tags:
+      - Applications
+      operationId: CreateApplication
+      summary: Create a new application
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Application'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of application to create (max length is 64 chars)
+                organization_id:
+                  type: string
+                  description: ID of organization
+                description:
+                  type: string
+                  description: Description of application (max length is 200 chars)
+              required:
+              - name
+              x-properties-order:
+              - name
+              - organization_id
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "description": "string",
+              "name": "string",
+              "organization_id": "string"
+            }' \
+            "https://api.scaleway.com/iam/v1alpha1/applications"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/applications" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            description="string" \
+            name="string" \
+            organization_id="string"
+  /iam/v1alpha1/applications/{application_id}:
+    get:
+      tags:
+      - Applications
+      operationId: GetApplication
+      summary: Get an existing application
+      parameters:
+      - in: path
+        name: application_id
+        description: ID of application to find
+        required: true
+        schema:
+          type: string
+          description: ID of application to find
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Application'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/applications/{application_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/applications/{application_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Applications
+      operationId: UpdateApplication
+      summary: Update an existing application
+      parameters:
+      - in: path
+        name: application_id
+        description: ID of application to update
+        required: true
+        schema:
+          type: string
+          description: ID of application to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Application'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name of application (max length is 64 chars)
+                  nullable: true
+                description:
+                  type: string
+                  description: New description of application (max length is 200 chars)
+                  nullable: true
+              x-properties-order:
+              - name
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/applications/{application_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/iam/v1alpha1/applications/{application_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Applications
+      operationId: DeleteApplication
+      summary: Delete an application
+      parameters:
+      - in: path
+        name: application_id
+        description: ID of application to delete
+        required: true
+        schema:
+          type: string
+          description: ID of application to delete
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/applications/{application_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/iam/v1alpha1/applications/{application_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/groups:
+    get:
+      tags:
+      - Groups
+      operationId: ListGroups
+      summary: List groups
+      parameters:
+      - in: query
+        name: order_by
+        description: Sort order of groups
+        schema:
+          type: string
+          description: Sort order of groups
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - updated_at_asc
+          - updated_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: page
+        description: Requested page number. Value must be greater or equals to 1
+        schema:
+          type: integer
+          description: Requested page number. Value must be greater or equals to 1
+          default: "1"
+      - in: query
+        name: page_size
+        description: Number of items per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of items per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: organization_id
+        description: Filter by organization ID
+        schema:
+          type: string
+          description: Filter by organization ID
+          nullable: true
+      - in: query
+        name: name
+        description: Name of group to find
+        schema:
+          type: string
+          description: Name of group to find
+          nullable: true
+      - in: query
+        name: application_ids
+        description: Filter out by a list of application ID
+        schema:
+          type: array
+          description: Filter out by a list of application ID
+          items:
+            type: string
+      - in: query
+        name: user_ids
+        description: Filter out by a list of user ID
+        schema:
+          type: array
+          description: Filter out by a list of user ID
+          items:
+            type: string
+      - in: query
+        name: group_ids
+        description: Filter out by a list of group ID
+        schema:
+          type: array
+          description: Filter out by a list of group ID
+          items:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListGroupsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/groups?application_ids=[string]&group_ids=[string]&user_ids=[string]"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/groups" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            application_ids==[string] \
+            group_ids==[string] \
+            user_ids==[string]
+    post:
+      tags:
+      - Groups
+      operationId: CreateGroup
+      summary: Create a new group
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                organization_id:
+                  type: string
+                  description: ID of organization linked to the group
+                name:
+                  type: string
+                  description: Name of the group to create (max length is 64 chars).
+                    MUST be unique inside an organization
+                description:
+                  type: string
+                  description: Description of the group to create (max length is 200
+                    chars)
+              required:
+              - organization_id
+              - name
+              x-properties-order:
+              - organization_id
+              - name
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "description": "string",
+              "name": "string",
+              "organization_id": "string"
+            }' \
+            "https://api.scaleway.com/iam/v1alpha1/groups"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/groups" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            description="string" \
+            name="string" \
+            organization_id="string"
+  /iam/v1alpha1/groups/{group_id}:
+    get:
+      tags:
+      - Groups
+      operationId: GetGroup
+      summary: Get a group
+      parameters:
+      - in: path
+        name: group_id
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          description: ID of group
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Groups
+      operationId: UpdateGroup
+      summary: Update a group
+      parameters:
+      - in: path
+        name: group_id
+        description: ID of group to update
+        required: true
+        schema:
+          type: string
+          description: ID of group to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name for the group (max length is 64 chars). MUST
+                    be unique inside an organization
+                  nullable: true
+                description:
+                  type: string
+                  description: New description for the group (max length is 200 chars)
+                  nullable: true
+              x-properties-order:
+              - name
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Groups
+      operationId: DeleteGroup
+      summary: Delete a group
+      parameters:
+      - in: path
+        name: group_id
+        description: ID of group to delete
+        required: true
+        schema:
+          type: string
+          description: ID of group to delete
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/groups/{group_id}/add-member:
+    post:
+      tags:
+      - Groups
+      operationId: AddGroupMember
+      summary: Add a user of an application to a group
+      parameters:
+      - in: path
+        name: group_id
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          description: ID of group
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  description: ID of the user to add
+                  x-one-of: member
+                application_id:
+                  type: string
+                  description: ID of the application to add
+                  x-one-of: member
+              x-properties-order:
+              - user_id
+              - application_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}/add-member"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}/add-member" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/groups/{group_id}/members:
+    put:
+      tags:
+      - Groups
+      operationId: SetGroupMembers
+      summary: Overwrite users and applications of a group
+      parameters:
+      - in: path
+        name: group_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_ids:
+                  type: array
+                  items:
+                    type: string
+                application_ids:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - user_ids
+              - application_ids
+              x-properties-order:
+              - user_ids
+              - application_ids
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PUT \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"application_ids":["string"],"user_ids":["string"]}' \
+            "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}/members"
+      - lang: HTTPie
+        source: |-
+          http PUT "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}/members" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            application_ids:='["string"]' \
+            user_ids:='["string"]'
+  /iam/v1alpha1/groups/{group_id}/remove-member:
+    post:
+      tags:
+      - Groups
+      operationId: RemoveGroupMember
+      summary: Remove a user or an application from a group
+      parameters:
+      - in: path
+        name: group_id
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          description: ID of group
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Group'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  description: ID of the user to remove
+                  x-one-of: member
+                application_id:
+                  type: string
+                  description: ID of the application to remove
+                  x-one-of: member
+              x-properties-order:
+              - user_id
+              - application_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}/remove-member"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/groups/{group_id}/remove-member" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/permission-sets:
+    get:
+      tags:
+      - Permission sets
+      operationId: ListPermissionSets
+      summary: List permission sets
+      parameters:
+      - in: query
+        name: order_by
+        description: Criteria for sorting results
+        schema:
+          type: string
+          description: Criteria for sorting results
+          enum:
+          - name_asc
+          - name_desc
+          - created_at_asc
+          - created_at_desc
+          default: created_at_asc
+      - in: query
+        name: page_size
+        description: Number of results per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of results per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: page
+        description: Number of page. Value must be greater to 1
+        schema:
+          type: integer
+          description: Number of page. Value must be greater to 1
+          default: "1"
+      - in: query
+        name: organization_id
+        description: Filter by organization ID
+        required: true
+        schema:
+          type: string
+          description: Filter by organization ID
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListPermissionSetsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/permission-sets?organization_id=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/permission-sets" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            organization_id==string
+  /iam/v1alpha1/policies:
+    get:
+      tags:
+      - Policies
+      operationId: ListPolicies
+      summary: List policies of an organization
+      parameters:
+      - in: query
+        name: order_by
+        description: Criteria for sorting results
+        schema:
+          type: string
+          description: Criteria for sorting results
+          enum:
+          - policy_name_asc
+          - policy_name_desc
+          - created_at_asc
+          - created_at_desc
+          default: created_at_asc
+      - in: query
+        name: page_size
+        description: Number of results per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of results per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: page
+        description: Number of page. Value must be greater to 1
+        schema:
+          type: integer
+          description: Number of page. Value must be greater to 1
+          default: "1"
+      - in: query
+        name: organization_id
+        description: ID of organization to filter
+        required: true
+        schema:
+          type: string
+          description: ID of organization to filter
+          nullable: true
+      - in: query
+        name: editable
+        description: Filter out editable policies or not
+        schema:
+          type: boolean
+          description: Filter out editable policies or not
+          nullable: true
+      - in: query
+        name: user_ids
+        description: Filter out by a list of user ID
+        schema:
+          type: array
+          description: Filter out by a list of user ID
+          items:
+            type: string
+      - in: query
+        name: group_ids
+        description: Filter out by a list of group ID
+        schema:
+          type: array
+          description: Filter out by a list of group ID
+          items:
+            type: string
+      - in: query
+        name: application_ids
+        description: Filter out by a list of application ID
+        schema:
+          type: array
+          description: Filter out by a list of application ID
+          items:
+            type: string
+      - in: query
+        name: no_principal
+        description: True when the policy do not belong to any principal
+        schema:
+          type: boolean
+          description: True when the policy do not belong to any principal
+          nullable: true
+      - in: query
+        name: policy_name
+        description: Name of policy to fetch
+        schema:
+          type: string
+          description: Name of policy to fetch
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListPoliciesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/policies?application_ids=[string]&group_ids=[string]&organization_id=string&user_ids=[string]"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/policies" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            application_ids==[string] \
+            group_ids==[string] \
+            organization_id==string \
+            user_ids==[string]
+    post:
+      tags:
+      - Policies
+      operationId: CreatePolicy
+      summary: Create a new policy
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Policy'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of policy to create (max length is 64 chars)
+                description:
+                  type: string
+                  description: Description of policy to create (max length is 200
+                    chars)
+                organization_id:
+                  type: string
+                  description: ID of organization
+                rules:
+                  type: array
+                  description: Rules of the policy to create
+                  items:
+                    $ref: '#/components/schemas/scaleway.iam.v1alpha1.RuleSpecs'
+                user_id:
+                  type: string
+                  description: ID of user, owner of the policy
+                  x-one-of: principal
+                group_id:
+                  type: string
+                  description: ID of group, owner of the policy
+                  x-one-of: principal
+                application_id:
+                  type: string
+                  description: ID of application, owner of the policy
+                  x-one-of: principal
+                no_principal:
+                  type: boolean
+                  description: True when the policy do not belong to any principal
+                  x-one-of: principal
+              required:
+              - name
+              x-properties-order:
+              - name
+              - description
+              - organization_id
+              - rules
+              - user_id
+              - group_id
+              - application_id
+              - no_principal
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "description": "string",
+              "name": "string",
+              "organization_id": "string",
+              "rules": [
+                  ""
+              ]
+            }' \
+            "https://api.scaleway.com/iam/v1alpha1/policies"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/policies" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            description="string" \
+            name="string" \
+            organization_id="string" \
+            rules:='[
+              ""
+            ]'
+  /iam/v1alpha1/policies/{policy_id}:
+    get:
+      tags:
+      - Policies
+      operationId: GetPolicy
+      summary: Get an existing policy
+      parameters:
+      - in: path
+        name: policy_id
+        description: Id of policy to search
+        required: true
+        schema:
+          type: string
+          description: Id of policy to search
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Policy'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Policies
+      operationId: UpdatePolicy
+      summary: Update an existing policy
+      parameters:
+      - in: path
+        name: policy_id
+        description: Id of policy to update
+        required: true
+        schema:
+          type: string
+          description: Id of policy to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Policy'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name of policy (max length is 64 chars)
+                  nullable: true
+                description:
+                  type: string
+                  description: New description of policy (max length is 200 chars)
+                  nullable: true
+                user_id:
+                  type: string
+                  description: New ID of user, owner of the policy
+                  nullable: true
+                  x-one-of: principal
+                group_id:
+                  type: string
+                  description: New ID of group, owner of the policy
+                  nullable: true
+                  x-one-of: principal
+                application_id:
+                  type: string
+                  description: New ID of application, owner of the policy
+                  nullable: true
+                  x-one-of: principal
+                no_principal:
+                  type: boolean
+                  description: True when the policy do not belong to any principal
+                  nullable: true
+                  x-one-of: principal
+              x-properties-order:
+              - name
+              - description
+              - user_id
+              - group_id
+              - application_id
+              - no_principal
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Policies
+      operationId: DeletePolicy
+      summary: Delete a policy
+      parameters:
+      - in: path
+        name: policy_id
+        description: Id of policy to delete
+        required: true
+        schema:
+          type: string
+          description: Id of policy to delete
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/policies/{policy_id}/clone:
+    post:
+      operationId: ClonePolicy
+      parameters:
+      - in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.Policy'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}/clone"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/policies/{policy_id}/clone" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/rules:
+    get:
+      tags:
+      - Rules
+      operationId: ListRules
+      summary: List rules of an existing policy
+      parameters:
+      - in: query
+        name: policy_id
+        description: Id of policy to search
+        required: true
+        schema:
+          type: string
+          description: Id of policy to search
+          nullable: true
+      - in: query
+        name: page_size
+        description: Number of results per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of results per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: page
+        description: Number of page. Value must be greater to 1
+        schema:
+          type: integer
+          description: Number of page. Value must be greater to 1
+          default: "1"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListRulesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/rules?policy_id=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/rules" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            policy_id==string
+    put:
+      tags:
+      - Rules
+      operationId: SetRules
+      summary: Set rules of an existing policy
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.SetRulesResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy_id:
+                  type: string
+                  description: Id of policy to update
+                rules:
+                  type: array
+                  description: Rules of the policy to set
+                  items:
+                    $ref: '#/components/schemas/scaleway.iam.v1alpha1.RuleSpecs'
+              required:
+              - policy_id
+              - rules
+              x-properties-order:
+              - policy_id
+              - rules
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PUT \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"policy_id":"string","rules":[""]}' \
+            "https://api.scaleway.com/iam/v1alpha1/rules"
+      - lang: HTTPie
+        source: |-
+          http PUT "https://api.scaleway.com/iam/v1alpha1/rules" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            policy_id="string" \
+            rules:='[""]'
+  /iam/v1alpha1/ssh-keys:
+    get:
+      tags:
+      - SSH Keys
+      operationId: ListSSHKeys
+      summary: List SSH keys
+      parameters:
+      - in: query
+        name: order_by
+        description: Sort order of SSH keys
+        schema:
+          type: string
+          description: Sort order of SSH keys
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - updated_at_asc
+          - updated_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: page
+        description: Requested page number. Value must be greater or equals to 1
+        schema:
+          type: integer
+          description: Requested page number. Value must be greater or equals to 1
+          default: "1"
+      - in: query
+        name: page_size
+        description: Number of items per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of items per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: organization_id
+        description: Filter by organization ID
+        schema:
+          type: string
+          description: Filter by organization ID
+          nullable: true
+      - in: query
+        name: name
+        description: Name of group to find
+        schema:
+          type: string
+          description: Name of group to find
+          nullable: true
+      - in: query
+        name: project_id
+        description: Filter by project ID
+        schema:
+          type: string
+          description: Filter by project ID
+          nullable: true
+      - in: query
+        name: disabled
+        description: Filter out disabled SSH keys or not
+        schema:
+          type: boolean
+          description: Filter out disabled SSH keys or not
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListSSHKeysResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/ssh-keys"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/ssh-keys" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - SSH Keys
+      operationId: CreateSSHKey
+      summary: Create an SSH key
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.SSHKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the SSH key. Max length is 1000
+                public_key:
+                  type: string
+                  description: SSH public key. Currently ssh-rsa, ssh-dss (DSA), ssh-ed25519
+                    and ecdsa keys with NIST curves are supported. Max length is 65000
+                project_id:
+                  type: string
+                  description: Project owning the resource
+              required:
+              - name
+              - public_key
+              - project_id
+              x-properties-order:
+              - name
+              - public_key
+              - project_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "string",
+              "project_id": "string",
+              "public_key": "string"
+            }' \
+            "https://api.scaleway.com/iam/v1alpha1/ssh-keys"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/iam/v1alpha1/ssh-keys" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name="string" \
+            project_id="string" \
+            public_key="string"
+  /iam/v1alpha1/ssh-keys/{ssh_key_id}:
+    get:
+      tags:
+      - SSH Keys
+      operationId: GetSSHKey
+      summary: Get an SSH key
+      parameters:
+      - in: path
+        name: ssh_key_id
+        description: The ID of the SSH key
+        required: true
+        schema:
+          type: string
+          description: The ID of the SSH key
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.SSHKey'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/ssh-keys/{ssh_key_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/ssh-keys/{ssh_key_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - SSH Keys
+      operationId: UpdateSSHKey
+      summary: Update an SSH key
+      parameters:
+      - in: path
+        name: ssh_key_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.SSHKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the SSH key. Max length is 1000
+                  nullable: true
+                disabled:
+                  type: boolean
+                  description: Enable or disable the SSH key
+                  nullable: true
+              x-properties-order:
+              - name
+              - disabled
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/iam/v1alpha1/ssh-keys/{ssh_key_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/iam/v1alpha1/ssh-keys/{ssh_key_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - SSH Keys
+      operationId: DeleteSSHKey
+      summary: Delete an SSH key
+      parameters:
+      - in: path
+        name: ssh_key_id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/ssh-keys/{ssh_key_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/iam/v1alpha1/ssh-keys/{ssh_key_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /iam/v1alpha1/users:
+    get:
+      tags:
+      - Users
+      operationId: ListUsers
+      summary: List users of an organization
+      parameters:
+      - in: query
+        name: order_by
+        description: Criteria for sorting results
+        schema:
+          type: string
+          description: Criteria for sorting results
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - updated_at_asc
+          - updated_at_desc
+          - email_asc
+          - email_desc
+          - last_login_asc
+          - last_login_desc
+          default: created_at_asc
+      - in: query
+        name: page_size
+        description: Number of results per page. Value must be between 1 and 100
+        schema:
+          type: integer
+          description: Number of results per page. Value must be between 1 and 100
+          default: "20"
+      - in: query
+        name: page
+        description: Number of page. Value must be greater or equals to 1
+        schema:
+          type: integer
+          description: Number of page. Value must be greater or equals to 1
+          default: "1"
+      - in: query
+        name: organization_id
+        description: ID of organization to filter
+        required: true
+        schema:
+          type: string
+          description: ID of organization to filter
+          nullable: true
+      - in: query
+        name: user_ids
+        description: Filter out by a list of ID
+        schema:
+          type: array
+          description: Filter out by a list of ID
+          items:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.ListUsersResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/users?organization_id=string&user_ids=[string]"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/users" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            organization_id==string \
+            user_ids==[string]
+  /iam/v1alpha1/users/{user_id}:
+    get:
+      tags:
+      - Users
+      operationId: GetUser
+      summary: Retrieve a user from its ID
+      parameters:
+      - in: path
+        name: user_id
+        description: ID of user to find
+        required: true
+        schema:
+          type: string
+          description: ID of user to find
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.iam.v1alpha1.User'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/users/{user_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/iam/v1alpha1/users/{user_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Users
+      operationId: DeleteUser
+      summary: Delete a guest user from an organization
+      parameters:
+      - in: path
+        name: user_id
+        description: ID of user to delete
+        required: true
+        schema:
+          type: string
+          description: ID of user to delete
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/iam/v1alpha1/users/{user_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/iam/v1alpha1/users/{user_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY

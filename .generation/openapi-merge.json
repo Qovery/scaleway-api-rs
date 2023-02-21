@@ -1,0 +1,6 @@
+{
+  "inputs": [
+    {"inputFile": "./scaleway.account.v2.Api.yml"},{"inputFile": "./scaleway.baremetal.v1.Api.yml"},{"inputFile": "./scaleway.billing.v2alpha1.Api.yml"},{"inputFile": "./scaleway.domain.v2beta1.Api.yml"},{"inputFile": "./scaleway.flexible_ip.v1alpha1.Api.yml"},{"inputFile": "./scaleway.iam.v1alpha1.Api.yml"},{"inputFile": "./scaleway.instance.v1.Api.yml"},{"inputFile": "./scaleway.k8s.v1.Api.yml"},{"inputFile": "./scaleway.rdb.v1.Api.yml"},{"inputFile": "./scaleway.registry.v1.Api.yml"},{"inputFile": "./scaleway.vpc.v1.Api.yml"}
+  ],
+  "output": "consolidated-specs.yml"
+}

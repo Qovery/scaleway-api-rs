@@ -1,0 +1,5417 @@
+openapi: 3.0.0
+info:
+  title: Database RDB API
+  description: |
+    # Introduction
+
+    Scaleway Database is a service that make your database's management easy as
+    pie. It provides simple and reliable solutions to create and run your database,
+    dealing with security and high availability to ensure the durability of your data.
+
+    # Concepts
+
+    The following sections define concepts such as Instance, Database Engine,
+    Configuration, ACL, Failover, Configuration, Backup and Restore in Scaleway Database.
+
+    ## Database Engine
+
+    A Database Engine is the software component that stores and retrieves
+    your data from a database. For example, PostgreSQL is a database engine
+    and it implements the SQL standard.
+    Database Engines have versions. Different major versions represents changes
+    that can break backward compatibility.
+
+    See "Engine Specifics" for supported engines and versions.
+
+    ## Database Instance
+
+    A Database Instance is composed of one or more computing nodes, depending on
+    the chosen HA setting (1 leader for Standalone, 1 leader + 1 replica for High Availability).
+    HA standby nodes are linked to a leader, using synchronous replication.
+    Synchronous replication offers the ability to confirm that all changes intended
+    by a transaction have been transferred and applied to one or more synchronous
+    replica servers, thus providing durability to the data.
+    You can also add up to 3 read replicas that can be used for some read-only workflows like BI, or for a read-only scaling of your application.
+    Read replicas use asynchronous replication to replicate data from the leader.
+
+    ## Instance Advanced Settings
+
+    A Database Instance has settings that let you tune the behavior of its Database Engine to better fit your needs.
+    Available settings depend on the Database Engine and its version.
+    Each instance setting entry has a default value that the user can override.
+    The deletion of a setting entry will restore the setting to the entry's default value.
+    Some of the defaults values can be different from the engine defaults, as we optimize
+    these defaults for the Scaleway platform.
+
+    ## Database Instance Endpoint
+
+    A Database Instance Endpoint is composed of an IP and a TCP port.
+    These are the coordinates that are used to connect to the service.
+    For now, there is only one endpoint, always pointing to the leader node of the Instance.
+
+    Endpoints IPs are public (No access is available using private IPs for now, but this
+    might change in the future). This might raise security concerns to some, but here are
+    a few points that must be remembered:
+
+    - When connecting to a Database's public IP address from a Scaleway Compute Instance
+      from the same region, the traffic does not leave Scaleway's network.
+    - All Scaleway Database Endpoints have SSL enabled. Be sure to use it to make your
+      data and your passwords unreadable in transit to anyone but you.
+    - Access to your Endpoint can be restricted to a set of trusted hosts or networks that
+      you choose, see "ACL Rules" below.
+
+    Please note that RDB architecture uses LoadBalancers to forward the traffic to the right
+    node based on the node state (active/hot standby). LoadBalancers configuration is set to cut off
+    inactive connections if no TCP traffic is sent within a 6-hour timeframe.
+    We recommend using a connection pooling on application side in order to renew database connections regularly.
+
+    ## ACL Rules / Allowed IPs
+
+    Access Control List Rules (ACL Rules) define which host and networks can connect
+    to your Database Instance Endpoint. You can add, edit or delete rules from your ACLs.
+    The initial setup of an instance allows full network access from anywhere (0.0.0.0/0).
+
+    Access control is handled directly at network-level by our load-balancers, so the
+    Database does not need to do it itself, making the filtering more efficient, universal
+    and relieving the Database from this task.
+
+    ## Automatic Failover
+
+    You can order a high availability database instance.
+    With this configuration, we install the RDBMS (Relational Database Management System)
+    on two dedicated compute nodes.
+    We also make sure those instances are on two physically separate racks.
+
+    On a High Availability Database Instance, replication is synchronous.
+    With this replication mode, write operations are routed to one database node.
+    The other node (standby node) replicates these data. Write operations are acknowledged
+    to the user only when they are applied on the master AND on the standby node.
+    If a node goes down, data integrity is guaranteed. You can't be in the situation where
+    the leader node has more data than the replica. This replication mode introduces a bit
+    of overhead on the database system, but for us, data integrity is the most important.
+
+    High availability instances are monitored continuously and got an AutoHealing feature.
+    If a database node goes down, the standby node will take write operations in less
+    than 10 seconds letting you be able to continue your business as usual with read
+    and write operations. During this phase, your instance switch to AUTOHEALING
+    status (blue dot in the console). During this period, your High Availability
+    Instance is working on the remaining database node for at most 700 seconds.
+    After 700 seconds, if your database node is still considered as down,
+    a new node is spawned and automatically configured as a standby database node.
+    Once configured, your database instance get the READY status back.
+    With this system, your database instance is unavailable only for a few seconds
+    letting your app work as usual.
+
+    ## Backup And Restore
+
+    Logical Databases can be saved to and restored from our storage facilities,
+    located in a different physical region than your Database.
+    Each logical database inside of a database instance is backed up and therefore
+    restorable separately.
+
+    ## User and Permissions
+
+    A User is an account protected by a password, allowing access to your Database Instance.
+
+    There are two ways to manage user permssions: from the API/Console or using SQL.
+    All supported engines have a rich permission model and as most users only need a part
+    of it, so Scaleway Database provides a simplified and unified permission model through
+    the API and the console to make things easier to manage and understand.
+    Beside this, it is perfectly fine to use engine-specific ways of managing users
+    and permissions, see each engine documentation to find mode about the corresponding
+    SQL commands.
+
+    The following is only about the simplified workflow.
+
+    Each User has associated Permissions that give it access to zero or more Logical Databases.
+    A User can have the "admin" flag, the behaviour is slightly different depending
+    on the engine, see below in "Engine Specifics".
+
+    | Permission Level | Description                                                 |
+    | ---------------- | :---------------------------------------------------------- |
+    | `none`           | no access to the database                                   |
+    | `read`           | read-only access to the data                                |
+    | `read/write`     | read and write access to the data                           |
+    | `admin`          | read and write access to the data plus some more privileges |
+    |                  | depending on the engine (see "Engine Specifics")            |
+
+    ## Logs
+
+    Logs can contain useful information for debugging or to know more about the behaviour
+    and activity of your database. They are available for download, but must first be
+    gathered from the Database Nodes.
+
+    ## Metrics
+
+    Memory, CPU and Disk usage are important metrics that you should keep an eye on.
+    Graphs are available on the "Metrics" section in the console. You can also track
+    these value from the API to inject them in you own system and raise custom alerts.
+
+    ## Region
+
+    Scaleway's infrastructure is divided into
+    [regions and zones](https://developers.scaleway.com/en/quickstart/#region-and-zone).
+
+    Scaleway Database is available in the following regions:
+
+    - fr-par
+    - nl-ams
+    - pl-waw
+
+    You can use cURL to send request to APIs, we will provide curl example for each step.
+
+    ## cURL Installation
+
+    **Ubuntu**
+
+    ```bash
+    ?> sudo apt-get install curl
+    ```
+
+    **Mac OS**
+
+    ```bash
+    ?> brew install curl
+    ```
+
+    ## Sign up
+
+    Go to the following link: https://console.scaleway.com/register
+    Provide a valid e-mail address and a password.
+
+    ## Generate your API Token
+
+    Login to your Scaleway account and create a token from the `credentials`
+    page. A `SECRET_KEY` and an `access_key` will show on your screen, the
+    `SECRET_KEY` will be used as `X-Auth-Token`.
+
+    reference: https://www.scaleway.com/docs/generate-an-api-token/
+
+    ## Get your project_id
+
+    In order to use Scaleway API you need to have `curl` installed. It is also a good idea to have `jq`, which will help you to read and parse JSON output. Make sure you have these two tools before you begin. Otherwise use your package manager to install them.
+
+    To call Scaleway API, you need an API key. If you don't have one yet, [you can create it with the Scaleway console](https://www.scaleway.com/en/docs/generate-api-keys/).
+
+    <!-- TODO: Add a link to documentation website and remove this CURL. -->
+
+    Using this token, get your project ID:
+
+    ```bash
+    export ACCESS_KEY="<Access key of your API key>"
+    export SECRET_KEY="<Secret key of your API key>"
+    export REGION="<choose your location (nl-ams/fr-par/pl-waw)>"
+
+    curl -s -H "X-Auth-Token: $SECRET_KEY" https://account.scaleway.com/tokens/$ACCESS_KEY | jq -r '.token.project_id'
+
+    export PROJECT_ID="<your project ID>"
+    ```
+
+    You can also find your project ID in [the Scaleway web console](https://console.scaleway.com/project/settings).
+
+    # Getting Started with PostgreSQL
+
+    This documentation shows how to create and connect to a PostgreSQL Database using Scaleway Database product.
+
+    **Requirements:**
+
+    You have to complete the "Setup" explained on upper sections, you are logged in
+    scaleway and have your API Token and Project ID. We are going to create,
+    connect to and delete a database.
+
+    ## How to create your Database instance?
+
+    **Create your database instance**
+
+    - endpoint: https://api.scaleway.com/rdb/v1/regions/$REGION/instances
+
+    ```
+    {
+        "project_id": "$PROJECT_ID",
+        "name": "myDB",
+        "engine": "PostgreSQL-11",
+        "tags": ["donnerstag"],
+        "is_ha_cluster": true,
+        "node_type": "db-dev-s",
+        "disable_backup": true,
+        "user_name": "my_initial_user",
+        "password": "thiZ_is_v&ry_s3cret"
+    }
+    ```
+
+    | Parameter        | Do                                                                 |
+    | :--------------- | :----------------------------------------------------------------- |
+    | `engine`         | database's engine version id                                       |
+    | `name`           | database's name                                                    |
+    | `node_type`      | Choose your node type                                              |
+    | `project_id`     | Your Scaleway project ID and X-Auth-Token are from your account    |
+    | `is_ha_cluster`  | Enable or disable high availability for database instance          |
+    | `disable_backup` | Disable automated backup on your database instance                 |
+    | `tags`           | list of tags ["tag1", "tag2", ...] attached to a database instance |
+    | `user_name`      | Identifier of the first user of your database                      |
+    | `password`       | Password for the fist user                                         |
+
+    Example:
+
+    ```bash
+    ?> curl -X POST -H "Content-Type: application/json" \
+    -H "X-Auth-Token: $SECRET_KEY" https://api.scaleway.com/rdb/v1/regions/$REGION/instances
+    -d "{
+        \"project_id\": \"$PROJECT_ID\",
+        \"name\": \"myDB\",
+        \"engine\": \"PostgreSQL-11\",
+        \"tags\": [\"donnerstag\"],
+        \"is_ha_cluster\": true,
+        \"node_type\": \"db-dev-s\",
+        \"disable_backup\": true,
+        \"user_name\": \"my_initial_user\",
+        \"password\": \"thiZ_is_v&ry_s3cret\"
+    }"
+    ```
+
+    ## How to connect to your instance?
+
+    Now you've created your database instance, you can open a connection between a
+    database client and your database. You will need a PostgreSQL client such as
+    [psql](https://www.postgresql.org/docs/current/static/app-psql.html)
+
+    **List instances**
+
+    - endpoint: https://api.scaleway.com/rdb/v1/regions/$REGION/instances
+
+    example:
+
+    ```bash
+    ?> curl -X GET -H "Content-Type: application/json" \
+    -H "X-Auth-Token: $SECRET_KEY" https://api.scaleway.com/rdb/v1/regions/$REGION/instances
+
+    {
+      "instances": [
+        {
+          "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "name": "myDB",
+          "organization_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "project_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+          "status": "ready",
+          "engine": "PostgreSQL-11",
+          "endpoint": {
+            "ip": "xxx.xxx.xxx.xxx",
+            "port": 22245,
+            "name": null
+          },
+          "tags": [
+            "donnerstag"
+          ],
+          "settings": [],
+          "backup_schedule": {
+            "frequency": 24,
+            "retention": 7,
+            "disabled": true
+          },
+          "is_ha_cluster": true,
+          "read_replicas": [],
+          "node_type": "db-dev-s",
+          "volume": {
+            "type": "lssd",
+            "size": 30000000000
+          }
+          "created_at": "2019-04-19T16:24:52.591417Z",
+          "region": "fr-par"
+        }
+      ],
+      "total_count": 1
+    }
+    ```
+
+    **Get the endpoint, port**
+
+    - endpoint: https://api.scaleway.com/rdb/v1/regions/$REGION/instances/{instance_id}
+
+    ```bash
+    ?> curl -X GET -H "Content-Type: application/json" \
+    -H "X-Auth-Token: $SECRET_KEY" https://api.scaleway.com/rdb/v1/regions/$REGION/instances/{instance_id}
+
+    {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "name": "myDB",
+      "organization_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "project_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "status": "ready",
+      "engine": "PostgreSQL-11",
+      "endpoint": {
+        "ip": "xxx.xxx.xxx.xxx",
+        "port": 22245,
+        "name": null
+      },
+      "tags": [
+        "donnerstag"
+      ],
+      "settings": [],
+      "backup_schedule": {
+        "frequency": 24,
+        "retention": 7,
+        "disabled": false
+      },
+      "volume": {
+        "type": "local",
+        "size": {
+          "bytes": 50000000000,
+        }
+      },
+      "is_ha_cluster": false,
+      "read_replicas": [],
+      "node_type": {
+        "name": "db-dev-s",
+        "stock_status": "available",
+        "description": "2 GB ram; 2 cpu; 50 GB LSSD storage",
+        "region": "fr-par"
+      },
+      "created_at": "2019-04-18T15:27:24.177854Z",
+      "region": "fr-par"
+    }
+    ```
+
+    **Connect to your database with psql client**
+
+    ```bash
+    ?> psql -h 192.0.2.250 -p 28991 -U my_initial_user -d rdb
+    password:
+
+    postsql>
+    ```
+
+    Congratulations! You have done your first steps on Database product !
+
+    ## References
+
+    - [api token](https://www.scaleway.com/docs/generate-an-api-token/): get your api token
+    - [organization id](https://www.scaleway.com/docs/retrieve-my-organization-id-throught-the-api/): get your organization id
+
+    # Migration to Scaleway Database for PostgreSQL
+
+    In order to migrate your PostgreSQL instance to a _Scaleway Database for PostgreSQL_ instance,
+    you will need the following:
+
+    - `pg_dump` command-line installed
+    - `psql` command-line installed
+    - scaleway database instance ip
+    - scaleway database instance port
+    - scaleway database instance user and password
+    - source instance user
+    - source instance port if required
+    - list of the database that you want to migrate
+
+    ## How to export your data from your source PostgreSQL
+
+    You can export your data from your source instance to a local file by performing the following command:
+
+    ```
+    ?> pg_dump –-host=<host> --port=<port> --username=<name> --dbname=<database_name> --file=<database>.sql
+    ```
+
+    If your source postgreSQL is in a docker container, the command will be:
+
+    ```
+    ?> docker exec -it $CONTAINER_NAME pg_dump --username=<name> --dbname=<database_name> > <database>.sql
+    ```
+
+    ## How to create your logical database and roles in your Scaleway Database instance
+
+    In order to restore a database, you have to create the destination database and users of that database in your instance.
+    You can create your database and roles by using the web console, or by using the API. Ensure that your user permission
+    is correctly set to `all`.
+
+    - create database: https://developers.scaleway.com/en/products/rdb/api/#post-560a84
+    - create user: https://developers.scaleway.com/en/products/rdb/api/#post-944e53
+
+    ## How to import your data to your destination PostgreSQL
+
+    Once you have created each destination database and its users, you can import your data from the `<database>.sql` file to your scaleway database instance by performing the following command:
+
+    ```
+    ?> psql --file=<database>.sql --host=<Scaleway Database Instance Ip> --port=<Scaleway Database Instance Port> --username=<user> --dbname=<destination database name>
+    ```
+
+    # Engine Specifics and Limitations
+
+    ## PostgreSQL
+
+    ### Versions
+
+    Scaleway Database for PostgreSQL supports PostgreSQL versions 10, 11, 12, 13 and 14.
+
+    ### System
+
+    Some modules are available for installation, including the popular TimescaleDB
+    and PostGIS. See FAQ for a list of allowed extensions.
+
+    ### Database Management
+
+    Logical databases are created either using Console/API or SQL.
+
+    - Databases created using the Console/API will be owned by an internal system user. These are called "managed databases".
+    - Databases created using SQL will be owned by the creator. These are called "unmanaged databases".
+
+    ### User Management
+
+    - Users with the `admin` level have the `CREATEROLE` and `CREATEDB` privileges
+    - Users do NOT have the `SUPERUSER` privileges
+    - Permissions management through the Console/API is only possible on "managed databases".
+
+    ### Backup and restoration
+
+    Database will be restored with the permissions they were backuped with.
+    However, privileges will be ignored for deleted users, and if objects
+    cannot be restored to the original owner, they will be owned by an internal system user.
+
+    ## MySQL
+
+    ### Versions
+
+    Scaleway Database for MySQL supports MySQL 8.
+
+    ### System
+
+    - Only the [InnoDB engine](https://dev.mysql.com/doc/refman/8.0/en/innodb-storage-engine.html) is supported
+    - [Global Transaction Identifier (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids-concepts.html) is enabled.
+    - [`mysql_native_password`](https://dev.mysql.com/doc/refman/8.0/en/native-pluggable-authentication.html) and [`caching_sha2_password`](https://dev.mysql.com/doc/refman/8.0/en/caching-sha2-pluggable-authentication.html) authentication are supported.
+      Default is [`mysql_native_password`](https://dev.mysql.com/doc/refman/8.0/en/native-pluggable-authentication.html) for compatibility.
+
+    ### User Management
+
+    - User with the `admin` level have access to all logical databases and can create new ones.
+    - Users created through the API are authenticated using the default authentication
+      plugin, which can be changed in the settings.
+
+    # Issues that you can encounter using Database
+
+    ## Disk full situation
+
+    Even if we manage your database storage space, you're responsible for its usage.
+
+    In the case you're reaching the space provisioned for your instance, the instance
+    will shift to the `disk_full` status, informing you that there is only 1GB left
+    on your database instance. This lets you either scale up the disk on the console
+    or leaves you enough room to do some cleanup.
+
+    In `disk_full` mode, the default transaction mode will shift to `read only`,
+    allowing your application to still access its data, while preventing new
+    data from being inserted.
+
+    In order to remove data from your instance, you must connect to it as usual,
+    but explicitly shift to a `read write` transaction, like this:
+
+    ```sql
+    -- On PostgreSQL
+    BEGIN;
+    SET TRANSACTION READ WRITE;
+    -- do some cleanup
+    COMMIT;
+    ```
+
+    ```sql
+    -- On MySQL
+    SET transaction_read_only=0;
+    BEGIN;
+    -- do some cleanup
+    COMMIT;
+    ```
+
+    When enough space is available on the instance, the default transaction mode
+    will change back to `read write` shortly after, allowing normal operation again.
+
+    Failing to cleanup or forcing insertions while the database is in `disk_full` mode will
+    lead to downtime.
+  version: v1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: Backups
+  description: |
+    Save and restore backups of your database instance.
+- name: Engines
+  description: |
+    Software that stores and retrieves data from a database. Each database engine has a name and versions.
+- name: Database Instances
+  description: |
+    A Database Instance is composed of one or more Nodes, depending of the is_ha_cluster setting. Autohealing is enabled by default for HA clusters. Database automated backup is enabled by default in order to prevent data loss.
+- name: Read replicas
+  description: |
+    A read replica is a live copy of the main database instance only available for reading. Read replica allows you to scale your database instance for read-heavy database workloads. Read replicas can also be used for Business Intelligence workloads. Listing of read replicas is available in the instance response object.
+    A read replica can have at most one direct access and one private network endpoint. Loadbalancer endpoint is not available on read replica even if this resource is displayed in the read replica response example.
+    If you want to remove a read replica endpoint, you can use the instance delete endpoint API call.
+    Instance Access Control List (ACL) also applies on read replica direct access endpoint. Don't forget to set it to improve the security of your read replica nodes.
+    Be aware that there can be replication lags between the primary node and its read replica nodes. You can try to reduce this lag with some good practices:
+    * All your tables should have a primary key
+    * Don't run large transactions that modify, delete or insert lots of rows. Try to split it into several small transactions.
+- name: ACL
+  description: |
+    Network Access Control List allows to control network in and out traffic by setting up ACL rules.
+- name: Instance Settings
+  description: |
+    Instance Settings are tunables of Database Engines. Available settings depend on the database engine and its version.
+- name: Privileges
+  description: |
+    Define some privileges to a user on a specific database.
+- name: Users
+  description: |
+    Manage users on your instance
+- name: Databases
+  description: |
+    Manage logical databases on your instance
+- name: NodeTypes
+  description: |
+    Node types powering your instance
+- name: Snapshots
+  description: |
+    Create, restore and manage block snapshot
+- name: Endpoints
+  description: |
+    Create and manage database instance endpoints
+components:
+  schemas:
+    scaleway.rdb.v1.ACLRule:
+      type: object
+      properties:
+        ip:
+          type: string
+          description: (IP network)
+          example: 1.2.3.4/32
+        port:
+          type: integer
+          format: uint32
+        protocol:
+          $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule.Protocol'
+        direction:
+          $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule.Direction'
+        action:
+          $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule.Action'
+        description:
+          type: string
+      x-properties-order:
+      - ip
+      - port
+      - protocol
+      - direction
+      - action
+      - description
+    scaleway.rdb.v1.ACLRule.Action:
+      type: string
+      enum:
+      - allow
+      - deny
+      default: allow
+    scaleway.rdb.v1.ACLRule.Direction:
+      type: string
+      enum:
+      - inbound
+      - outbound
+      default: inbound
+    scaleway.rdb.v1.ACLRule.Protocol:
+      type: string
+      enum:
+      - tcp
+      - udp
+      - icmp
+      default: tcp
+    scaleway.rdb.v1.ACLRuleRequest:
+      type: object
+      properties:
+        ip:
+          type: string
+          description: (IP network)
+          example: 1.2.3.4/32
+        description:
+          type: string
+      x-properties-order:
+      - ip
+      - description
+    scaleway.rdb.v1.AddInstanceACLRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: Rules enabled on the instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule'
+      x-properties-order:
+      - rules
+    scaleway.rdb.v1.AddInstanceSettingsResponse:
+      type: object
+      properties:
+        settings:
+          type: array
+          description: Settings available on the instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+      x-properties-order:
+      - settings
+    scaleway.rdb.v1.Database:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the database
+        owner:
+          type: string
+          description: Name of the owner of the database
+        managed:
+          type: boolean
+          description: Whether or not the database is managed or not
+        size:
+          type: integer
+          description: Size of the database (in bytes)
+          format: uint64
+      x-properties-order:
+      - name
+      - owner
+      - managed
+      - size
+    scaleway.rdb.v1.DatabaseBackup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID of the database backup
+        instance_id:
+          type: string
+          description: UUID of the instance
+        database_name:
+          type: string
+          description: Name of the database of this backup
+        name:
+          type: string
+          description: Name of the backup
+        status:
+          type: string
+          description: Status of the backup
+          enum:
+          - unknown
+          - creating
+          - ready
+          - restoring
+          - deleting
+          - error
+          - exporting
+          - locked
+          default: unknown
+        size:
+          type: integer
+          description: Size of the database backup (in bytes)
+          nullable: true
+        expires_at:
+          type: string
+          description: Expiration date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        created_at:
+          type: string
+          description: Creation date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Updated date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        instance_name:
+          type: string
+          description: Name of the instance of the backup
+        download_url:
+          type: string
+          description: URL you can download the backup from
+          nullable: true
+        download_url_expires_at:
+          type: string
+          description: Expiration date of the download link (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        region:
+          type: string
+          description: Region of this database backup
+        same_region:
+          type: boolean
+          description: Store logical backups in the same region as the source database
+            instance
+      x-properties-order:
+      - id
+      - instance_id
+      - database_name
+      - name
+      - status
+      - size
+      - expires_at
+      - created_at
+      - updated_at
+      - instance_name
+      - download_url
+      - download_url_expires_at
+      - region
+      - same_region
+    scaleway.rdb.v1.DatabaseEngine:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Engine name
+        logo_url:
+          type: string
+          description: Engine logo URL
+        versions:
+          type: array
+          description: Available versions
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.EngineVersion'
+        region:
+          type: string
+          description: Region of this database engine
+      x-properties-order:
+      - name
+      - logo_url
+      - versions
+      - region
+    scaleway.rdb.v1.DeleteInstanceACLRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: ACL rules present on the instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule'
+      x-properties-order:
+      - rules
+    scaleway.rdb.v1.DeleteInstanceSettingsResponse:
+      type: object
+      properties:
+        settings:
+          type: array
+          description: Settings names to delete from the instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+      x-properties-order:
+      - settings
+    scaleway.rdb.v1.Endpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID of the endpoint (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        ip:
+          type: string
+          description: IPv4 address of the endpoint (IP address)
+          example: 1.2.3.4
+          nullable: true
+          x-one-of: address
+        port:
+          type: integer
+          description: TCP port of the endpoint
+          format: uint32
+        name:
+          type: string
+          description: Name of the endpoint
+          nullable: true
+        private_network:
+          type: object
+          description: Private network details. One at the most per RDB instance or
+            read replica (an RDB instance and its read replica can have different
+            private networks). Cannot be updated (has to be deleted and recreated)
+          properties:
+            private_network_id:
+              type: string
+              description: UUID of the private network (UUID format)
+              example: 6170692e-7363-616c-6577-61792e636f6d
+            service_ip:
+              type: string
+              description: CIDR notation of the endpoint IPv4 address (IP network)
+              example: 1.2.3.4/32
+            zone:
+              type: string
+              description: Private network zone
+          x-properties-order:
+          - private_network_id
+          - service_ip
+          - zone
+          x-one-of: details
+        load_balancer:
+          type: object
+          description: Load balancer details. Public endpoint for RDB instances which
+            is systematically present. One per RDB instance
+          x-one-of: details
+        direct_access:
+          type: object
+          description: Direct access details. Public endpoint reserved for read replicas.
+            One per read replica
+          x-one-of: details
+        hostname:
+          type: string
+          description: Hostname of the endpoint
+          x-one-of: address
+      x-properties-order:
+      - id
+      - ip
+      - port
+      - name
+      - private_network
+      - load_balancer
+      - direct_access
+      - hostname
+    scaleway.rdb.v1.EndpointSpec:
+      type: object
+      properties:
+        load_balancer:
+          type: object
+          description: Load balancer endpoint specifications. Public endpoint for
+            RDB instances which is systematically present. One per RDB instance
+          x-one-of: spec
+        private_network:
+          type: object
+          description: Private network endpoint specifications. One at the most per
+            RDB instance or read replica (an RDB instance and its read replica can
+            have different private networks). Cannot be updated (has to be deleted
+            and recreated)
+          properties:
+            private_network_id:
+              type: string
+              description: UUID of the private network to be connected to the database
+                instance (UUID format)
+              example: 6170692e-7363-616c-6577-61792e636f6d
+            service_ip:
+              type: string
+              description: Endpoint IPv4 adress with a CIDR notation. Check documentation
+                about IP and subnet limitation. (IP network)
+              example: 1.2.3.4/32
+          x-properties-order:
+          - private_network_id
+          - service_ip
+          x-one-of: spec
+      x-properties-order:
+      - load_balancer
+      - private_network
+    scaleway.rdb.v1.EngineSetting:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Setting name from database engine
+        default_value:
+          type: string
+          description: Value set when not specified
+        hot_configurable:
+          type: boolean
+          description: Setting can be applied without restarting
+        description:
+          type: string
+          description: Setting description
+        property_type:
+          type: string
+          description: Setting type
+          enum:
+          - BOOLEAN
+          - INT
+          - STRING
+          - FLOAT
+          default: BOOLEAN
+        unit:
+          type: string
+          description: Setting base unit
+          nullable: true
+        string_constraint:
+          type: string
+          description: Validation regex for string type settings
+          nullable: true
+        int_min:
+          type: integer
+          description: Minimum value for int types
+          nullable: true
+        int_max:
+          type: integer
+          description: Maximum value for int types
+          nullable: true
+        float_min:
+          type: object
+          description: Minimum value for float types
+          properties:
+            value:
+              type: number
+              format: float
+          x-properties-order:
+          - value
+        float_max:
+          type: object
+          description: Maximum value for float types
+          properties:
+            value:
+              type: number
+              format: float
+          x-properties-order:
+          - value
+      x-properties-order:
+      - name
+      - default_value
+      - hot_configurable
+      - description
+      - property_type
+      - unit
+      - string_constraint
+      - int_min
+      - int_max
+      - float_min
+      - float_max
+    scaleway.rdb.v1.EngineVersion:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Database engine version
+        name:
+          type: string
+          description: Database engine name
+        end_of_life:
+          type: string
+          description: End of life date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        available_settings:
+          type: array
+          description: Engine settings available to be set
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.EngineSetting'
+        disabled:
+          type: boolean
+          description: Disabled versions cannot be created
+        beta:
+          type: boolean
+          description: Beta status of engine version
+        available_init_settings:
+          type: array
+          description: Engine settings available to be set at database initialisation
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.EngineSetting'
+      x-properties-order:
+      - version
+      - name
+      - end_of_life
+      - available_settings
+      - disabled
+      - beta
+      - available_init_settings
+    scaleway.rdb.v1.Instance:
+      type: object
+      properties:
+        created_at:
+          type: string
+          description: Creation date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        volume:
+          type: object
+          description: Volumes of the instance
+          properties:
+            type:
+              $ref: '#/components/schemas/scaleway.rdb.v1.Volume.Type'
+            size:
+              type: integer
+              description: (in bytes)
+              format: uint64
+          x-properties-order:
+          - type
+          - size
+        region:
+          type: string
+          description: Region the instance is in
+        id:
+          type: string
+          description: UUID of the instance (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        name:
+          type: string
+          description: Name of the instance
+        organization_id:
+          type: string
+          description: Organization ID the instance belongs to (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        project_id:
+          type: string
+          description: Project ID the instance belongs to (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        status:
+          type: string
+          description: Status of the instance
+          enum:
+          - unknown
+          - ready
+          - provisioning
+          - configuring
+          - deleting
+          - error
+          - autohealing
+          - locked
+          - initializing
+          - disk_full
+          - backuping
+          - snapshotting
+          - restarting
+          default: unknown
+        engine:
+          type: string
+          description: Database engine of the database (PostgreSQL, MySQL, ...)
+        upgradable_version:
+          type: array
+          description: Available database engine versions for upgrade
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.UpgradableVersion'
+        endpoint:
+          type: object
+          description: Endpoint of the instance
+          deprecated: true
+          properties:
+            id:
+              type: string
+              description: UUID of the endpoint (UUID format)
+              example: 6170692e-7363-616c-6577-61792e636f6d
+            ip:
+              type: string
+              description: IPv4 address of the endpoint (IP address)
+              example: 1.2.3.4
+              nullable: true
+              x-one-of: address
+            port:
+              type: integer
+              description: TCP port of the endpoint
+              format: uint32
+            name:
+              type: string
+              description: Name of the endpoint
+              nullable: true
+            private_network:
+              type: object
+              description: Private network details. One at the most per RDB instance
+                or read replica (an RDB instance and its read replica can have different
+                private networks). Cannot be updated (has to be deleted and recreated)
+              properties:
+                private_network_id:
+                  type: string
+                  description: UUID of the private network (UUID format)
+                  example: 6170692e-7363-616c-6577-61792e636f6d
+                service_ip:
+                  type: string
+                  description: CIDR notation of the endpoint IPv4 address (IP network)
+                  example: 1.2.3.4/32
+                zone:
+                  type: string
+                  description: Private network zone
+              x-properties-order:
+              - private_network_id
+              - service_ip
+              - zone
+              x-one-of: details
+            load_balancer:
+              type: object
+              description: Load balancer details. Public endpoint for RDB instances
+                which is systematically present. One per RDB instance
+              x-one-of: details
+            direct_access:
+              type: object
+              description: Direct access details. Public endpoint reserved for read
+                replicas. One per read replica
+              x-one-of: details
+            hostname:
+              type: string
+              description: Hostname of the endpoint
+              x-one-of: address
+          x-properties-order:
+          - id
+          - ip
+          - port
+          - name
+          - private_network
+          - load_balancer
+          - direct_access
+          - hostname
+        tags:
+          type: array
+          description: List of tags applied to the instance
+          items:
+            type: string
+        settings:
+          type: array
+          description: Advanced settings of the instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+        backup_schedule:
+          type: object
+          description: Backup schedule of the instance
+          properties:
+            frequency:
+              type: integer
+              format: uint32
+            retention:
+              type: integer
+              format: uint32
+            disabled:
+              type: boolean
+          x-properties-order:
+          - frequency
+          - retention
+          - disabled
+        is_ha_cluster:
+          type: boolean
+          description: Whether or not High-Availability is enabled
+        read_replicas:
+          type: array
+          description: Read replicas of the instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplica'
+        node_type:
+          type: string
+          description: Node type of the instance
+        init_settings:
+          type: array
+          description: List of engine settings to be set at database initialisation
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+        endpoints:
+          type: array
+          description: List of instance endpoints
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Endpoint'
+        logs_policy:
+          type: object
+          description: Logs policy of the instance
+          properties:
+            max_age_retention:
+              type: integer
+              description: Max age (in day) of remote logs to keep on the database
+                instance
+              nullable: true
+            total_disk_retention:
+              type: integer
+              description: Max disk size of remote logs to keep on the database instance
+                (in bytes)
+              nullable: true
+          x-properties-order:
+          - max_age_retention
+          - total_disk_retention
+        backup_same_region:
+          type: boolean
+          description: Store logical backups in the same region as the database instance
+        maintenances:
+          type: array
+          description: List of instance maintenances
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Maintenance'
+      x-properties-order:
+      - created_at
+      - volume
+      - region
+      - id
+      - name
+      - organization_id
+      - project_id
+      - status
+      - engine
+      - upgradable_version
+      - endpoint
+      - tags
+      - settings
+      - backup_schedule
+      - is_ha_cluster
+      - read_replicas
+      - node_type
+      - init_settings
+      - endpoints
+      - logs_policy
+      - backup_same_region
+      - maintenances
+    scaleway.rdb.v1.InstanceLog:
+      type: object
+      properties:
+        download_url:
+          type: string
+          description: Presigned S3 URL to download your log file
+          nullable: true
+        id:
+          type: string
+          description: UUID of the instance log
+        status:
+          type: string
+          description: Status of the logs in a given instance
+          enum:
+          - unknown
+          - ready
+          - creating
+          - error
+          default: unknown
+        node_name:
+          type: string
+          description: Name of the undelying node
+        expires_at:
+          type: string
+          description: Expiration date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        created_at:
+          type: string
+          description: Creation date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        region:
+          type: string
+          description: Region the instance is in
+      x-properties-order:
+      - download_url
+      - id
+      - status
+      - node_name
+      - expires_at
+      - created_at
+      - region
+    scaleway.rdb.v1.InstanceMetrics:
+      type: object
+      properties:
+        timeseries:
+          type: array
+          description: Time series of metrics of a given instance
+          items:
+            $ref: '#/components/schemas/scaleway.std.TimeSeries'
+      x-properties-order:
+      - timeseries
+    scaleway.rdb.v1.InstanceSetting:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      x-properties-order:
+      - name
+      - value
+    scaleway.rdb.v1.ListDatabaseBackupsResponse:
+      type: object
+      properties:
+        database_backups:
+          type: array
+          description: List of database backups
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+        total_count:
+          type: integer
+          description: Total count of database backups available
+          format: uint32
+      x-properties-order:
+      - database_backups
+      - total_count
+    scaleway.rdb.v1.ListDatabaseEnginesResponse:
+      type: object
+      properties:
+        engines:
+          type: array
+          description: List of the available database engines
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseEngine'
+        total_count:
+          type: integer
+          description: Total count of database engines available
+          format: uint32
+      x-properties-order:
+      - engines
+      - total_count
+    scaleway.rdb.v1.ListDatabasesResponse:
+      type: object
+      properties:
+        databases:
+          type: array
+          description: List of the databases
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Database'
+        total_count:
+          type: integer
+          description: Total count of databases present on a given instance
+          format: uint32
+      x-properties-order:
+      - databases
+      - total_count
+    scaleway.rdb.v1.ListInstanceACLRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: List of the ACL rules present on a given instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule'
+        total_count:
+          type: integer
+          description: Total count of ACL rules present on a given instance
+          format: uint32
+      x-properties-order:
+      - rules
+      - total_count
+    scaleway.rdb.v1.ListInstanceLogsDetailsResponse:
+      type: object
+      properties:
+        details:
+          type: array
+          description: Remote instance logs details
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.ListInstanceLogsDetailsResponse.InstanceLogDetail'
+      x-properties-order:
+      - details
+    scaleway.rdb.v1.ListInstanceLogsDetailsResponse.InstanceLogDetail:
+      type: object
+      properties:
+        log_name:
+          type: string
+        size:
+          type: integer
+          format: uint64
+      x-properties-order:
+      - log_name
+      - size
+    scaleway.rdb.v1.ListInstanceLogsResponse:
+      type: object
+      properties:
+        instance_logs:
+          type: array
+          description: Available logs in a given instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceLog'
+      x-properties-order:
+      - instance_logs
+    scaleway.rdb.v1.ListInstancesResponse:
+      type: object
+      properties:
+        instances:
+          type: array
+          description: List all instances available in a given organization/project
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+        total_count:
+          type: integer
+          description: Total count of instances available in a given organization/project
+          format: uint32
+      x-properties-order:
+      - instances
+      - total_count
+    scaleway.rdb.v1.ListNodeTypesResponse:
+      type: object
+      properties:
+        node_types:
+          type: array
+          description: Types of the node
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.NodeType'
+        total_count:
+          type: integer
+          description: Total count of node-types available
+          format: uint32
+      x-properties-order:
+      - node_types
+      - total_count
+    scaleway.rdb.v1.ListPrivilegesResponse:
+      type: object
+      properties:
+        privileges:
+          type: array
+          description: Privileges of a given user in a given database in a given instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Privilege'
+        total_count:
+          type: integer
+          description: Total count of privileges present on a given database
+          format: uint32
+      x-properties-order:
+      - privileges
+      - total_count
+    scaleway.rdb.v1.ListSnapshotsResponse:
+      type: object
+      properties:
+        snapshots:
+          type: array
+          description: List of snapshots
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Snapshot'
+        total_count:
+          type: integer
+          description: Total count of snapshots available
+          format: uint32
+      x-properties-order:
+      - snapshots
+      - total_count
+    scaleway.rdb.v1.ListUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          description: List of users in a given instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.User'
+        total_count:
+          type: integer
+          description: Total count of users present on a given instance
+          format: uint32
+      x-properties-order:
+      - users
+      - total_count
+    scaleway.rdb.v1.Maintenance:
+      type: object
+      properties:
+        starts_at:
+          type: string
+          description: Start date of the maintenance window (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        stops_at:
+          type: string
+          description: End date of the maintenance window (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        closed_at:
+          type: string
+          description: Closed maintenance date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        reason:
+          type: string
+          description: Maintenance information message
+        status:
+          type: string
+          description: Status of the maintenance
+          enum:
+          - unknown
+          - pending
+          - done
+          - canceled
+          default: unknown
+      x-properties-order:
+      - starts_at
+      - stops_at
+      - closed_at
+      - reason
+      - status
+    scaleway.rdb.v1.NodeType:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Node Type name identifier
+        stock_status:
+          type: string
+          description: Current stock status for the Node Type
+          enum:
+          - unknown
+          - low_stock
+          - out_of_stock
+          - available
+          default: unknown
+        description:
+          type: string
+          description: Current specs of the offer
+        vcpus:
+          type: integer
+          description: Number of virtual CPUs
+          format: uint32
+        memory:
+          type: integer
+          description: Quantity of RAM (in bytes)
+          format: uint64
+        volume_constraint:
+          type: object
+          description: '[deprecated] Node Type volume constraints'
+          deprecated: true
+          properties:
+            min_size:
+              type: integer
+              description: '[deprecated] Mimimum size required for the Volume (in
+                bytes)'
+              format: uint64
+            max_size:
+              type: integer
+              description: '[deprecated] Maximum size required for the Volume (in
+                bytes)'
+              format: uint64
+          x-properties-order:
+          - min_size
+          - max_size
+        is_bssd_compatible:
+          type: boolean
+          description: The Node Type is compliant with Block Storage
+          deprecated: true
+        disabled:
+          type: boolean
+          description: The Node Type is currently disabled
+        beta:
+          type: boolean
+          description: The Node Type is currently in beta
+        available_volume_types:
+          type: array
+          description: Available storage options for the Node Type
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.NodeType.VolumeType'
+        is_ha_required:
+          type: boolean
+          description: The Node Type can be used only with high availability option
+        region:
+          type: string
+          description: Region the Node Type is in
+      x-properties-order:
+      - name
+      - stock_status
+      - description
+      - vcpus
+      - memory
+      - volume_constraint
+      - is_bssd_compatible
+      - disabled
+      - beta
+      - available_volume_types
+      - is_ha_required
+      - region
+    scaleway.rdb.v1.NodeType.VolumeType:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Volume Type
+          enum:
+          - lssd
+          - bssd
+          default: lssd
+        description:
+          type: string
+          description: The description of the Volume
+        min_size:
+          type: integer
+          description: Mimimum size required for the Volume (in bytes)
+          format: uint64
+        max_size:
+          type: integer
+          description: Maximum size required for the Volume (in bytes)
+          format: uint64
+        chunk_size:
+          type: integer
+          description: Minimum increment level for a Block Storage volume size (in
+            bytes)
+          format: uint64
+      x-properties-order:
+      - type
+      - description
+      - min_size
+      - max_size
+      - chunk_size
+    scaleway.rdb.v1.PrepareInstanceLogsResponse:
+      type: object
+      properties:
+        instance_logs:
+          type: array
+          description: Instance logs for a given instance between a start and an end
+            date
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceLog'
+      x-properties-order:
+      - instance_logs
+    scaleway.rdb.v1.Privilege:
+      type: object
+      properties:
+        permission:
+          type: string
+          description: Permission (Read, Read/Write, All, Custom)
+          enum:
+          - readonly
+          - readwrite
+          - all
+          - custom
+          - none
+          default: readonly
+        database_name:
+          type: string
+          description: Name of the database
+        user_name:
+          type: string
+          description: Name of the user
+      x-properties-order:
+      - permission
+      - database_name
+      - user_name
+    scaleway.rdb.v1.ReadReplica:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID of the read replica (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        endpoints:
+          type: array
+          description: Display read replica connection information
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.Endpoint'
+        status:
+          type: string
+          description: Read replica status
+          enum:
+          - unknown
+          - provisioning
+          - initializing
+          - ready
+          - deleting
+          - error
+          - locked
+          - configuring
+          default: unknown
+        region:
+          type: string
+          description: Region the read replica is in
+      x-properties-order:
+      - id
+      - endpoints
+      - status
+      - region
+    scaleway.rdb.v1.ReadReplicaEndpointSpec:
+      type: object
+      properties:
+        direct_access:
+          type: object
+          description: Direct access endpoint specifications. Public endpoint reserved
+            for read replicas. One per read replica
+          x-one-of: spec
+        private_network:
+          type: object
+          description: Private network endpoint specifications. One at the most per
+            read replica. Cannot be updated (has to be deleted and recreated)
+          properties:
+            private_network_id:
+              type: string
+              description: UUID of the private network to be connected to the read
+                replica (UUID format)
+              example: 6170692e-7363-616c-6577-61792e636f6d
+            service_ip:
+              type: string
+              description: Endpoint IPv4 adress with a CIDR notation. Check documentation
+                about IP and subnet limitations. (IP network)
+              example: 1.2.3.4/32
+          x-properties-order:
+          - private_network_id
+          - service_ip
+          x-one-of: spec
+      x-properties-order:
+      - direct_access
+      - private_network
+    scaleway.rdb.v1.SetInstanceACLRulesResponse:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: ACLs rules configured for an instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.ACLRule'
+      x-properties-order:
+      - rules
+    scaleway.rdb.v1.SetInstanceSettingsResponse:
+      type: object
+      properties:
+        settings:
+          type: array
+          description: Settings configured for a given instance
+          items:
+            $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+      x-properties-order:
+      - settings
+    scaleway.rdb.v1.Snapshot:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID of the snapshot
+        instance_id:
+          type: string
+          description: UUID of the instance
+        name:
+          type: string
+          description: Name of the snapshot
+        status:
+          type: string
+          description: Status of the snapshot
+          enum:
+          - unknown
+          - creating
+          - ready
+          - restoring
+          - deleting
+          - error
+          - locked
+          default: unknown
+        size:
+          type: integer
+          description: Size of the snapshot (in bytes)
+          nullable: true
+        expires_at:
+          type: string
+          description: Expiration date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        created_at:
+          type: string
+          description: Creation date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Updated date (Format ISO 8601) (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        instance_name:
+          type: string
+          description: Name of the instance of the snapshot
+        node_type:
+          type: string
+          description: Source node type
+        region:
+          type: string
+          description: Region of this snapshot
+      x-properties-order:
+      - id
+      - instance_id
+      - name
+      - status
+      - size
+      - expires_at
+      - created_at
+      - updated_at
+      - instance_name
+      - node_type
+      - region
+    scaleway.rdb.v1.UpgradableVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        name:
+          type: string
+        version:
+          type: string
+        minor_version:
+          type: string
+      x-properties-order:
+      - id
+      - name
+      - version
+      - minor_version
+    scaleway.rdb.v1.User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the user (Length must be between 1 and 63 characters,
+            First character must be an alphabet character (a-zA-Z), Your Username
+            cannot start with '_rdb', Only a-zA-Z0-9_$- characters are accepted)
+        is_admin:
+          type: boolean
+          description: Whether or not a user got administrative privileges on the
+            database instance
+      x-properties-order:
+      - name
+      - is_admin
+    scaleway.rdb.v1.Volume.Type:
+      type: string
+      enum:
+      - lssd
+      - bssd
+      default: lssd
+    scaleway.std.File:
+      type: object
+      properties:
+        name:
+          type: string
+        content_type:
+          type: string
+        content:
+          type: string
+      x-properties-order:
+      - name
+      - content_type
+      - content
+    scaleway.std.TimeSeries:
+      type: object
+      properties:
+        name:
+          type: string
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.std.TimeSeries.Point'
+        metadata:
+          type: object
+          properties:
+            <metadataKey>:
+              type: string
+          additionalProperties: true
+      x-properties-order:
+      - name
+      - points
+      - metadata
+    scaleway.std.TimeSeries.Point:
+      type: array
+      items:
+        oneOf:
+        - type: string
+          format: date-time
+        - type: number
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /rdb/v1/regions/{region}/backups:
+    get:
+      tags:
+      - Backups
+      operationId: ListDatabaseBackups
+      summary: List database backups
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: name
+        description: Name of the database backups
+        schema:
+          type: string
+          description: Name of the database backups
+          nullable: true
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering database backups listing
+        schema:
+          type: string
+          description: Criteria to use when ordering database backups listing
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          - status_asc
+          - status_desc
+          default: created_at_asc
+      - in: query
+        name: instance_id
+        description: UUID of the instance
+        schema:
+          type: string
+          description: UUID of the instance
+          nullable: true
+      - in: query
+        name: organization_id
+        description: Organization ID the database backups belongs to
+        schema:
+          type: string
+          description: Organization ID the database backups belongs to
+          nullable: true
+      - in: query
+        name: project_id
+        description: Project ID the database backups belongs to
+        schema:
+          type: string
+          description: Project ID the database backups belongs to
+          nullable: true
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListDatabaseBackupsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/backups" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - Backups
+      operationId: CreateDatabaseBackup
+      summary: Create a database backup
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                instance_id:
+                  type: string
+                  description: UUID of the instance
+                database_name:
+                  type: string
+                  description: Name of the database you want to make a backup of
+                name:
+                  type: string
+                  description: Name of the backup
+                expires_at:
+                  type: string
+                  description: Expiration date (Format ISO 8601) (RFC 3339 format)
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+              x-properties-order:
+              - instance_id
+              - database_name
+              - name
+              - expires_at
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "database_name": "string",
+              "instance_id": "string",
+              "name": "string"
+            }' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/backups" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            database_name="string" \
+            instance_id="string" \
+            name="string"
+  /rdb/v1/regions/{region}/backups/{database_backup_id}:
+    get:
+      tags:
+      - Backups
+      operationId: GetDatabaseBackup
+      summary: Get a database backup
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: database_backup_id
+        description: UUID of the database backup
+        required: true
+        schema:
+          type: string
+          description: UUID of the database backup
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Backups
+      operationId: UpdateDatabaseBackup
+      summary: Update a database backup
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: database_backup_id
+        description: UUID of the database backup to update
+        required: true
+        schema:
+          type: string
+          description: UUID of the database backup to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the Database Backup
+                  nullable: true
+                expires_at:
+                  type: string
+                  description: Expiration date (Format ISO 8601) (RFC 3339 format)
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+              x-properties-order:
+              - name
+              - expires_at
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Backups
+      operationId: DeleteDatabaseBackup
+      summary: Delete a database backup
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: database_backup_id
+        description: UUID of the database backup to delete
+        required: true
+        schema:
+          type: string
+          description: UUID of the database backup to delete
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/backups/{database_backup_id}/export:
+    post:
+      tags:
+      - Backups
+      operationId: ExportDatabaseBackup
+      summary: Export a database backup
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: database_backup_id
+        description: UUID of the database backup you want to export
+        required: true
+        schema:
+          type: string
+          description: UUID of the database backup you want to export
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}/export"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}/export" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/backups/{database_backup_id}/restore:
+    post:
+      tags:
+      - Backups
+      operationId: RestoreDatabaseBackup
+      summary: Restore a database backup
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: database_backup_id
+        description: Backup of a logical database
+        required: true
+        schema:
+          type: string
+          description: Backup of a logical database
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DatabaseBackup'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                database_name:
+                  type: string
+                  description: Defines the destination database in order to restore
+                    into a specified database, the default destination is set to the
+                    origin database of the backup
+                  nullable: true
+                instance_id:
+                  type: string
+                  description: Defines the rdb instance where the backup has to be
+                    restored
+              required:
+              - instance_id
+              x-properties-order:
+              - database_name
+              - instance_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"instance_id":"string"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}/restore"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/backups/{database_backup_id}/restore" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            instance_id="string"
+  /rdb/v1/regions/{region}/database-engines:
+    get:
+      tags:
+      - Engines
+      operationId: ListDatabaseEngines
+      summary: List available database engines
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: name
+        description: Name of the Database Engine
+        schema:
+          type: string
+          description: Name of the Database Engine
+          nullable: true
+      - in: query
+        name: version
+        description: Version of the Database Engine
+        schema:
+          type: string
+          description: Version of the Database Engine
+          nullable: true
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListDatabaseEnginesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/database-engines"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/database-engines" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/endpoints/{endpoint_id}:
+    get:
+      tags:
+      - Endpoints
+      operationId: GetEndpoint
+      summary: Get an instance endpoint
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: endpoint_id
+        description: UUID of the endpoint you want to get
+        required: true
+        schema:
+          type: string
+          description: UUID of the endpoint you want to get
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Endpoint'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/endpoints/{endpoint_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/endpoints/{endpoint_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Endpoints
+      operationId: DeleteEndpoint
+      summary: Delete an instance endpoint
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: endpoint_id
+        description: This endpoint can also be used to delete a read replica endpoint.
+        required: true
+        schema:
+          type: string
+          description: This endpoint can also be used to delete a read replica endpoint.
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/endpoints/{endpoint_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/endpoints/{endpoint_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances:
+    get:
+      tags:
+      - Database Instances
+      operationId: ListInstances
+      summary: List instances
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: tags
+        description: List instance that have a given tags
+        schema:
+          type: array
+          description: List instance that have a given tags
+          items:
+            type: string
+      - in: query
+        name: name
+        description: List instance that match a given name pattern
+        schema:
+          type: string
+          description: List instance that match a given name pattern
+          nullable: true
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering instance listing
+        schema:
+          type: string
+          description: Criteria to use when ordering instance listing
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          - region
+          - status_asc
+          - status_desc
+          default: created_at_asc
+      - in: query
+        name: organization_id
+        description: Please use `project_id` instead
+        schema:
+          type: string
+          description: Please use `project_id` instead
+          nullable: true
+      - in: query
+        name: project_id
+        description: Project ID to list the instance of
+        schema:
+          type: string
+          description: Project ID to list the instance of
+          nullable: true
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListInstancesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances?tags=[string]"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            tags==[string]
+    post:
+      tags:
+      - Database Instances
+      operationId: CreateInstance
+      summary: Create an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                organization_id:
+                  type: string
+                  description: Please use `project_id` instead
+                  deprecated: true
+                  x-one-of: ProjectIdentifier
+                project_id:
+                  type: string
+                  description: The project ID on which to create the instance
+                  x-one-of: ProjectIdentifier
+                name:
+                  type: string
+                  description: Name of the instance
+                engine:
+                  type: string
+                  description: Database engine of the database (PostgreSQL, MySQL,
+                    ...)
+                user_name:
+                  type: string
+                  description: Name of the user created when the instance is created
+                password:
+                  type: string
+                  description: Password of the user
+                node_type:
+                  type: string
+                  description: Type of node to use for the instance
+                is_ha_cluster:
+                  type: boolean
+                  description: Whether or not High-Availability is enabled
+                disable_backup:
+                  type: boolean
+                  description: Whether or not backups are disabled
+                tags:
+                  type: array
+                  description: Tags to apply to the instance
+                  items:
+                    type: string
+                init_settings:
+                  type: array
+                  description: List of engine settings to be set at database initialisation
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+                volume_type:
+                  type: string
+                  description: Type of volume where data are stored (lssd, bssd, ...)
+                  enum:
+                  - lssd
+                  - bssd
+                  default: lssd
+                volume_size:
+                  type: integer
+                  description: Volume size when volume_type is not lssd (in bytes)
+                  format: uint64
+                init_endpoints:
+                  type: array
+                  description: One or multiple EndpointSpec used to expose your database
+                    instance. A load_balancer public endpoint is systematically created
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.EndpointSpec'
+                backup_same_region:
+                  type: boolean
+                  description: Store logical backups in the same region as the database
+                    instance
+              required:
+              - engine
+              - user_name
+              - password
+              - node_type
+              x-properties-order:
+              - organization_id
+              - project_id
+              - name
+              - engine
+              - user_name
+              - password
+              - node_type
+              - is_ha_cluster
+              - disable_backup
+              - tags
+              - init_settings
+              - volume_type
+              - volume_size
+              - init_endpoints
+              - backup_same_region
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "backup_same_region": false,
+              "disable_backup": false,
+              "engine": "string",
+              "init_endpoints": [
+                  ""
+              ],
+              "init_settings": [
+                  ""
+              ],
+              "is_ha_cluster": false,
+              "name": "string",
+              "node_type": "string",
+              "password": "string",
+              "tags": [
+                  "string"
+              ],
+              "user_name": "string",
+              "volume_size": 42
+            }' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            backup_same_region:=false \
+            disable_backup:=false \
+            engine="string" \
+            init_endpoints:='[
+              ""
+            ]' \
+            init_settings:='[
+              ""
+            ]' \
+            is_ha_cluster:=false \
+            name="string" \
+            node_type="string" \
+            password="string" \
+            tags:='[
+              "string"
+            ]' \
+            user_name="string" \
+            volume_size:=42
+  /rdb/v1/regions/{region}/instances/{instance_id}:
+    get:
+      tags:
+      - Database Instances
+      operationId: GetInstance
+      summary: Get an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Database Instances
+      operationId: UpdateInstance
+      summary: Update an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance to update
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                backup_schedule_frequency:
+                  type: integer
+                  description: In hours
+                  nullable: true
+                backup_schedule_retention:
+                  type: integer
+                  description: In days
+                  nullable: true
+                is_backup_schedule_disabled:
+                  type: boolean
+                  description: Whether or not the backup schedule is disabled
+                  nullable: true
+                name:
+                  type: string
+                  description: Name of the instance
+                  nullable: true
+                tags:
+                  type: array
+                  description: Tags of a given instance
+                  nullable: true
+                  items:
+                    type: string
+                logs_policy:
+                  type: object
+                  description: Logs policy of the instance
+                  properties:
+                    max_age_retention:
+                      type: integer
+                      description: Max age (in day) of remote logs to keep on the
+                        database instance
+                      nullable: true
+                    total_disk_retention:
+                      type: integer
+                      description: Max disk size of remote logs to keep on the database
+                        instance (in bytes)
+                      nullable: true
+                  x-properties-order:
+                  - max_age_retention
+                  - total_disk_retention
+                backup_same_region:
+                  type: boolean
+                  description: Store logical backups in the same region as the database
+                    instance
+                  nullable: true
+              x-properties-order:
+              - backup_schedule_frequency
+              - backup_schedule_retention
+              - is_backup_schedule_disabled
+              - name
+              - tags
+              - logs_policy
+              - backup_same_region
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"logs_policy":{"max_age_retention":42,"total_disk_retention":42}}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            logs_policy:='{"max_age_retention":42,"total_disk_retention":42}'
+    delete:
+      tags:
+      - Database Instances
+      operationId: DeleteInstance
+      summary: Delete an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance to delete
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance to delete
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/acls:
+    get:
+      tags:
+      - ACL
+      operationId: ListInstanceACLRules
+      summary: List ACL rules of a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListInstanceACLRulesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - ACL
+      operationId: AddInstanceACLRules
+      summary: Add an ACL instance to a given instance
+      description: Add an additional ACL rule to a database instance.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to add acl rules to
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to add acl rules to
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.AddInstanceACLRulesResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rules:
+                  type: array
+                  description: ACLs rules to add to the instance
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.ACLRuleRequest'
+              required:
+              - rules
+              x-properties-order:
+              - rules
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"rules":[""]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            rules:='[""]'
+    put:
+      tags:
+      - ACL
+      operationId: SetInstanceACLRules
+      summary: Set ACL rules for a given instance
+      description: Replace all the ACL rules of a database instance.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance where the ACL rules has to be set
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance where the ACL rules has to be set
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.SetInstanceACLRulesResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rules:
+                  type: array
+                  description: ACL rules to define for the instance
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.ACLRuleRequest'
+              required:
+              - rules
+              x-properties-order:
+              - rules
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PUT \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"rules":[""]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls"
+      - lang: HTTPie
+        source: |-
+          http PUT "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            rules:='[""]'
+    delete:
+      tags:
+      - ACL
+      operationId: DeleteInstanceACLRules
+      summary: Delete ACL rules of a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to delete an ACL rules from
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to delete an ACL rules from
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DeleteInstanceACLRulesResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                acl_rule_ips:
+                  type: array
+                  description: ACL rules IP present on the instance
+                  items:
+                    type: string
+              required:
+              - acl_rule_ips
+              x-properties-order:
+              - acl_rule_ips
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"acl_rule_ips":["string"]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/acls" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            acl_rule_ips:='["string"]'
+  /rdb/v1/regions/{region}/instances/{instance_id}/certificate:
+    get:
+      tags:
+      - Database Instances
+      operationId: GetInstanceCertificate
+      summary: Get the TLS certificate of an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.std.File'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/certificate"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/certificate" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/clone:
+    post:
+      tags:
+      - Database Instances
+      operationId: CloneInstance
+      summary: Clone an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to clone
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to clone
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the clone instance
+                node_type:
+                  type: string
+                  description: Node type of the clone
+                  nullable: true
+              x-properties-order:
+              - name
+              - node_type
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"string"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/clone"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/clone" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name="string"
+  /rdb/v1/regions/{region}/instances/{instance_id}/databases:
+    get:
+      tags:
+      - Databases
+      operationId: ListDatabases
+      summary: List all database in a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance to list database of
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance to list database of
+      - in: query
+        name: name
+        description: Name of the database
+        schema:
+          type: string
+          description: Name of the database
+          nullable: true
+      - in: query
+        name: managed
+        description: Whether or not the database is managed
+        schema:
+          type: boolean
+          description: Whether or not the database is managed
+          nullable: true
+      - in: query
+        name: owner
+        description: User that owns this database
+        schema:
+          type: string
+          description: User that owns this database
+          nullable: true
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering database listing
+        schema:
+          type: string
+          description: Criteria to use when ordering database listing
+          enum:
+          - name_asc
+          - name_desc
+          - size_asc
+          - size_desc
+          default: name_asc
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListDatabasesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/databases"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/databases" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - Databases
+      operationId: CreateDatabase
+      summary: Create a database in a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance where to create the database
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance where to create the database
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Database'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the database
+              x-properties-order:
+              - name
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"string"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/databases"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/databases" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name="string"
+  /rdb/v1/regions/{region}/instances/{instance_id}/databases/{name}:
+    delete:
+      tags:
+      - Databases
+      operationId: DeleteDatabase
+      summary: Delete a database in a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance where to delete the database
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance where to delete the database
+      - in: path
+        name: name
+        description: Name of the database to delete
+        required: true
+        schema:
+          type: string
+          description: Name of the database to delete
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/databases/{name}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/databases/{name}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/endpoints:
+    post:
+      tags:
+      - Endpoints
+      operationId: CreateEndpoint
+      summary: Create a new instance endpoint
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to add endpoint to
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to add endpoint to
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Endpoint'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                endpoint_spec:
+                  type: object
+                  description: Specification of the endpoint you want to create
+                  properties:
+                    load_balancer:
+                      type: object
+                      description: Load balancer endpoint specifications. Public endpoint
+                        for RDB instances which is systematically present. One per
+                        RDB instance
+                      x-one-of: spec
+                    private_network:
+                      type: object
+                      description: Private network endpoint specifications. One at
+                        the most per RDB instance or read replica (an RDB instance
+                        and its read replica can have different private networks).
+                        Cannot be updated (has to be deleted and recreated)
+                      properties:
+                        private_network_id:
+                          type: string
+                          description: UUID of the private network to be connected
+                            to the database instance (UUID format)
+                          example: 6170692e-7363-616c-6577-61792e636f6d
+                        service_ip:
+                          type: string
+                          description: Endpoint IPv4 adress with a CIDR notation.
+                            Check documentation about IP and subnet limitation. (IP
+                            network)
+                          example: 1.2.3.4/32
+                      x-properties-order:
+                      - private_network_id
+                      - service_ip
+                      x-one-of: spec
+                  x-properties-order:
+                  - load_balancer
+                  - private_network
+              x-properties-order:
+              - endpoint_spec
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"endpoint_spec":{"load_balancer":{},"private_network":{"private_network_id":"6170692e-7363-616c-6577-61792e636f6d","service_ip":"1.2.3.4/32"}}}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/endpoints"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/endpoints" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            endpoint_spec:='{"load_balancer":{},"private_network":{"private_network_id":"6170692e-7363-616c-6577-61792e636f6d","service_ip":"1.2.3.4/32"}}'
+  /rdb/v1/regions/{region}/instances/{instance_id}/logs:
+    get:
+      tags:
+      - Database Instances
+      operationId: ListInstanceLogs
+      summary: List available logs of a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want logs of
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want logs of
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering instance logs listing
+        schema:
+          type: string
+          description: Criteria to use when ordering instance logs listing
+          enum:
+          - created_at_asc
+          - created_at_desc
+          default: created_at_asc
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListInstanceLogsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/logs"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/logs" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/logs-details:
+    get:
+      tags:
+      - Database Instances
+      operationId: ListInstanceLogsDetails
+      summary: List remote instances logs details
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want logs of
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want logs of
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListInstanceLogsDetailsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/logs-details"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/logs-details" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/metrics:
+    get:
+      tags:
+      - Database Instances
+      operationId: GetInstanceMetrics
+      summary: Get instance metrics
+      description: Get database instance metrics.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      - in: query
+        name: start_date
+        description: Start date to gather metrics from (RFC 3339 format)
+        schema:
+          type: string
+          description: Start date to gather metrics from (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      - in: query
+        name: end_date
+        description: End date to gather metrics from (RFC 3339 format)
+        schema:
+          type: string
+          description: End date to gather metrics from (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      - in: query
+        name: metric_name
+        description: Name of the metric to gather
+        schema:
+          type: string
+          description: Name of the metric to gather
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.InstanceMetrics'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/metrics"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/metrics" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/prepare-logs:
+    post:
+      tags:
+      - Database Instances
+      operationId: PrepareInstanceLogs
+      summary: Prepare logs of a given instance
+      description: Prepare your instance logs. Logs will be grouped on a minimum interval
+        of a day.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want logs of
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want logs of
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.PrepareInstanceLogsResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  description: 'Start datetime of your log. Format: `{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z`
+                    (RFC 3339 format)'
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+                end_date:
+                  type: string
+                  description: 'End datetime of your log. Format: `{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z`
+                    (RFC 3339 format)'
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+              x-properties-order:
+              - start_date
+              - end_date
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/prepare-logs"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/prepare-logs" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/privileges:
+    get:
+      tags:
+      - Privileges
+      operationId: ListPrivileges
+      summary: List privileges of a given user for a given database on a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering privileges listing
+        schema:
+          type: string
+          description: Criteria to use when ordering privileges listing
+          enum:
+          - user_name_asc
+          - user_name_desc
+          - database_name_asc
+          - database_name_desc
+          default: user_name_asc
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      - in: query
+        name: database_name
+        description: Name of the database
+        schema:
+          type: string
+          description: Name of the database
+          nullable: true
+      - in: query
+        name: user_name
+        description: Name of the user
+        schema:
+          type: string
+          description: Name of the user
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListPrivilegesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/privileges"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/privileges" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    put:
+      tags:
+      - Privileges
+      operationId: SetPrivilege
+      summary: Set privileges of a given user for a given database on a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Privilege'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                database_name:
+                  type: string
+                  description: Name of the database
+                user_name:
+                  type: string
+                  description: Name of the user
+                permission:
+                  type: string
+                  description: Permission to set (Read, Read/Write, All, Custom)
+                  enum:
+                  - readonly
+                  - readwrite
+                  - all
+                  - custom
+                  - none
+                  default: readonly
+              x-properties-order:
+              - database_name
+              - user_name
+              - permission
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PUT \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"database_name":"string","user_name":"string"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/privileges"
+      - lang: HTTPie
+        source: |-
+          http PUT "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/privileges" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            database_name="string" \
+            user_name="string"
+  /rdb/v1/regions/{region}/instances/{instance_id}/purge-logs:
+    post:
+      tags:
+      - Database Instances
+      operationId: PurgeInstanceLogs
+      summary: Purge remote instances logs
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want logs of
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want logs of
+      responses:
+        "204":
+          description: ""
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                log_name:
+                  type: string
+                  description: Specific log name to purge
+                  nullable: true
+              x-properties-order:
+              - log_name
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/purge-logs"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/purge-logs" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/renew-certificate:
+    post:
+      tags:
+      - Database Instances
+      operationId: RenewInstanceCertificate
+      summary: Renew the TLS certificate of an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want logs of
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want logs of
+      responses:
+        "204":
+          description: ""
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/renew-certificate"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/renew-certificate" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/restart:
+    post:
+      tags:
+      - Database Instances
+      operationId: RestartInstance
+      summary: Restart an instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to restart
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to restart
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/restart"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/restart" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/settings:
+    post:
+      tags:
+      - Instance Settings
+      operationId: AddInstanceSettings
+      summary: Add an instance setting
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to add settings to
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to add settings to
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.AddInstanceSettingsResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: array
+                  description: Settings to add on the instance
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+              required:
+              - settings
+              x-properties-order:
+              - settings
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"settings":[""]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/settings"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/settings" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            settings:='[""]'
+    put:
+      tags:
+      - Instance Settings
+      operationId: SetInstanceSettings
+      summary: Set a given instance setting
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance where the settings has to be set
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance where the settings has to be set
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.SetInstanceSettingsResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: array
+                  description: Settings to define for the instance
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.InstanceSetting'
+              required:
+              - settings
+              x-properties-order:
+              - settings
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PUT \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"settings":[""]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/settings"
+      - lang: HTTPie
+        source: |-
+          http PUT "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/settings" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            settings:='[""]'
+    delete:
+      tags:
+      - Instance Settings
+      operationId: DeleteInstanceSettings
+      summary: Delete an instance setting
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance to delete settings from
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance to delete settings from
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.DeleteInstanceSettingsResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                setting_names:
+                  type: array
+                  description: Settings names to delete
+                  items:
+                    type: string
+              required:
+              - setting_names
+              x-properties-order:
+              - setting_names
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"setting_names":["string"]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/settings"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/settings" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            setting_names:='["string"]'
+  /rdb/v1/regions/{region}/instances/{instance_id}/snapshots:
+    post:
+      tags:
+      - Snapshots
+      operationId: CreateSnapshot
+      summary: Create an instance snapshot
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Snapshot'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the snapshot
+                expires_at:
+                  type: string
+                  description: Expiration date (Format ISO 8601) (RFC 3339 format)
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+              required:
+              - name
+              x-properties-order:
+              - name
+              - expires_at
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"string"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/snapshots"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/snapshots" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name="string"
+  /rdb/v1/regions/{region}/instances/{instance_id}/upgrade:
+    post:
+      tags:
+      - Database Instances
+      operationId: UpgradeInstance
+      summary: Upgrade an instance
+      description: Upgrade your current instance specifications like node type, high
+        availability, volume, or db engine version.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to upgrade
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to upgrade
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                node_type:
+                  type: string
+                  description: Node type of the instance you want to upgrade to
+                  x-one-of: UpgradeTarget
+                enable_ha:
+                  type: boolean
+                  description: Set to true to enable high availability on your instance
+                  x-one-of: UpgradeTarget
+                volume_size:
+                  type: integer
+                  description: Increase your block storage volume size
+                  format: uint64
+                  x-one-of: UpgradeTarget
+                volume_type:
+                  type: string
+                  description: Change your instance storage type
+                  enum:
+                  - lssd
+                  - bssd
+                  default: lssd
+                  x-one-of: UpgradeTarget
+                upgradable_version_id:
+                  type: string
+                  description: This will create a new Database Instance with same
+                    instance specification as the current one and perform a Database
+                    Engine upgrade. (UUID format)
+                  example: 6170692e-7363-616c-6577-61792e636f6d
+                  x-one-of: UpgradeTarget
+              x-properties-order:
+              - node_type
+              - enable_ha
+              - volume_size
+              - volume_type
+              - upgradable_version_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/upgrade"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/upgrade" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/instances/{instance_id}/users:
+    get:
+      tags:
+      - Users
+      operationId: ListUsers
+      summary: List users of a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance
+      - in: query
+        name: name
+        description: Name of the user
+        schema:
+          type: string
+          description: Name of the user
+          nullable: true
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering users listing
+        schema:
+          type: string
+          description: Criteria to use when ordering users listing
+          enum:
+          - name_asc
+          - name_desc
+          - is_admin_asc
+          - is_admin_desc
+          default: name_asc
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListUsersResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - Users
+      operationId: CreateUser
+      summary: Create a user on a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance you want to create a user in
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance you want to create a user in
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.User'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the user you want to create
+                password:
+                  type: string
+                  description: Password of the user you want to create
+                is_admin:
+                  type: boolean
+                  description: Whether the user you want to create will have administrative
+                    privileges
+              x-properties-order:
+              - name
+              - password
+              - is_admin
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "is_admin": false,
+              "name": "string",
+              "password": "string"
+            }' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            is_admin:=false \
+            name="string" \
+            password="string"
+  /rdb/v1/regions/{region}/instances/{instance_id}/users/{name}:
+    patch:
+      tags:
+      - Users
+      operationId: UpdateUser
+      summary: Update a user on a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance the user belongs to
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance the user belongs to
+      - in: path
+        name: name
+        description: Name of the database user
+        required: true
+        schema:
+          type: string
+          description: Name of the database user
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.User'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: Password of the database user
+                  nullable: true
+                is_admin:
+                  type: boolean
+                  description: Whether or not this user got administrative privileges
+                  nullable: true
+              x-properties-order:
+              - password
+              - is_admin
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users/{name}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users/{name}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Users
+      operationId: DeleteUser
+      summary: Delete a user on a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_id
+        description: UUID of the instance to delete a user from
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance to delete a user from
+      - in: path
+        name: name
+        description: Name of the user
+        required: true
+        schema:
+          type: string
+          description: Name of the user
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users/{name}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/instances/{instance_id}/users/{name}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/logs/{instance_log_id}:
+    get:
+      tags:
+      - Database Instances
+      operationId: GetInstanceLog
+      summary: Get specific logs of a given instance
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: instance_log_id
+        description: UUID of the instance_log you want
+        required: true
+        schema:
+          type: string
+          description: UUID of the instance_log you want
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.InstanceLog'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/logs/{instance_log_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/logs/{instance_log_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/node-types:
+    get:
+      tags:
+      - NodeTypes
+      operationId: ListNodeTypes
+      summary: List available node types
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: include_disabled_types
+        description: Whether or not to include disabled types
+        schema:
+          type: boolean
+          description: Whether or not to include disabled types
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListNodeTypesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/node-types?include_disabled_types=false"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/node-types" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            include_disabled_types==false
+  /rdb/v1/regions/{region}/read-replicas:
+    post:
+      tags:
+      - Read replicas
+      operationId: CreateReadReplica
+      summary: Create a read replica
+      description: You can only create a maximum of 3 read replicas for one instance.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplica'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                instance_id:
+                  type: string
+                  description: UUID of the instance you want a read replica of (UUID
+                    format)
+                  example: 6170692e-7363-616c-6577-61792e636f6d
+                endpoint_spec:
+                  type: array
+                  description: Specification of the endpoint you want to create
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec'
+              required:
+              - instance_id
+              x-properties-order:
+              - instance_id
+              - endpoint_spec
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"endpoint_spec":[""],"instance_id":"6170692e-7363-616c-6577-61792e636f6d"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            endpoint_spec:='[""]' \
+            instance_id="6170692e-7363-616c-6577-61792e636f6d"
+  /rdb/v1/regions/{region}/read-replicas/{read_replica_id}:
+    get:
+      tags:
+      - Read replicas
+      operationId: GetReadReplica
+      summary: Get a read replica
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: read_replica_id
+        description: UUID of the read replica (UUID format)
+        required: true
+        schema:
+          type: string
+          description: UUID of the read replica (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplica'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Read replicas
+      operationId: DeleteReadReplica
+      summary: Delete a read replica
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: read_replica_id
+        description: UUID of the read replica (UUID format)
+        required: true
+        schema:
+          type: string
+          description: UUID of the read replica (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplica'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/read-replicas/{read_replica_id}/endpoints:
+    post:
+      tags:
+      - Read replicas
+      operationId: CreateReadReplicaEndpoint
+      summary: Create a new endpoint for a given read replica
+      description: A read replica can have at most one direct access and one private
+        network endpoint.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: read_replica_id
+        description: UUID of the read replica (UUID format)
+        required: true
+        schema:
+          type: string
+          description: UUID of the read replica (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplica'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                endpoint_spec:
+                  type: array
+                  description: Specification of the endpoint you want to create
+                  items:
+                    $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplicaEndpointSpec'
+              required:
+              - endpoint_spec
+              x-properties-order:
+              - endpoint_spec
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"endpoint_spec":[""]}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}/endpoints"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}/endpoints" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            endpoint_spec:='[""]'
+  /rdb/v1/regions/{region}/read-replicas/{read_replica_id}/reset:
+    post:
+      tags:
+      - Read replicas
+      operationId: ResetReadReplica
+      summary: Resync a read replica
+      description: |
+        When you resync a read replica, first it is reset, and then its data is resynchronized from the primary node.
+        Your read replica will be unavailable during the resync process. The duration of this process is proportional to your Database Instance size.
+        The configured endpoints will not change.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: read_replica_id
+        description: UUID of the read replica (UUID format)
+        required: true
+        schema:
+          type: string
+          description: UUID of the read replica (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ReadReplica'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}/reset"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/read-replicas/{read_replica_id}/reset" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/snapshots:
+    get:
+      tags:
+      - Snapshots
+      operationId: ListSnapshots
+      summary: List instance snapshots
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: name
+        description: Name of the snapshot
+        schema:
+          type: string
+          description: Name of the snapshot
+          nullable: true
+      - in: query
+        name: order_by
+        description: Criteria to use when ordering snapshot listing
+        schema:
+          type: string
+          description: Criteria to use when ordering snapshot listing
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          - expires_at_asc
+          - expires_at_desc
+          default: created_at_asc
+      - in: query
+        name: instance_id
+        description: UUID of the instance
+        schema:
+          type: string
+          description: UUID of the instance
+          nullable: true
+      - in: query
+        name: organization_id
+        description: Organization ID the snapshots belongs to
+        schema:
+          type: string
+          description: Organization ID the snapshots belongs to
+          nullable: true
+      - in: query
+        name: project_id
+        description: Project ID the snapshots belongs to
+        schema:
+          type: string
+          description: Project ID the snapshots belongs to
+          nullable: true
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Page size
+        schema:
+          type: integer
+          description: Page size
+          default: 20
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.ListSnapshotsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/snapshots/{snapshot_id}:
+    get:
+      tags:
+      - Snapshots
+      operationId: GetSnapshot
+      summary: Get an instance snapshot
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: snapshot_id
+        description: UUID of the snapshot
+        required: true
+        schema:
+          type: string
+          description: UUID of the snapshot
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Snapshot'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Snapshots
+      operationId: UpdateSnapshot
+      summary: Update an instance snapshot
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: snapshot_id
+        description: UUID of the snapshot to update
+        required: true
+        schema:
+          type: string
+          description: UUID of the snapshot to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Snapshot'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the snapshot
+                  nullable: true
+                expires_at:
+                  type: string
+                  description: Expiration date (Format ISO 8601) (RFC 3339 format)
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+              x-properties-order:
+              - name
+              - expires_at
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Snapshots
+      operationId: DeleteSnapshot
+      summary: Delete an instance snapshot
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: snapshot_id
+        description: UUID of the snapshot to delete
+        required: true
+        schema:
+          type: string
+          description: UUID of the snapshot to delete
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Snapshot'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /rdb/v1/regions/{region}/snapshots/{snapshot_id}/create-instance:
+    post:
+      tags:
+      - Snapshots
+      operationId: CreateInstanceFromSnapshot
+      summary: Create a new instance from a given snapshot
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: snapshot_id
+        description: Block snapshot of the instance
+        required: true
+        schema:
+          type: string
+          description: Block snapshot of the instance
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.rdb.v1.Instance'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                instance_name:
+                  type: string
+                  description: Name of the instance created with the snapshot
+                is_ha_cluster:
+                  type: boolean
+                  description: Whether or not High-Availability is enabled on the
+                    new instance
+                  nullable: true
+                node_type:
+                  type: string
+                  description: The node type used to restore the snapshot
+                  nullable: true
+              x-properties-order:
+              - instance_name
+              - is_ha_cluster
+              - node_type
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"instance_name":"string"}' \
+            "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}/create-instance"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/rdb/v1/regions/fr-par/snapshots/{snapshot_id}/create-instance" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            instance_name="string"

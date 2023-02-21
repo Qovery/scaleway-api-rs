@@ -1,0 +1,313 @@
+openapi: 3.0.0
+info:
+  title: Account API
+  description: |
+    # Introduction
+
+    The Account API allows you to manage projects. Project is Scaleway’s resource management feature. Designed to help you organize your infrastructure and cloud services, the feature allows resources to be isolated and grouped into specific projects.
+  version: v2
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: Projects
+components:
+  schemas:
+    scaleway.account.v2.ListProjectsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: The total number of projects
+          format: uint32
+        projects:
+          type: array
+          description: The paginated returned projects
+          items:
+            $ref: '#/components/schemas/scaleway.account.v2.Project'
+      x-properties-order:
+      - total_count
+      - projects
+    scaleway.account.v2.Project:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        name:
+          type: string
+          description: The name of the project
+        organization_id:
+          type: string
+          description: The organization ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        created_at:
+          type: string
+          description: The creation date of the project (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: The update date of the project (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        description:
+          type: string
+          description: The description of the project
+      x-properties-order:
+      - id
+      - name
+      - organization_id
+      - created_at
+      - updated_at
+      - description
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /account/v2/projects:
+    get:
+      tags:
+      - Projects
+      operationId: ListProjects
+      summary: List projects
+      parameters:
+      - in: query
+        name: organization_id
+        description: The organization ID of the project (UUID format)
+        schema:
+          type: string
+          description: The organization ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      - in: query
+        name: name
+        description: The name of the project
+        schema:
+          type: string
+          description: The name of the project
+          nullable: true
+      - in: query
+        name: page
+        description: The page number for the returned projects
+        schema:
+          type: integer
+          description: The page number for the returned projects
+          default: 1
+      - in: query
+        name: page_size
+        description: The maximum number of project per page
+        schema:
+          type: integer
+          description: The maximum number of project per page
+          default: 20
+      - in: query
+        name: order_by
+        description: The sort order of the returned projects
+        schema:
+          type: string
+          description: The sort order of the returned projects
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: project_ids
+        description: Filter out by a list of project ID
+        schema:
+          type: array
+          description: Filter out by a list of project ID
+          items:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.account.v2.ListProjectsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/account/v2/projects?organization_id=6170692e-7363-616c-6577-61792e636f6d&project_ids=[string]"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/account/v2/projects" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            organization_id==6170692e-7363-616c-6577-61792e636f6d \
+            project_ids==[string]
+    post:
+      tags:
+      - Projects
+      operationId: CreateProject
+      summary: Create project
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.account.v2.Project'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the project
+                organization_id:
+                  type: string
+                  description: The organization ID of the project (UUID format)
+                  example: 6170692e-7363-616c-6577-61792e636f6d
+                description:
+                  type: string
+                  description: The description of the project
+                  nullable: true
+              x-properties-order:
+              - name
+              - organization_id
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"string","organization_id":"6170692e-7363-616c-6577-61792e636f6d"}' \
+            "https://api.scaleway.com/account/v2/projects"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/account/v2/projects" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name="string" \
+            organization_id="6170692e-7363-616c-6577-61792e636f6d"
+  /account/v2/projects/{project_id}:
+    get:
+      tags:
+      - Projects
+      operationId: GetProject
+      summary: Get project
+      parameters:
+      - in: path
+        name: project_id
+        description: The project ID of the project (UUID format)
+        required: true
+        schema:
+          type: string
+          description: The project ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.account.v2.Project'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/account/v2/projects/{project_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/account/v2/projects/{project_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Projects
+      operationId: UpdateProject
+      summary: Update project
+      parameters:
+      - in: path
+        name: project_id
+        description: The project ID of the project (UUID format)
+        required: true
+        schema:
+          type: string
+          description: The project ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.account.v2.Project'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the project
+                  nullable: true
+                description:
+                  type: string
+                  description: The description of the project
+                  nullable: true
+              x-properties-order:
+              - name
+              - description
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/account/v2/projects/{project_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/account/v2/projects/{project_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Projects
+      operationId: DeleteProject
+      summary: Delete project
+      parameters:
+      - in: path
+        name: project_id
+        description: The project ID of the project (UUID format)
+        required: true
+        schema:
+          type: string
+          description: The project ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/account/v2/projects/{project_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/account/v2/projects/{project_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY

@@ -1,0 +1,2560 @@
+openapi: 3.0.0
+info:
+  title: Elastic metal API
+  description: |
+    # Introduction
+
+    Elastic metal as a service allows ordering a dedicated server on-demand like a cloud instance.
+    Dedicated servers could be used for large workloads, big data, those requiring more security, ….
+
+    ## Technical Limitations
+
+    - Elastic metal is available in `fr-par-1`,  `fr-par-2`, `nl-ams-1` zones
+
+    - Installation is done by preseed (± 10min) (preseed: complete install from a virtual media)
+
+    ## Features
+
+    - Install (Server is installed by preseed (preseed: complete install from a virtual media), you must define at least one ssh key to install your server)
+
+    - Start/Stop/Reboot
+
+    - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix an OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image.
+
+    - Billed by minute (The billing start when the server is delivered and stop when the server is deleted)
+
+    - IPv6, all servers are available with an IPv6 /128
+
+    - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint
+
+    - Basic monitoring with ping status
+
+    - Flexible IP is available ([documentation](https://developers.scaleway.com/en/products/flexible-ip/api/))
+
+    - IP failovers are not available in api v1, use the api v1alpha1
+
+    ## FAQ
+
+    ### How can I get my SSH key id?
+
+    You can find your `$SCW_SECRET_KEY` and your `SCW_DEFAULT_ORGANIZATION_ID` at the following page: https://console.scaleway.com/project/credentials
+
+    ### How can I add my server to a private network?
+
+    See [our online documentation](https://developers.scaleway.com/en/products/vpc-elasticmetal/api/).
+  version: v1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: Servers
+  description: |
+    A server represents a dedicated elastic metal server.
+- name: Server Actions
+  description: |
+    Server actions allows you to start, stop or reboot your servers.
+- name: BMC access
+  description: |
+    BMC (Baseboard Management Controller) access allow you to access serie console of your elastic metal server.
+    The BMC (Baseboard Management Controller) access feature is available one hour after the installation of the server.
+    You need first to create an option Remote Access. You will find the ID and the price with a call to listOffers (https://developers.scaleway.com/en/products/baremetal/api/#get-78db92). Then you can add the option https://developers.scaleway.com/en/products/baremetal/api/#post-b14abd. Do not forget to delete the Option.
+    Then you need to create Remote Access https://developers.scaleway.com/en/products/baremetal/api/#post-1af723.
+    And filnally Get Remote Access to get the login/password https://developers.scaleway.com/en/products/baremetal/api/#get-cefc0f.
+- name: Offers
+- name: Options
+- name: OS
+components:
+  schemas:
+    google.protobuf.StringValue:
+      type: string
+      nullable: true
+    scaleway.baremetal.v1.BMCAccess:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL to access to the server console
+        login:
+          type: string
+          description: The login to use for the BMC (Baseboard Management Controller)
+            access authentification
+        password:
+          type: string
+          description: The password to use for the BMC (Baseboard Management Controller)
+            access authentification
+        expires_at:
+          type: string
+          description: The date after which the BMC (Baseboard Management Controller)
+            access will be closed (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - url
+      - login
+      - password
+      - expires_at
+    scaleway.baremetal.v1.CPU:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the CPU
+        core_count:
+          type: integer
+          description: Number of cores of the CPU
+          format: uint32
+        thread_count:
+          type: integer
+          description: Number of threads of the CPU
+          format: uint32
+        frequency:
+          type: integer
+          description: Frequency of the CPU in MHz
+          format: uint32
+        benchmark:
+          type: string
+          description: Benchmark of the CPU
+      x-properties-order:
+      - name
+      - core_count
+      - thread_count
+      - frequency
+      - benchmark
+    scaleway.baremetal.v1.Disk:
+      type: object
+      properties:
+        capacity:
+          type: integer
+          description: Capacity of the disk in bytes (in bytes)
+          format: uint64
+        type:
+          type: string
+          description: Type of the disk
+      x-properties-order:
+      - capacity
+      - type
+    scaleway.baremetal.v1.GetServerMetricsResponse:
+      type: object
+      properties:
+        pings:
+          type: object
+          description: Timeseries of ping on the server
+          properties:
+            name:
+              type: string
+            points:
+              type: array
+              items:
+                $ref: '#/components/schemas/scaleway.std.TimeSeries.Point'
+            metadata:
+              type: object
+              properties:
+                <metadataKey>:
+                  type: string
+              additionalProperties: true
+          x-properties-order:
+          - name
+          - points
+          - metadata
+      x-properties-order:
+      - pings
+    scaleway.baremetal.v1.IP:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the IP
+        address:
+          type: string
+          description: Address of the IP (IP address)
+          example: 1.2.3.4
+        reverse:
+          type: string
+          description: Reverse IP value
+        version:
+          type: string
+          description: Version of IP (v4 or v6)
+          enum:
+          - IPv4
+          - IPv6
+          default: IPv4
+        reverse_status:
+          type: string
+          description: Status of the reverse
+          enum:
+          - unknown
+          - pending
+          - active
+          - error
+          default: unknown
+        reverse_status_message:
+          type: string
+          description: A message related to the reverse status, in case of an error
+            for example
+      x-properties-order:
+      - id
+      - address
+      - reverse
+      - version
+      - reverse_status
+      - reverse_status_message
+    scaleway.baremetal.v1.ListOSResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total count of matching OS
+          format: uint32
+        os:
+          type: array
+          description: OS that match filters
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.OS'
+      x-properties-order:
+      - total_count
+      - os
+    scaleway.baremetal.v1.ListOffersResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total count of matching offers
+          format: uint32
+        offers:
+          type: array
+          description: Offers that match filters
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Offer'
+      x-properties-order:
+      - total_count
+      - offers
+    scaleway.baremetal.v1.ListOptionsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total count of matching options
+          format: uint32
+        options:
+          type: array
+          description: Options that match filters
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Option'
+      x-properties-order:
+      - total_count
+      - options
+    scaleway.baremetal.v1.ListServerEventsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total count of matching events
+          format: uint32
+        events:
+          type: array
+          description: Server events that match filters
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.ServerEvent'
+      x-properties-order:
+      - total_count
+      - events
+    scaleway.baremetal.v1.ListServersResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total count of matching servers
+          format: uint32
+        servers:
+          type: array
+          description: Servers that match filters
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      x-properties-order:
+      - total_count
+      - servers
+    scaleway.baremetal.v1.ListSettingsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total count of matching sttings
+          format: uint32
+        settings:
+          type: array
+          description: Settings that match filters
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Setting'
+      x-properties-order:
+      - total_count
+      - settings
+    scaleway.baremetal.v1.Memory:
+      type: object
+      properties:
+        capacity:
+          type: integer
+          description: Capacity of the memory in bytes (in bytes)
+          format: uint64
+        type:
+          type: string
+          description: Type of the memory
+        frequency:
+          type: integer
+          description: Frequency of the memory in MHz
+          format: uint32
+        is_ecc:
+          type: boolean
+          description: True if the memory is an error-correcting code memory
+      x-properties-order:
+      - capacity
+      - type
+      - frequency
+      - is_ecc
+    scaleway.baremetal.v1.OS:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the OS
+        name:
+          type: string
+          description: Name of the OS
+        version:
+          type: string
+          description: Version of the OS
+        logo_url:
+          type: string
+          description: URL of this os's logo
+        ssh:
+          type: object
+          description: Define the SSH requirements to install the OS
+          properties:
+            editable:
+              type: boolean
+            required:
+              type: boolean
+            default_value:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+          x-properties-order:
+          - editable
+          - required
+          - default_value
+        user:
+          type: object
+          description: Define the username requirements to install the OS
+          properties:
+            editable:
+              type: boolean
+            required:
+              type: boolean
+            default_value:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+          x-properties-order:
+          - editable
+          - required
+          - default_value
+        password:
+          type: object
+          description: Define the password requirements to install the OS
+          properties:
+            editable:
+              type: boolean
+            required:
+              type: boolean
+            default_value:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+          x-properties-order:
+          - editable
+          - required
+          - default_value
+        service_user:
+          type: object
+          description: Define the username requirements to install the service
+          properties:
+            editable:
+              type: boolean
+            required:
+              type: boolean
+            default_value:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+          x-properties-order:
+          - editable
+          - required
+          - default_value
+        service_password:
+          type: object
+          description: Define the password requirements to install the service
+          properties:
+            editable:
+              type: boolean
+            required:
+              type: boolean
+            default_value:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+          x-properties-order:
+          - editable
+          - required
+          - default_value
+        enabled:
+          type: boolean
+          description: State of OS
+        license_required:
+          type: boolean
+          description: License required (check server options for pricing details)
+      x-properties-order:
+      - id
+      - name
+      - version
+      - logo_url
+      - ssh
+      - user
+      - password
+      - service_user
+      - service_password
+      - enabled
+      - license_required
+    scaleway.baremetal.v1.Offer:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the offer
+        name:
+          type: string
+          description: Name of the offer
+        stock:
+          type: string
+          description: Stock level
+          enum:
+          - empty
+          - low
+          - available
+          default: empty
+        bandwidth:
+          type: integer
+          description: Bandwidth available in bits/s with the offer
+          format: uint64
+        commercial_range:
+          type: string
+          description: Commercial range of the offer
+        price_per_hour:
+          type: object
+          description: Price of the offer for the next 60 minutes (a server order
+            at 11h32 will be payed until 12h32)
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        price_per_month:
+          type: object
+          description: Price of the offer per months
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        disks:
+          type: array
+          description: Disks specifications of the offer
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Disk'
+        enable:
+          type: boolean
+          description: True if the offer is currently available
+        cpus:
+          type: array
+          description: CPU specifications of the offer
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.CPU'
+        memories:
+          type: array
+          description: Memory specifications of the offer
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Memory'
+        quota_name:
+          type: string
+          description: Name of the quota associated to the offer
+        persistent_memories:
+          type: array
+          description: Persistent memory specifications of the offer
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.PersistentMemory'
+        raid_controllers:
+          type: array
+          description: Raid controller specifications of the offer
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.RaidController'
+        incompatible_os_ids:
+          type: array
+          description: Array of incompatible OS ids
+          items:
+            type: string
+        subscription_period:
+          type: string
+          description: Period of subscription for the offer
+          enum:
+          - unknown_subscription_period
+          - hourly
+          - monthly
+          default: unknown_subscription_period
+        operation_path:
+          type: string
+          description: Operation path of the service
+        fee:
+          type: object
+          description: Fee to pay on order
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        options:
+          type: array
+          description: Options available on offer
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Offer.OptionOffer'
+      x-properties-order:
+      - id
+      - name
+      - stock
+      - bandwidth
+      - commercial_range
+      - price_per_hour
+      - price_per_month
+      - disks
+      - enable
+      - cpus
+      - memories
+      - quota_name
+      - persistent_memories
+      - raid_controllers
+      - incompatible_os_ids
+      - subscription_period
+      - operation_path
+      - fee
+      - options
+    scaleway.baremetal.v1.Offer.OptionOffer:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the option
+        name:
+          type: string
+          description: Name of the option
+        enabled:
+          type: boolean
+          description: |
+            If true the option is enabled and included by default in the offer
+            If false the option is available for the offer but not included by default
+        subscription_period:
+          type: string
+          description: Period of subscription for the offer
+          enum:
+          - unknown_subscription_period
+          - hourly
+          - monthly
+          default: unknown_subscription_period
+        price:
+          type: object
+          description: Price of the option
+          properties:
+            currency_code:
+              type: string
+            units:
+              type: integer
+              format: int64
+            nanos:
+              type: integer
+              format: int32
+          x-properties-order:
+          - currency_code
+          - units
+          - nanos
+        manageable:
+          type: boolean
+          description: Boolean to know if option could be managed
+        os_id:
+          type: string
+          description: ID of the OS linked to the option
+          nullable: true
+      x-properties-order:
+      - id
+      - name
+      - enabled
+      - subscription_period
+      - price
+      - manageable
+      - os_id
+    scaleway.baremetal.v1.Option:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the option
+        name:
+          type: string
+          description: Name of the option
+        manageable:
+          type: boolean
+          description: Is false if the option could not be added or removed
+      x-properties-order:
+      - id
+      - name
+      - manageable
+    scaleway.baremetal.v1.PersistentMemory:
+      type: object
+      properties:
+        capacity:
+          type: integer
+          description: Capacity of the memory in bytes (in bytes)
+          format: uint64
+        type:
+          type: string
+          description: Type of the memory
+        frequency:
+          type: integer
+          description: Frequency of the memory in MHz
+          format: uint32
+      x-properties-order:
+      - capacity
+      - type
+      - frequency
+    scaleway.baremetal.v1.RaidController:
+      type: object
+      properties:
+        model:
+          type: string
+        raid_level:
+          type: array
+          items:
+            type: string
+      x-properties-order:
+      - model
+      - raid_level
+    scaleway.baremetal.v1.Server:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the server
+        organization_id:
+          type: string
+          description: Organization ID the server is attached to
+        project_id:
+          type: string
+          description: Project ID the server is attached to
+        name:
+          type: string
+          description: Name of the server
+        description:
+          type: string
+          description: Description of the server
+        updated_at:
+          type: string
+          description: Date of last modification of the server (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        created_at:
+          type: string
+          description: Date of creation of the server (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        status:
+          type: string
+          description: Status of the server
+          enum:
+          - unknown
+          - delivering
+          - ready
+          - stopping
+          - stopped
+          - starting
+          - error
+          - deleting
+          - locked
+          - out_of_stock
+          - ordered
+          - resetting
+          default: unknown
+        offer_id:
+          type: string
+          description: Offer ID of the server
+        offer_name:
+          type: string
+          description: Offer name of the server
+        tags:
+          type: array
+          description: Array of customs tags attached to the server
+          items:
+            type: string
+        ips:
+          type: array
+          description: Array of IPs attached to the server
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.IP'
+        domain:
+          type: string
+          description: Domain of the server
+        boot_type:
+          type: string
+          description: Boot type of the server
+          enum:
+          - unknown_boot_type
+          - normal
+          - rescue
+          default: unknown_boot_type
+        zone:
+          type: string
+          description: The zone in which is the server
+        install:
+          type: object
+          description: Configuration of installation
+          properties:
+            os_id:
+              type: string
+              description: ID of the OS
+            hostname:
+              type: string
+              description: Host defined in the server install
+            ssh_key_ids:
+              type: array
+              description: SSH public key IDs defined in the server install
+              items:
+                type: string
+            status:
+              type: string
+              description: Status of the server install
+              enum:
+              - unknown
+              - to_install
+              - installing
+              - completed
+              - error
+              default: unknown
+            user:
+              type: string
+              description: User defined in the server install or the default one if
+                none were specified
+            service_user:
+              type: string
+              description: Service user defined in the server install or the default
+                one if none were specified
+            service_url:
+              type: string
+              description: The address of the installed service
+          x-properties-order:
+          - os_id
+          - hostname
+          - ssh_key_ids
+          - status
+          - user
+          - service_user
+          - service_url
+        ping_status:
+          type: string
+          description: Server status of ping
+          enum:
+          - ping_status_unknown
+          - ping_status_up
+          - ping_status_down
+          default: ping_status_unknown
+        options:
+          type: array
+          description: Options enabled on server
+          items:
+            $ref: '#/components/schemas/scaleway.baremetal.v1.Server.Option'
+        rescue_server:
+          type: object
+          description: Configuration of rescue boot
+          properties:
+            user:
+              type: string
+              description: Rescue user name
+            password:
+              type: string
+              description: Rescue password
+          x-properties-order:
+          - user
+          - password
+      x-properties-order:
+      - id
+      - organization_id
+      - project_id
+      - name
+      - description
+      - updated_at
+      - created_at
+      - status
+      - offer_id
+      - offer_name
+      - tags
+      - ips
+      - domain
+      - boot_type
+      - zone
+      - install
+      - ping_status
+      - options
+      - rescue_server
+    scaleway.baremetal.v1.Server.Option:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the option
+        name:
+          type: string
+          description: Name of the option
+        status:
+          type: string
+          description: Status of the option
+          enum:
+          - option_status_unknown
+          - option_status_enable
+          - option_status_enabling
+          - option_status_disabling
+          - option_status_error
+          default: option_status_unknown
+        manageable:
+          type: boolean
+          description: Is false if the option could not be added or removed
+        expires_at:
+          type: string
+          description: Auto expiration date for compatible options (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - id
+      - name
+      - status
+      - manageable
+      - expires_at
+    scaleway.baremetal.v1.ServerEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the server for whom the action will be applied
+        action:
+          type: string
+          description: The action that will be applied to the server
+        updated_at:
+          type: string
+          description: Date of last modification of the action (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        created_at:
+          type: string
+          description: Date of creation of the action (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - id
+      - action
+      - updated_at
+      - created_at
+    scaleway.baremetal.v1.Setting:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the setting
+        type:
+          type: string
+          description: Type of the setting
+          enum:
+          - unknown
+          - smtp
+          default: unknown
+        project_id:
+          type: string
+          description: ID of the project ID
+        enabled:
+          type: boolean
+          description: The setting is enable or disable
+      x-properties-order:
+      - id
+      - type
+      - project_id
+      - enabled
+    scaleway.std.TimeSeries.Point:
+      type: array
+      items:
+        oneOf:
+        - type: string
+          format: date-time
+        - type: number
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /baremetal/v1/zones/{zone}/offers:
+    get:
+      tags:
+      - Offers
+      operationId: ListOffers
+      summary: List offers
+      description: List all available server offers.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Number of offers per page
+        schema:
+          type: integer
+          description: Number of offers per page
+          default: 20
+      - in: query
+        name: subscription_period
+        description: Period of subscription to filter offers
+        schema:
+          type: string
+          description: Period of subscription to filter offers
+          enum:
+          - unknown_subscription_period
+          - hourly
+          - monthly
+          default: unknown_subscription_period
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.ListOffersResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/offers"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/offers" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/offers/{offer_id}:
+    get:
+      tags:
+      - Offers
+      operationId: GetOffer
+      summary: Get offer
+      description: Return specific offer for the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: offer_id
+        description: ID of the researched Offer
+        required: true
+        schema:
+          type: string
+          description: ID of the researched Offer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Offer'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/offers/{offer_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/offers/{offer_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/options:
+    get:
+      tags:
+      - Options
+      operationId: ListOptions
+      summary: List options
+      description: List all options matching with filters.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Number of options per page
+        schema:
+          type: integer
+          description: Number of options per page
+          default: 20
+      - in: query
+        name: offer_id
+        description: Filter options by offer_id
+        schema:
+          type: string
+          description: Filter options by offer_id
+          nullable: true
+      - in: query
+        name: name
+        description: Filter options by name
+        schema:
+          type: string
+          description: Filter options by name
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.ListOptionsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/options"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/options" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/options/{option_id}:
+    get:
+      tags:
+      - Options
+      operationId: GetOption
+      summary: Get option
+      description: Return specific option for the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: option_id
+        description: ID of the option
+        required: true
+        schema:
+          type: string
+          description: ID of the option
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Option'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/options/{option_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/options/{option_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/os:
+    get:
+      tags:
+      - OS
+      operationId: ListOS
+      summary: List all available OS that can be install on an elastic metal server
+      description: List all available OS that can be install on an elastic metal server.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Number of OS per page
+        schema:
+          type: integer
+          description: Number of OS per page
+          default: 20
+      - in: query
+        name: offer_id
+        description: Filter OS by offer ID
+        schema:
+          type: string
+          description: Filter OS by offer ID
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.ListOSResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/os"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/os" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/os/{os_id}:
+    get:
+      tags:
+      - OS
+      operationId: GetOS
+      summary: Get an OS with a given ID
+      description: Return specific OS for the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: os_id
+        description: ID of the OS
+        required: true
+        schema:
+          type: string
+          description: ID of the OS
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.OS'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/os/{os_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/os/{os_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers:
+    get:
+      tags:
+      - Servers
+      operationId: ListServers
+      summary: List elastic metal servers for organization
+      description: List elastic metal servers for organization.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Number of server per page
+        schema:
+          type: integer
+          description: Number of server per page
+          default: 20
+      - in: query
+        name: order_by
+        description: Order of the servers
+        schema:
+          type: string
+          description: Order of the servers
+          enum:
+          - created_at_asc
+          - created_at_desc
+          default: created_at_asc
+      - in: query
+        name: tags
+        description: Filter by tags
+        schema:
+          type: array
+          description: Filter by tags
+          items:
+            type: string
+      - in: query
+        name: status
+        description: Filter by status
+        schema:
+          type: array
+          description: Filter by status
+          items:
+            type: string
+      - in: query
+        name: name
+        description: Filter by name
+        schema:
+          type: string
+          description: Filter by name
+          nullable: true
+      - in: query
+        name: organization_id
+        description: Filter by organization ID
+        schema:
+          type: string
+          description: Filter by organization ID
+          nullable: true
+      - in: query
+        name: project_id
+        description: Filter by project ID
+        schema:
+          type: string
+          description: Filter by project ID
+          nullable: true
+      - in: query
+        name: option_id
+        description: Filter by option ID
+        schema:
+          type: string
+          description: Filter by option ID
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.ListServersResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers?status=[string]&tags=[string]"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            status==[string] \
+            tags==[string]
+    post:
+      tags:
+      - Servers
+      operationId: CreateServer
+      summary: Create an elastic metal server
+      description: Create a new elastic metal server. Once the server is created,
+        you probably want to install an OS.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                offer_id:
+                  type: string
+                  description: Offer ID of the new server
+                organization_id:
+                  type: string
+                  description: Organization ID with which the server will be created
+                  deprecated: true
+                  x-one-of: ProjectIdentifier
+                project_id:
+                  type: string
+                  description: Project ID with which the server will be created
+                  x-one-of: ProjectIdentifier
+                name:
+                  type: string
+                  description: Name of the server (≠hostname)
+                description:
+                  type: string
+                  description: Description associated to the server, max 255 characters
+                tags:
+                  type: array
+                  description: Tags to associate to the server
+                  items:
+                    type: string
+                install:
+                  type: object
+                  description: Configuration of installation
+                  properties:
+                    os_id:
+                      type: string
+                      description: ID of the OS to install on the server
+                    hostname:
+                      type: string
+                      description: Hostname of the server
+                    ssh_key_ids:
+                      type: array
+                      description: SSH key IDs authorized on the server
+                      items:
+                        type: string
+                    user:
+                      type: string
+                      description: User used for the installation
+                      nullable: true
+                    password:
+                      type: string
+                      description: Password used for the installation
+                      nullable: true
+                    service_user:
+                      type: string
+                      description: User used for the service to install
+                      nullable: true
+                    service_password:
+                      type: string
+                      description: Password used for the service to install
+                      nullable: true
+                  x-properties-order:
+                  - os_id
+                  - hostname
+                  - ssh_key_ids
+                  - user
+                  - password
+                  - service_user
+                  - service_password
+                option_ids:
+                  type: array
+                  description: IDs of options to enable on server
+                  items:
+                    type: string
+              required:
+              - offer_id
+              - name
+              - description
+              x-properties-order:
+              - offer_id
+              - organization_id
+              - project_id
+              - name
+              - description
+              - tags
+              - install
+              - option_ids
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "description": "string",
+              "install": {
+                  "hostname": "string",
+                  "os_id": "string",
+                  "password": "string",
+                  "service_password": "string",
+                  "service_user": "string",
+                  "ssh_key_ids": [
+                      "string"
+                  ],
+                  "user": "string"
+              },
+              "name": "string",
+              "offer_id": "string",
+              "option_ids": [
+                  "string"
+              ],
+              "tags": [
+                  "string"
+              ]
+            }' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            description="string" \
+            install:='{
+              "hostname": "string",
+              "os_id": "string",
+              "password": "string",
+              "service_password": "string",
+              "service_user": "string",
+              "ssh_key_ids": [
+                  "string"
+              ],
+              "user": "string"
+            }' \
+            name="string" \
+            offer_id="string" \
+            option_ids:='[
+              "string"
+            ]' \
+            tags:='[
+              "string"
+            ]'
+  /baremetal/v1/zones/{zone}/servers/{server_id}:
+    get:
+      tags:
+      - Servers
+      operationId: GetServer
+      summary: Get a specific elastic metal server
+      description: Get the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Servers
+      operationId: UpdateServer
+      summary: Update an elastic metal server
+      description: Update the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server to update
+        required: true
+        schema:
+          type: string
+          description: ID of the server to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the server (≠hostname), not updated if null
+                  nullable: true
+                description:
+                  type: string
+                  description: Description associated to the server, max 255 characters,
+                    not updated if null
+                  nullable: true
+                tags:
+                  type: array
+                  description: Tags associated to the server, not updated if null
+                  nullable: true
+                  items:
+                    type: string
+              x-properties-order:
+              - name
+              - description
+              - tags
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Servers
+      operationId: DeleteServer
+      summary: Delete an elastic metal server
+      description: Delete the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server to delete
+        required: true
+        schema:
+          type: string
+          description: ID of the server to delete
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access:
+    get:
+      tags:
+      - BMC access
+      operationId: GetBMCAccess
+      summary: Get BMC (Baseboard Management Controller) access for a given elastic
+        metal server
+      description: Get the BMC (Baseboard Management Controller) access associated
+        with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.BMCAccess'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - BMC access
+      operationId: StartBMCAccess
+      summary: Start BMC (Baseboard Management Controller) access for a given elastic
+        metal server
+      description: |
+        Start BMC (Baseboard Management Controller) access associated with the given ID.
+        The BMC (Baseboard Management Controller) access is available one hour after the installation of the server.
+        You need first to create an option Remote Access. You will find the ID and the price with a call to listOffers (https://developers.scaleway.com/en/products/baremetal/api/#get-78db92). Then you can add the option https://developers.scaleway.com/en/products/baremetal/api/#post-b14abd. Do not forget to delete the Option.
+         After start BMC, you need to Get Remote Access to get the login/password https://developers.scaleway.com/en/products/baremetal/api/#get-cefc0f.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.BMCAccess'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ip:
+                  type: string
+                  description: The IP authorized to connect to the given server (IPv4
+                    address)
+                  example: 1.2.3.4
+              required:
+              - ip
+              x-properties-order:
+              - ip
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"ip":"1.2.3.4"}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            ip="1.2.3.4"
+    delete:
+      tags:
+      - BMC access
+      operationId: StopBMCAccess
+      summary: Stop BMC (Baseboard Management Controller) access for a given elastic
+        metal server
+      description: Stop BMC (Baseboard Management Controller) access associated with
+        the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/bmc-access" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/events:
+    get:
+      tags:
+      - Servers
+      operationId: ListServerEvents
+      summary: List server events
+      description: List events associated to the given server ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server events searched
+        required: true
+        schema:
+          type: string
+          description: ID of the server events searched
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Number of server events per page
+        schema:
+          type: integer
+          description: Number of server events per page
+          default: 20
+      - in: query
+        name: order_by
+        description: Order of the server events
+        schema:
+          type: string
+          description: Order of the server events
+          enum:
+          - created_at_asc
+          - created_at_desc
+          default: created_at_asc
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.ListServerEventsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/events"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/events" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/install:
+    post:
+      tags:
+      - Servers
+      operationId: InstallServer
+      summary: Install an elastic metal server
+      description: Install an OS on the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: Server ID to install
+        required: true
+        schema:
+          type: string
+          description: Server ID to install
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                os_id:
+                  type: string
+                  description: ID of the OS to install on the server
+                hostname:
+                  type: string
+                  description: Hostname of the server
+                ssh_key_ids:
+                  type: array
+                  description: SSH key IDs authorized on the server
+                  items:
+                    type: string
+                user:
+                  type: string
+                  description: User used for the installation
+                  nullable: true
+                password:
+                  type: string
+                  description: Password used for the installation
+                  nullable: true
+                service_user:
+                  type: string
+                  description: User used for the service to install
+                  nullable: true
+                service_password:
+                  type: string
+                  description: Password used for the service to install
+                  nullable: true
+              required:
+              - os_id
+              - hostname
+              - ssh_key_ids
+              x-properties-order:
+              - os_id
+              - hostname
+              - ssh_key_ids
+              - user
+              - password
+              - service_user
+              - service_password
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "hostname": "string",
+              "os_id": "string",
+              "ssh_key_ids": [
+                  "string"
+              ]
+            }' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/install"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/install" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            hostname="string" \
+            os_id="string" \
+            ssh_key_ids:='[
+              "string"
+            ]'
+  /baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id}:
+    patch:
+      tags:
+      - Servers
+      operationId: UpdateIP
+      summary: Update IP
+      description: Configure ip associated with the given server ID and ipID. You
+        can use this method to set a reverse dns for an IP.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      - in: path
+        name: ip_id
+        description: ID of the IP to update
+        required: true
+        schema:
+          type: string
+          description: ID of the IP to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.IP'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reverse:
+                  type: string
+                  description: New reverse IP to update, not updated if null
+                  nullable: true
+              x-properties-order:
+              - reverse
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/ips/{ip_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/metrics:
+    get:
+      tags:
+      - Servers
+      operationId: GetServerMetrics
+      summary: Return server metrics
+      description: Give the ping status on the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: Server ID to get the metrics
+        required: true
+        schema:
+          type: string
+          description: Server ID to get the metrics
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.GetServerMetricsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/metrics"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/metrics" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}:
+    post:
+      tags:
+      - Servers
+      operationId: AddOptionServer
+      summary: Add server option
+      description: Add an option to a specific server.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      - in: path
+        name: option_id
+        description: ID of the option to add
+        required: true
+        schema:
+          type: string
+          description: ID of the option to add
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expires_at:
+                  type: string
+                  description: Auto expire the option after this date (RFC 3339 format)
+                  format: date-time
+                  example: "2022-03-22T12:34:56.123456Z"
+                  nullable: true
+              x-properties-order:
+              - expires_at
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Servers
+      operationId: DeleteOptionServer
+      summary: Delete server option
+      description: Delete an option from a specific server.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server
+        required: true
+        schema:
+          type: string
+          description: ID of the server
+      - in: path
+        name: option_id
+        description: ID of the option to delete
+        required: true
+        schema:
+          type: string
+          description: ID of the option to delete
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/options/{option_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/reboot:
+    post:
+      tags:
+      - Server Actions
+      operationId: RebootServer
+      summary: Reboot an elastic metal server
+      description: Reboot the server associated with the given ID, use boot param
+        to reboot in rescue.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server to reboot
+        required: true
+        schema:
+          type: string
+          description: ID of the server to reboot
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                boot_type:
+                  type: string
+                  description: The type of boot
+                  enum:
+                  - unknown_boot_type
+                  - normal
+                  - rescue
+                  default: unknown_boot_type
+              x-properties-order:
+              - boot_type
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/reboot"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/reboot" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/start:
+    post:
+      tags:
+      - Server Actions
+      operationId: StartServer
+      summary: Start an elastic metal server
+      description: Start the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server to start
+        required: true
+        schema:
+          type: string
+          description: ID of the server to start
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                boot_type:
+                  type: string
+                  description: The type of boot
+                  enum:
+                  - unknown_boot_type
+                  - normal
+                  - rescue
+                  default: unknown_boot_type
+              x-properties-order:
+              - boot_type
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/start"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/start" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/servers/{server_id}/stop:
+    post:
+      tags:
+      - Server Actions
+      operationId: StopServer
+      summary: Stop an elastic metal server
+      description: Stop the server associated with the given ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: server_id
+        description: ID of the server to stop
+        required: true
+        schema:
+          type: string
+          description: ID of the server to stop
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Server'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/stop"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/baremetal/v1/zones/{zone}/servers/{server_id}/stop" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /baremetal/v1/zones/{zone}/settings:
+    get:
+      tags:
+      - Options
+      operationId: ListSettings
+      summary: List all settings
+      description: Return all settings for a project ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: query
+        name: page
+        description: Page number
+        schema:
+          type: integer
+          description: Page number
+          default: 1
+      - in: query
+        name: page_size
+        description: Set the maximum list size
+        schema:
+          type: integer
+          description: Set the maximum list size
+          default: 20
+      - in: query
+        name: order_by
+        description: Order the response
+        schema:
+          type: string
+          description: Order the response
+          enum:
+          - created_at_asc
+          - created_at_desc
+          default: created_at_asc
+      - in: query
+        name: project_id
+        description: ID of the project (UUID format)
+        required: true
+        schema:
+          type: string
+          description: ID of the project (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.ListSettingsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/settings?project_id=6170692e-7363-616c-6577-61792e636f6d"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/baremetal/v1/zones/{zone}/settings" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            project_id==6170692e-7363-616c-6577-61792e636f6d
+  /baremetal/v1/zones/{zone}/settings/{setting_id}:
+    patch:
+      tags:
+      - Options
+      operationId: UpdateSetting
+      summary: Update setting
+      description: Update a setting for a project ID (enable or disable).
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - nl-ams-1
+      - in: path
+        name: setting_id
+        description: ID of the setting
+        required: true
+        schema:
+          type: string
+          description: ID of the setting
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.baremetal.v1.Setting'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Enable/Disable the setting
+                  nullable: true
+              x-properties-order:
+              - enabled
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/baremetal/v1/zones/{zone}/settings/{setting_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/baremetal/v1/zones/{zone}/settings/{setting_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY

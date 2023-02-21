@@ -1,0 +1,1051 @@
+openapi: 3.0.0
+info:
+  title: Registry API
+  description: |
+    # Introduction
+
+    Container Registry API completes the docker command line to allow you to fully manage your namespaces, images and tags.
+
+    # Concepts
+
+    ## Registries
+
+    A Registry is a service which stores docker images. Container Registry proposes one registry per region (currently nl-ams and fr-par)
+
+    # Getting Started
+
+    **Please note** that examples below are using `nl-ams` for creating namespace in Amsterdam region , but you may also use Paris region `fr-par` or `pl-waw` by replacing it in the curl. Export the value for `SCALEWAY_TOKEN` and `SCALEWAY_ORG` in the environment variable with your corresponding value accordingly.
+
+    For docker registry, change the hostname from `rg.nl-ams.scw.cloud` to `rg.fr-par.scw.cloud` or `rg.pl-waw.scw.cloud`.
+
+    Create a namespace:
+
+    ```
+     curl -X POST --header "x-auth-token: $SCALEWAY_TOKEN" https://api.scaleway.com/registry/v1/regions/nl-ams/namespaces  -d '{"description": "testnamespace","name": "myfirstnamespace", "organization_id": "'"$SCALEWAY_ORG"'" }'
+    ```
+
+    Push an image:
+
+    ```
+    docker login rg.nl-ams.scw.cloud -u anyuser -p ${SCALEWAY_TOKEN}
+    docker tag nginx:latest rg.nl-ams.scw.cloud/myfirstnamespace/nginx:latest
+    docker push rg.nl-ams.scw.cloud/myfirstnamespace/nginx:latest
+    ```
+  version: v1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: Namespaces
+  description: |
+    A namespace is for images what a folder is for files
+
+    To use our services, the first step is to create a namespace.
+
+    A namespace is for images what a folder is for files. Every push or pull must mention the namespace :
+    ```docker pull rg.nl-ams.scw.cloud/<namespace_name>/<image_name>:<tag_name>```
+
+    Note that a namespace name is unique on a region. Thus, if another client already has created "test", you can't have it as a namespace
+
+    A namespace can be either public or private (default), which determines who can pull images.
+- name: Images
+  description: |
+    An image represents a container image.
+
+    The visibility of an image can be public (everyone can pull it), private (only your organization can pull it) or inherit from the namespace visibility (default)
+    It can be changed with an update on the image via the registry API.
+- name: Tags
+  description: |
+    A tag represents a container tag of an image.
+components:
+  schemas:
+    scaleway.registry.v1.Image:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the Image
+        name:
+          type: string
+          description: The Image name, unique in a namespace
+        namespace_id:
+          type: string
+          description: The unique ID of the Namespace the image belongs to
+        status:
+          type: string
+          description: The status of the image
+          enum:
+          - unknown
+          - ready
+          - deleting
+          - error
+          - locked
+          default: unknown
+        status_message:
+          type: string
+          description: Details of the image status
+          nullable: true
+        visibility:
+          type: string
+          description: A `public` image is pullable from internet without authentication,
+            opposed to a `private` image. `inherit` will use the namespace `is_public`
+            parameter
+          enum:
+          - visibility_unknown
+          - inherit
+          - public
+          - private
+          default: visibility_unknown
+        size:
+          type: integer
+          description: Image size in bytes, calculated from the size of image layers.
+            One layer used in two tags of the same image is counted once but one layer
+            used in two images is counted twice. (in bytes)
+          format: uint64
+        created_at:
+          type: string
+          description: Creation date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last modification date, from the user or the service (RFC 3339
+            format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        tags:
+          type: array
+          description: List of docker tags of the image
+          items:
+            type: string
+      x-properties-order:
+      - id
+      - name
+      - namespace_id
+      - status
+      - status_message
+      - visibility
+      - size
+      - created_at
+      - updated_at
+      - tags
+    scaleway.registry.v1.ListImagesResponse:
+      type: object
+      properties:
+        images:
+          type: array
+          description: Paginated list of images matching filters
+          items:
+            $ref: '#/components/schemas/scaleway.registry.v1.Image'
+        total_count:
+          type: integer
+          description: Total number of images matching filters
+          format: uint32
+      x-properties-order:
+      - images
+      - total_count
+    scaleway.registry.v1.ListNamespacesResponse:
+      type: object
+      properties:
+        namespaces:
+          type: array
+          description: Paginated list of namespaces matching filters
+          items:
+            $ref: '#/components/schemas/scaleway.registry.v1.Namespace'
+        total_count:
+          type: integer
+          description: Total number of namespaces matching filters
+          format: uint32
+      x-properties-order:
+      - namespaces
+      - total_count
+    scaleway.registry.v1.ListTagsResponse:
+      type: object
+      properties:
+        tags:
+          type: array
+          description: Paginated list of tags matching filters
+          items:
+            $ref: '#/components/schemas/scaleway.registry.v1.Tag'
+        total_count:
+          type: integer
+          description: Total number of tags matching filters
+          format: uint32
+      x-properties-order:
+      - tags
+      - total_count
+    scaleway.registry.v1.Namespace:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the namespace
+        name:
+          type: string
+          description: The name of the namespace, unique in a region accross all organizations
+        description:
+          type: string
+          description: Description of the namespace
+        organization_id:
+          type: string
+          description: Owner of the namespace
+        project_id:
+          type: string
+          description: Project of the namespace
+        status:
+          type: string
+          description: Namespace status
+          enum:
+          - unknown
+          - ready
+          - deleting
+          - error
+          - locked
+          default: unknown
+        status_message:
+          type: string
+          description: Namespace status details
+        endpoint:
+          type: string
+          description: Endpoint reachable by docker
+        is_public:
+          type: boolean
+          description: Namespace visibility policy
+        size:
+          type: integer
+          description: Total size of the namespace, calculated as the sum of the size
+            of all images in the namespace (in bytes)
+          format: uint64
+        created_at:
+          type: string
+          description: Creation date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last modification date, from the user or the service (RFC 3339
+            format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        image_count:
+          type: integer
+          description: Number of images in the namespace
+          format: uint32
+        region:
+          type: string
+          description: Region the namespace belongs to
+      x-properties-order:
+      - id
+      - name
+      - description
+      - organization_id
+      - project_id
+      - status
+      - status_message
+      - endpoint
+      - is_public
+      - size
+      - created_at
+      - updated_at
+      - image_count
+      - region
+    scaleway.registry.v1.Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the tag
+        name:
+          type: string
+          description: Tag name, unique for an image
+        image_id:
+          type: string
+          description: Image ID this tag belongs to
+        status:
+          type: string
+          description: Tag status
+          enum:
+          - unknown
+          - ready
+          - deleting
+          - error
+          - locked
+          default: unknown
+        digest:
+          type: string
+          description: Hash of the tag actual content. Several tags of a same image
+            may have the same digest
+        created_at:
+          type: string
+          description: Creation date (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Last modification date, from the user or the service (RFC 3339
+            format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - id
+      - name
+      - image_id
+      - status
+      - digest
+      - created_at
+      - updated_at
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /registry/v1/regions/{region}/images:
+    get:
+      tags:
+      - Images
+      operationId: ListImages
+      summary: List all your images
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: page
+        description: A positive integer to choose the page to display
+        schema:
+          type: integer
+          description: A positive integer to choose the page to display
+          default: 1
+      - in: query
+        name: page_size
+        description: A positive integer lower or equal to 100 to select the number
+          of items to display
+        schema:
+          type: integer
+          description: A positive integer lower or equal to 100 to select the number
+            of items to display
+          default: 20
+      - in: query
+        name: order_by
+        description: Field by which to order the display of Images
+        schema:
+          type: string
+          description: Field by which to order the display of Images
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: namespace_id
+        description: Filter by the Namespace ID
+        schema:
+          type: string
+          description: Filter by the Namespace ID
+          nullable: true
+      - in: query
+        name: name
+        description: Filter by the Image name (exact match)
+        schema:
+          type: string
+          description: Filter by the Image name (exact match)
+          nullable: true
+      - in: query
+        name: organization_id
+        description: Filter by Organization ID
+        schema:
+          type: string
+          description: Filter by Organization ID
+          nullable: true
+      - in: query
+        name: project_id
+        description: Filter by Project ID
+        schema:
+          type: string
+          description: Filter by Project ID
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.ListImagesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/images"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/registry/v1/regions/fr-par/images" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /registry/v1/regions/{region}/images/{image_id}:
+    get:
+      tags:
+      - Images
+      operationId: GetImage
+      summary: Get a image
+      description: Get the image associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: image_id
+        description: The unique ID of the Image
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the Image
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Image'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Images
+      operationId: UpdateImage
+      summary: Update an existing image
+      description: Update the image associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: image_id
+        description: Image ID to update
+        required: true
+        schema:
+          type: string
+          description: Image ID to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Image'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                visibility:
+                  type: string
+                  description: A `public` image is pullable from internet without
+                    authentication, opposed to a `private` image. `inherit` will use
+                    the namespace `is_public` parameter
+                  enum:
+                  - visibility_unknown
+                  - inherit
+                  - public
+                  - private
+                  default: visibility_unknown
+              x-properties-order:
+              - visibility
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Images
+      operationId: DeleteImage
+      summary: Delete an image
+      description: Delete the image associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: image_id
+        description: The unique ID of the Image
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the Image
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Image'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /registry/v1/regions/{region}/images/{image_id}/tags:
+    get:
+      tags:
+      - Tags
+      operationId: ListTags
+      summary: List all your tags
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: image_id
+        description: The unique ID of the image
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the image
+      - in: query
+        name: page
+        description: A positive integer to choose the page to display
+        schema:
+          type: integer
+          description: A positive integer to choose the page to display
+          default: 1
+      - in: query
+        name: page_size
+        description: A positive integer lower or equal to 100 to select the number
+          of items to display
+        schema:
+          type: integer
+          description: A positive integer lower or equal to 100 to select the number
+            of items to display
+          default: 20
+      - in: query
+        name: order_by
+        description: Field by which to order the display of Images
+        schema:
+          type: string
+          description: Field by which to order the display of Images
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: name
+        description: Filter by the tag name (exact match)
+        schema:
+          type: string
+          description: Filter by the tag name (exact match)
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.ListTagsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}/tags"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/registry/v1/regions/fr-par/images/{image_id}/tags" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /registry/v1/regions/{region}/namespaces:
+    get:
+      tags:
+      - Namespaces
+      operationId: ListNamespaces
+      summary: List all your namespaces
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: query
+        name: page
+        description: A positive integer to choose the page to display
+        schema:
+          type: integer
+          description: A positive integer to choose the page to display
+          default: 1
+      - in: query
+        name: page_size
+        description: A positive integer lower or equal to 100 to select the number
+          of items to display
+        schema:
+          type: integer
+          description: A positive integer lower or equal to 100 to select the number
+            of items to display
+          default: 20
+      - in: query
+        name: order_by
+        description: Field by which to order the display of Images
+        schema:
+          type: string
+          description: Field by which to order the display of Images
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - description_asc
+          - description_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: organization_id
+        description: Filter by Organization ID
+        schema:
+          type: string
+          description: Filter by Organization ID
+          nullable: true
+      - in: query
+        name: project_id
+        description: Filter by Project ID
+        schema:
+          type: string
+          description: Filter by Project ID
+          nullable: true
+      - in: query
+        name: name
+        description: Filter by the namespace name (exact match)
+        schema:
+          type: string
+          description: Filter by the namespace name (exact match)
+          nullable: true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.ListNamespacesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - Namespaces
+      operationId: CreateNamespace
+      summary: Create a new namespace
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Namespace'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Define a namespace name
+                description:
+                  type: string
+                  description: Define a description
+                organization_id:
+                  type: string
+                  description: Assign the namespace owner (deprecated)
+                  deprecated: true
+                  x-one-of: ProjectIdentifier
+                project_id:
+                  type: string
+                  description: Assign the namespace to a project ID
+                  x-one-of: ProjectIdentifier
+                is_public:
+                  type: boolean
+                  description: Define the default visibility policy
+              required:
+              - name
+              x-properties-order:
+              - name
+              - description
+              - organization_id
+              - project_id
+              - is_public
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "description": "string",
+              "is_public": false,
+              "name": "string"
+            }' \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            description="string" \
+            is_public:=false \
+            name="string"
+  /registry/v1/regions/{region}/namespaces/{namespace_id}:
+    get:
+      tags:
+      - Namespaces
+      operationId: GetNamespace
+      summary: Get a namespace
+      description: Get the namespace associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: namespace_id
+        description: The unique ID of the Namespace
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the Namespace
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Namespace'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces/{namespace_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces/{namespace_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Namespaces
+      operationId: UpdateNamespace
+      summary: Update an existing namespace
+      description: Update the namespace associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: namespace_id
+        description: Namespace ID to update
+        required: true
+        schema:
+          type: string
+          description: Namespace ID to update
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Namespace'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  description: Define a description
+                  nullable: true
+                is_public:
+                  type: boolean
+                  description: Define the default visibility policy
+                  nullable: true
+              x-properties-order:
+              - description
+              - is_public
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces/{namespace_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces/{namespace_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Namespaces
+      operationId: DeleteNamespace
+      summary: Delete an existing namespace
+      description: Delete the namespace associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: namespace_id
+        description: The unique ID of the Namespace
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the Namespace
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Namespace'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces/{namespace_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/registry/v1/regions/fr-par/namespaces/{namespace_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /registry/v1/regions/{region}/tags/{tag_id}:
+    get:
+      tags:
+      - Tags
+      operationId: GetTag
+      summary: Get a tag
+      description: Get the tag associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: tag_id
+        description: The unique ID of the Tag
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the Tag
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Tag'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/tags/{tag_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/registry/v1/regions/fr-par/tags/{tag_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Tags
+      operationId: DeleteTag
+      summary: Delete a tag
+      description: Delete the tag associated with the given id.
+      parameters:
+      - in: path
+        name: region
+        description: The region you want to target
+        required: true
+        schema:
+          type: string
+          description: The region you want to target
+          enum:
+          - fr-par
+          - nl-ams
+          - pl-waw
+      - in: path
+        name: tag_id
+        description: The unique ID of the tag
+        required: true
+        schema:
+          type: string
+          description: The unique ID of the tag
+      - in: query
+        name: force
+        description: If two tags share the same digest the deletion will fail unless
+          this parameter is set to true
+        schema:
+          type: boolean
+          description: If two tags share the same digest the deletion will fail unless
+            this parameter is set to true
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.registry.v1.Tag'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/registry/v1/regions/fr-par/tags/{tag_id}?force=false"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/registry/v1/regions/fr-par/tags/{tag_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            force==false
