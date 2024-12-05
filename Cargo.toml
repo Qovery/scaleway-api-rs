@@ -1,11 +1,11 @@
 [package]
 name = "scaleway_api_rs"
-version = "0.1.6"
+version = "0.1.7"
 authors = ["Qovery Team", "OpenAPI Generator team and contributors"]
 description = "Generated library to interact with Scaleway API."
 repository = "https://github.com/Qovery/scaleway-api-rs"
 homepage = "https://github.com/Qovery/scaleway-api-rs"
-documentation = "https://docs.rs/scaleway_api_rs/0.1.0/scaleway_api_rs/"
+documentation = "https://docs.rs/scaleway_api_rs/"
 readme = "README.md"
 license-file = "LICENSE"
 edition = "2021"
@@ -25,13 +25,13 @@ crate-type = ["lib"]
 required-features = []
 
 [dependencies]
-serde = "1.0.152"
-serde_derive = "1.0.152"
-serde_json = "1.0.93"
-serde_with = "2.2.0"
-url = "2.3.1"
+serde = "1.0.215"
+serde_derive = "1.0.215"
+serde_json = "1.0.133"
+serde_with = "3.11.0"
+url = "2.5.4"
 [dependencies.reqwest]
-version = "0.11.14"
+version = "0.12.9"
 default-features = false
 features = ["json", "multipart"]
 
