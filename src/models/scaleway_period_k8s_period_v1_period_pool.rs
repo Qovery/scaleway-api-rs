@@ -1,0 +1,201 @@
+/*
+ * Elastic Metal API
+ *
+ * Scaleway Elastic Metal servers are dedicated physical servers that you can order on-demand, like Instances. You can install an OS or other images on your Elastic Metal server and connect to it via SSH to use it as you require. You can power off the server when you are not using or delete it from your account once you have finished using it. Elastic Metal servers are ideal for large workloads, big data, and applications that require increased security and dedicated resources.  (switchcolumn) <Message type=\"tip\">   Check out our dedicated APIs to manage [Private Networks](https://www.scaleway.com/en/developers/api/elastic-metal/private-network-api/) and [Flexible IPs](https://www.scaleway.com/en/developers/api/elastic-metal-flexible-ip) for Elastic Metal servers. </Message> (switchcolumn)  ## Concepts  Refer to our [dedicated concepts](https://www.scaleway.com/en/docs/compute/elastic-metal/concepts/) page to find definitions of the different terms referring to Elastic Metal servers.  ## Quickstart  (switchcolumn) (switchcolumn)  1. **Configure your environment variables.**     ```bash     export PROJECT_ID=\"<project-id>\"     export ACCESS_KEY=\"<access-key>\"     export SECRET_KEY=\"<secret-key>\"     export ZONE=\"<availability-zone>\"     ```     <Message type=\"note\">       This is an optional step that seeks to simplify your usage of the Bare Metal API.     </Message>  2. **Edit the POST request payload** that we will use in the next step to create an Elastic Metal server. Modify the values in the example according to your needs, using the information in the table to help.     ```json     {     \"offer_id\": \"string\",     \"project_id\": \"string\",     \"name\": \"string\",     \"description\": \"string\",     \"tags\": [         \"tag1\", \"tag2\"     ],     \"install\": {         \"os_id\": \"string\",         \"hostname\": \"string\",         \"ssh_key_ids\": [         \"string\"         ],         \"user\": \"string\",         \"password\": \"string\",         \"service_user\": \"string\",         \"service_password\": \"string\"     },     \"option_ids\": [         \"string\"     ]     }     ```      | Parameter        | Description                                                        |     | :--------------- | :----------------------------------------------------------------- |     | `offer_id`           | **REQUIRED** UUID of the Elastic Metal offer                                         |     | `project_id`     | **REQUIRED** UUID of the project you want to create your Elastic Metal in.  |     | `name`           | **REQUIRED** Name of the Elastic Metal server (≠hostname)                                          |     | `description`     | **REQUIRED** A description of your server (max 255 characters)                             |     | `tags`  | **OPTIONAL** An array of tags associated with your server   |     | `os_id`  | The ID of the operating system image to install on the server   |     | `hostname`  | Hostname of the server   |     | `ssh_key_ids`  | SSH key IDs authorized on the server   |     | `user`  | **NULLABLE** A regular user to be configured on the server   |     | `password`  | **NULLABLE** The password for the user account   |     | `service_user`  | **NULLABLE** A service user for third party services (user to login in services such as BigBlueButton)  |     | `service password`  | **NULLABLE** Password for the service user   |     | `option_ids`  | IDs of options to enable on server  |      <Message type=\"tip\">       To find your Project ID you can either use the [IAM API](https://www.scaleway.com/en/developers/api/account#path-projects-list-all-projects-of-an-organization) or the [Scaleway console](https://console.scaleway.com/project/settings):     </Message>  3. **Run the following command** to create an Elastic Metal server. Make sure you include the payload you edited in the previous step.     ```bash     curl -X POST \\       -H \"Content-Type: application/json\" \\       -H \"X-Auth-Token: $SECRET_KEY\" https://api.scaleway.com//baremetal/v1/zones/$ZONE/servers \\       -d '{         \"offer_id\": \"bd757ca3-a71b-4158-9ef5-39436b6db2a4\",         \"project_id\": \"cc6d123a-bc09-4e24-b5d9-3310f2104e13\",         \"name\": \"MyElasticMetal\",         \"description\": \"My_Elastic_Metal_Server\",         \"tags\": [             \"Ubuntu22\", \"Dedicated\"         ],         \"install\": {             \"os_id\": \"96e5f0f2-d216-4de2-8a15-68730d877885\",             \"hostname\": \"elasticmetal.example.com\",             \"ssh_key_ids\": [             \"fa05e77f-66b7-43b9-bc21-4dfe3c5bb624\"             ],             \"user\": \"ubuntu\",             \"password\": \"mySecretPa$$word\"         \"option_ids\": [             \"string\"         ]       }\"     ``` 4. **List your Elastic Metal servers.**     ```bash     curl -X GET \\       -H \"Content-Type: application/json\" \\       -H \"X-Auth-Token: $SECRET_KEY\" https://api.scaleway.com/baremetal/v1/zones/$ZONE/servers     ```  5. **Retrieve your Elastic Metal server IP** from the response.  6. **Connect to your Elastic Metal server** using SSH     ```bash     ssh root@my-elastic-metal-server-ip     ```  (switchcolumn) <Message type=\"requirement\"> To perform the following steps, you must first ensure that:   - you have an account and are logged into the [Scaleway console](https://console.scaleway.com/organization)   - you have created an [API key](https://www.scaleway.com/en/docs/identity-and-access-management/iam/how-to/create-api-keys/) and that the API key has sufficient [IAM permissions](https://www.scaleway.com/en/docs/identity-and-access-management/iam/reference-content/permission-sets/) to perform the actions described on this page.   - you have [installed `curl`](https://curl.se/download.html) </Message> (switchcolumn)  ## Technical information  ### Features  - Installation (Server is installed by preseed [preseed: complete install from a virtual media], you must define at least one ssh key to install your server) - Start/Stop/Reboot - Rescue Reboot, a rescue image is an operating system image designed to help you diagnose and fix OS experiencing failures. When your server boot on rescue, you can mount your disks and start diagnosing/fixing your image. - Billed by the minute (billing starts when the server is delivered and stops when the server is deleted) - IPv6, all servers are available with a /128 IPv6 subnet - ReverseIP, You can configure your reverse IP (IPv4 and IPv6), you must register the server IP in your DNS records before calling the endpoint - Basic monitoring with ping status - Flexible IP is available ([documentation](https://www.scaleway.com/en/developers/api/elastic-metal-flexible-ip))  ### Availability Zones  Scaleway's infrastructure is spread across different [regions and Availability Zones](https://www.scaleway.com/en/docs/console/my-account/reference-content/products-availability/).  Elastic Metal servers are available in Paris, Amsterdam, and Warsaw regions, with product availability in the following AZs:  | Name      | API ID                           | |-----------|----------------------------------| | Paris     | `fr-par-1` `fr-par-2`            | | Amsterdam | `nl-ams-1` `nl-ams-2`            | | Warsaw    | `pl-waw-2` `pl-waw-3`            |  ## Technical limitations  - Failover IPs are not available in API `v1`, use the API `v1alpha1` ## Going further  For more help using Scaleway Elastic Metal servers, check out the following resources: - Our [main documentation](https://www.scaleway.com/en/docs/compute/elastic-metal/) - The #elastic-metal channel on our [Slack Community](https://www.scaleway.com/en/docs/tutorials/scaleway-slack-community/) - Our [support ticketing system](https://www.scaleway.com/en/docs/console/my-account/how-to/open-a-support-ticket) ### Troubleshooting  #### How is the installation of Elastic Metal servers done?  - The installation of Elastic Metal servers is done by preseed (± 10min) (preseed: complete install from a virtual media) #### How can I retrieve my secret key and Project ID?  You can find your [secret key](https://console.scaleway.com/iam/api-keys) and your [Project ID](https://console.scaleway.com/project/credentials) in the Scaleway console.  #### How can I add my server to a Private Network?  See [our dedicated documentation](/en/developers/api/elastic-metal-flexible-ip).
+ *
+ * The version of the OpenAPI document: v1
+ *
+ * Generated by: https://openapi-generator.tech
+ */
+
+use crate::models;
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ScalewayPeriodK8sPeriodV1PeriodPool {
+    /// Pool ID.
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    /// Cluster ID of the pool.
+    #[serde(rename = "cluster_id", skip_serializing_if = "Option::is_none")]
+    pub cluster_id: Option<String>,
+    /// Date on which the pool was created. (RFC 3339 format)
+    #[serde(
+        rename = "created_at",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub created_at: Option<Option<String>>,
+    /// Date on which the pool was last updated. (RFC 3339 format)
+    #[serde(
+        rename = "updated_at",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub updated_at: Option<Option<String>>,
+    /// Pool name.
+    #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    /// Pool status.
+    #[serde(rename = "status", skip_serializing_if = "Option::is_none")]
+    pub status: Option<Status>,
+    /// Pool version.
+    #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
+    /// Node type is the type of Scaleway Instance wanted for the pool. Nodes with insufficient memory are not eligible (DEV1-S, PLAY2-PICO, STARDUST). 'external' is a special node type used to provision instances from other cloud providers in a Kosmos Cluster.
+    #[serde(rename = "node_type")]
+    pub node_type: String,
+    /// Defines whether the autoscaling feature is enabled for the pool.
+    #[serde(rename = "autoscaling", skip_serializing_if = "Option::is_none")]
+    pub autoscaling: Option<bool>,
+    /// Size (number of nodes) of the pool.
+    #[serde(rename = "size")]
+    pub size: i32,
+    /// Defines the minimum size of the pool. Note that this field is only used when autoscaling is enabled on the pool.
+    #[serde(rename = "min_size", skip_serializing_if = "Option::is_none")]
+    pub min_size: Option<i32>,
+    /// Defines the maximum size of the pool. Note that this field is only used when autoscaling is enabled on the pool.
+    #[serde(rename = "max_size", skip_serializing_if = "Option::is_none")]
+    pub max_size: Option<i32>,
+    /// Customization of the container runtime is available for each pool.
+    #[serde(rename = "container_runtime", skip_serializing_if = "Option::is_none")]
+    pub container_runtime: Option<ContainerRuntime>,
+    /// Defines whether the autohealing feature is enabled for the pool.
+    #[serde(rename = "autohealing", skip_serializing_if = "Option::is_none")]
+    pub autohealing: Option<bool>,
+    /// Tags associated with the pool, see [managing tags](https://www.scaleway.com/en/docs/containers/kubernetes/api-cli/managing-tags).
+    #[serde(rename = "tags", skip_serializing_if = "Option::is_none")]
+    pub tags: Option<Vec<String>>,
+    /// Placement group ID in which all the nodes of the pool will be created, placement groups are limited to 20 instances.
+    #[serde(
+        rename = "placement_group_id",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub placement_group_id: Option<Option<String>>,
+    #[serde(rename = "kubelet_args", skip_serializing_if = "Option::is_none")]
+    pub kubelet_args: Option<models::CreatePoolRequestKubeletArgs>,
+    #[serde(rename = "upgrade_policy", skip_serializing_if = "Option::is_none")]
+    pub upgrade_policy: Option<Box<models::ScalewayK8sV1PoolUpgradePolicy>>,
+    /// Zone in which the pool's nodes will be spawned.
+    #[serde(rename = "zone", skip_serializing_if = "Option::is_none")]
+    pub zone: Option<String>,
+    /// Defines the system volume disk type. Several types of volume (`volume_type`) are provided:. * `l_ssd` is a local block storage which means your system is stored locally on your node's hypervisor. This type is not available for all node types * `sbs-5k` is a remote block storage which means your system is stored on a centralized and resilient cluster with 5k IOPS limits * `sbs-15k` is a faster remote block storage which means your system is stored on a centralized and resilient cluster with 15k IOPS limits * `b_ssd` is the legacy remote block storage which means your system is stored on a centralized and resilient cluster. Consider using `sbs-5k` or `sbs-15k` instead.
+    #[serde(rename = "root_volume_type", skip_serializing_if = "Option::is_none")]
+    pub root_volume_type: Option<RootVolumeType>,
+    /// System volume disk size. (in bytes)
+    #[serde(
+        rename = "root_volume_size",
+        default,
+        with = "::serde_with::rust::double_option",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub root_volume_size: Option<Option<i32>>,
+    /// Defines if the public IP should be removed from Nodes. To use this feature, your Cluster must have an attached Private Network set up with a Public Gateway.
+    #[serde(rename = "public_ip_disabled", skip_serializing_if = "Option::is_none")]
+    pub public_ip_disabled: Option<bool>,
+    /// Defines whether the pool is migrated to new images.
+    #[serde(rename = "new_images_enabled", skip_serializing_if = "Option::is_none")]
+    pub new_images_enabled: Option<bool>,
+    /// Cluster region of the pool.
+    #[serde(rename = "region", skip_serializing_if = "Option::is_none")]
+    pub region: Option<String>,
+}
+
+impl ScalewayPeriodK8sPeriodV1PeriodPool {
+    pub fn new(node_type: String, size: i32) -> ScalewayPeriodK8sPeriodV1PeriodPool {
+        ScalewayPeriodK8sPeriodV1PeriodPool {
+            id: None,
+            cluster_id: None,
+            created_at: None,
+            updated_at: None,
+            name: None,
+            status: None,
+            version: None,
+            node_type,
+            autoscaling: None,
+            size,
+            min_size: None,
+            max_size: None,
+            container_runtime: None,
+            autohealing: None,
+            tags: None,
+            placement_group_id: None,
+            kubelet_args: None,
+            upgrade_policy: None,
+            zone: None,
+            root_volume_type: None,
+            root_volume_size: None,
+            public_ip_disabled: None,
+            new_images_enabled: None,
+            region: None,
+        }
+    }
+}
+/// Pool status.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum Status {
+    #[serde(rename = "unknown")]
+    Unknown,
+    #[serde(rename = "ready")]
+    Ready,
+    #[serde(rename = "deleting")]
+    Deleting,
+    #[serde(rename = "deleted")]
+    Deleted,
+    #[serde(rename = "scaling")]
+    Scaling,
+    #[serde(rename = "warning")]
+    Warning,
+    #[serde(rename = "locked")]
+    Locked,
+    #[serde(rename = "upgrading")]
+    Upgrading,
+}
+
+impl Default for Status {
+    fn default() -> Status {
+        Self::Unknown
+    }
+}
+/// Customization of the container runtime is available for each pool.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum ContainerRuntime {
+    #[serde(rename = "unknown_runtime")]
+    UnknownRuntime,
+    #[serde(rename = "docker")]
+    Docker,
+    #[serde(rename = "containerd")]
+    Containerd,
+    #[serde(rename = "crio")]
+    Crio,
+}
+
+impl Default for ContainerRuntime {
+    fn default() -> ContainerRuntime {
+        Self::UnknownRuntime
+    }
+}
+/// Defines the system volume disk type. Several types of volume (`volume_type`) are provided:. * `l_ssd` is a local block storage which means your system is stored locally on your node's hypervisor. This type is not available for all node types * `sbs-5k` is a remote block storage which means your system is stored on a centralized and resilient cluster with 5k IOPS limits * `sbs-15k` is a faster remote block storage which means your system is stored on a centralized and resilient cluster with 15k IOPS limits * `b_ssd` is the legacy remote block storage which means your system is stored on a centralized and resilient cluster. Consider using `sbs-5k` or `sbs-15k` instead.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum RootVolumeType {
+    #[serde(rename = "default_volume_type")]
+    DefaultVolumeType,
+    #[serde(rename = "l_ssd")]
+    LSsd,
+    #[serde(rename = "b_ssd")]
+    BSsd,
+    #[serde(rename = "sbs_5k")]
+    Sbs5k,
+    #[serde(rename = "sbs_15k")]
+    Sbs15k,
+}
+
+impl Default for RootVolumeType {
+    fn default() -> RootVolumeType {
+        Self::DefaultVolumeType
+    }
+}

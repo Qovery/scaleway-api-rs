@@ -4,18 +4,20 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_private_network**](PrivateNetworksApi.md#create_private_network) | **POST** /vpc/v1/zones/{zone}/private-networks | Create a private network
-[**delete_private_network**](PrivateNetworksApi.md#delete_private_network) | **DELETE** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Delete a private network
-[**get_private_network**](PrivateNetworksApi.md#get_private_network) | **GET** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Get a private network
-[**list_private_networks**](PrivateNetworksApi.md#list_private_networks) | **GET** /vpc/v1/zones/{zone}/private-networks | List private networks
-[**update_private_network**](PrivateNetworksApi.md#update_private_network) | **PATCH** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Update private network
+[**create_private_network**](PrivateNetworksApi.md#create_private_network) | **POST** /vpc/v1/zones/{zone}/private-networks | Create a Private Network
+[**delete_private_network**](PrivateNetworksApi.md#delete_private_network) | **DELETE** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Delete a Private Network
+[**get_private_network**](PrivateNetworksApi.md#get_private_network) | **GET** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Get a Private Network
+[**list_private_networks**](PrivateNetworksApi.md#list_private_networks) | **GET** /vpc/v1/zones/{zone}/private-networks | List Private Networks
+[**update_private_network**](PrivateNetworksApi.md#update_private_network) | **PATCH** /vpc/v1/zones/{zone}/private-networks/{private_network_id} | Update Private Network
 
 
 
 ## create_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork create_private_network(zone, inline_object37)
-Create a private network
+> models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork create_private_network(zone, create_private_network_request)
+Create a Private Network
+
+Create a new Private Network. Once created, you can attach Scaleway resources in the same Availability Zone.
 
 ### Parameters
 
@@ -23,11 +25,11 @@ Create a private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**inline_object37** | [**InlineObject37**](InlineObject37.md) |  | [required] |
+**create_private_network_request** | [**CreatePrivateNetworkRequest**](CreatePrivateNetworkRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1PrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
+[**models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
 
 ### Authorization
 
@@ -44,7 +46,9 @@ Name | Type | Description  | Required | Notes
 ## delete_private_network
 
 > delete_private_network(zone, private_network_id)
-Delete a private network
+Delete a Private Network
+
+Delete an existing Private Network. Note that you must first detach all resources from the network, in order to delete it.
 
 ### Parameters
 
@@ -52,7 +56,7 @@ Delete a private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**private_network_id** | **String** | The private network ID | [required] |
+**private_network_id** | **String** | Private Network ID. | [required] |
 
 ### Return type
 
@@ -72,8 +76,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork get_private_network(zone, private_network_id)
-Get a private network
+> models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork get_private_network(zone, private_network_id)
+Get a Private Network
+
+Retrieve information about an existing Private Network, specified by its Private Network ID. Its full details are returned in the response object.
 
 ### Parameters
 
@@ -81,11 +87,11 @@ Get a private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**private_network_id** | **String** | The private network id | [required] |
+**private_network_id** | **String** | Private Network ID. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1PrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
+[**models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
 
 ### Authorization
 
@@ -101,8 +107,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_private_networks
 
-> crate::models::ScalewayVpcV1ListPrivateNetworksResponse list_private_networks(zone, order_by, page, page_size, name, tags, organization_id, project_id)
-List private networks
+> models::ScalewayPeriodVpcPeriodV1PeriodListPrivateNetworksResponse list_private_networks(zone, order_by, page, page_size, name, tags, organization_id, project_id, private_network_ids, include_regional)
+List Private Networks
+
+List existing Private Networks in a specified Availability Zone. By default, the Private Networks returned in the list are ordered by creation date in ascending order, though this can be modified via the order_by field.
 
 ### Parameters
 
@@ -110,17 +118,19 @@ List private networks
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**order_by** | Option<**String**> | The sort order of the returned private networks |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned private networks |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of private networks per page |  |[default to 20]
-**name** | Option<**String**> | Filter private networks with names containing this string |  |
-**tags** | Option<[**Vec<String>**](String.md)> | Filter private networks with one or more matching tags |  |
-**organization_id** | Option<**String**> | The organization ID on which to filter the returned private networks |  |
-**project_id** | Option<**String**> | The project ID on which to filter the returned private networks |  |
+**order_by** | Option<**String**> | Sort order of the returned Private Networks. |  |[default to created_at_asc]
+**page** | Option<**i32**> | Page number to return, from the paginated results. |  |
+**page_size** | Option<**i32**> | Maximum number of Private Networks to return per page. |  |
+**name** | Option<**String**> | Name to filter for. Only Private Networks with names containing this string will be returned. |  |
+**tags** | Option<[**Vec<String>**](String.md)> | Tags to filter for. Only Private Networks with one or more matching tags will be returned. |  |
+**organization_id** | Option<**String**> | Organization ID to filter for. Only Private Networks belonging to this Organization will be returned. |  |
+**project_id** | Option<**String**> | Project ID to filter for. Only Private Networks belonging to this Project will be returned. |  |
+**private_network_ids** | Option<[**Vec<String>**](String.md)> | Private Network IDs to filter for. Only Private Networks with one of these IDs will be returned. (UUID format) |  |
+**include_regional** | Option<**bool**> | Defines whether to include regional Private Networks in the response. |  |
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1ListPrivateNetworksResponse**](scaleway.vpc.v1.ListPrivateNetworksResponse.md)
+[**models::ScalewayPeriodVpcPeriodV1PeriodListPrivateNetworksResponse**](scaleway.vpc.v1.ListPrivateNetworksResponse.md)
 
 ### Authorization
 
@@ -136,8 +146,10 @@ Name | Type | Description  | Required | Notes
 
 ## update_private_network
 
-> crate::models::ScalewayVpcV1PrivateNetwork update_private_network(zone, private_network_id, inline_object38)
-Update private network
+> models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork update_private_network(zone, private_network_id, update_private_network_request)
+Update Private Network
+
+Update parameters (such as name or tags) of an existing Private Network, specified by its Private Network ID.
 
 ### Parameters
 
@@ -145,12 +157,12 @@ Update private network
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**private_network_id** | **String** | The private network ID | [required] |
-**inline_object38** | [**InlineObject38**](InlineObject38.md) |  | [required] |
+**private_network_id** | **String** | Private Network ID. | [required] |
+**update_private_network_request** | [**UpdatePrivateNetworkRequest**](UpdatePrivateNetworkRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayVpcV1PrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
+[**models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork**](scaleway.vpc.v1.PrivateNetwork.md)
 
 ### Authorization
 

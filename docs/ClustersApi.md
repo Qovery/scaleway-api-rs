@@ -4,24 +4,26 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_cluster**](ClustersApi.md#create_cluster) | **POST** /k8s/v1/regions/{region}/clusters | Create a new cluster
-[**delete_cluster**](ClustersApi.md#delete_cluster) | **DELETE** /k8s/v1/regions/{region}/clusters/{cluster_id} | Delete a cluster
-[**get_cluster**](ClustersApi.md#get_cluster) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id} | Get a cluster
-[**get_cluster_kube_config**](ClustersApi.md#get_cluster_kube_config) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig | Download the kubeconfig for a cluster
-[**list_cluster_available_versions**](ClustersApi.md#list_cluster_available_versions) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions | List available versions for a cluster
-[**list_clusters**](ClustersApi.md#list_clusters) | **GET** /k8s/v1/regions/{region}/clusters | List all the clusters
-[**reset_cluster_admin_token**](ClustersApi.md#reset_cluster_admin_token) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/reset-admin-token | Reset the admin token of a cluster
-[**update_cluster**](ClustersApi.md#update_cluster) | **PATCH** /k8s/v1/regions/{region}/clusters/{cluster_id} | Update a cluster
-[**upgrade_cluster**](ClustersApi.md#upgrade_cluster) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade | Upgrade a cluster
+[**create_cluster**](ClustersApi.md#create_cluster) | **POST** /k8s/v1/regions/{region}/clusters | Create a new Cluster
+[**delete_cluster**](ClustersApi.md#delete_cluster) | **DELETE** /k8s/v1/regions/{region}/clusters/{cluster_id} | Delete a Cluster
+[**get_cluster**](ClustersApi.md#get_cluster) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id} | Get a Cluster
+[**get_cluster_kube_config**](ClustersApi.md#get_cluster_kube_config) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/kubeconfig | Download the kubeconfig for a Cluster
+[**list_cluster_available_types**](ClustersApi.md#list_cluster_available_types) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/available-types | List available cluster types for a cluster
+[**list_cluster_available_versions**](ClustersApi.md#list_cluster_available_versions) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/available-versions | List available versions for a Cluster
+[**list_clusters**](ClustersApi.md#list_clusters) | **GET** /k8s/v1/regions/{region}/clusters | List Clusters
+[**reset_cluster_admin_token**](ClustersApi.md#reset_cluster_admin_token) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/reset-admin-token | Reset the admin token of a Cluster
+[**set_cluster_type**](ClustersApi.md#set_cluster_type) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/set-type | Change the Cluster type
+[**update_cluster**](ClustersApi.md#update_cluster) | **PATCH** /k8s/v1/regions/{region}/clusters/{cluster_id} | Update a Cluster
+[**upgrade_cluster**](ClustersApi.md#upgrade_cluster) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/upgrade | Upgrade a Cluster
 
 
 
 ## create_cluster
 
-> crate::models::ScalewayK8sV1Cluster create_cluster(region, inline_object31)
-Create a new cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodCluster create_cluster(region, create_cluster_request)
+Create a new Cluster
 
-This method allows to create a new Kubernetes cluster on an account.
+Create a new Kubernetes cluster in a Scaleway region.
 
 ### Parameters
 
@@ -29,11 +31,11 @@ This method allows to create a new Kubernetes cluster on an account.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object31** | [**InlineObject31**](InlineObject31.md) |  | [required] |
+**create_cluster_request** | [**CreateClusterRequest**](CreateClusterRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -49,10 +51,10 @@ Name | Type | Description  | Required | Notes
 
 ## delete_cluster
 
-> crate::models::ScalewayK8sV1Cluster delete_cluster(region, cluster_id, with_additional_resources)
-Delete a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodCluster delete_cluster(region, cluster_id, with_additional_resources)
+Delete a Cluster
 
-This method allows to delete a specific cluster and all its associated pools and nodes. Note that this method will not delete any Load Balancers or Block Volumes that are associated with the cluster.
+Delete a specific Kubernetes cluster and all its associated pools and nodes, and possibly its associated Load Balancers or Block Volumes.
 
 ### Parameters
 
@@ -60,12 +62,12 @@ This method allows to delete a specific cluster and all its associated pools and
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster to delete | [required] |
-**with_additional_resources** | Option<**bool**> | Set true if you want to delete all volumes (including retain volume type) and loadbalancers whose name start with cluster ID |  |
+**cluster_id** | **String** | ID of the cluster to delete. | [required] |
+**with_additional_resources** | **bool** | Defines whether all volumes (including retain volume type), empty Private Networks and Load Balancers with a name starting with the cluster ID will also be deleted. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -81,10 +83,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_cluster
 
-> crate::models::ScalewayK8sV1Cluster get_cluster(region, cluster_id)
-Get a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodCluster get_cluster(region, cluster_id)
+Get a Cluster
 
-This method allows to get details about a specific Kubernetes cluster.
+Retrieve information about a specific Kubernetes cluster.
 
 ### Parameters
 
@@ -92,11 +94,11 @@ This method allows to get details about a specific Kubernetes cluster.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the requested cluster | [required] |
+**cluster_id** | **String** | ID of the requested cluster. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -112,10 +114,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_cluster_kube_config
 
-> crate::models::ScalewayStdFile get_cluster_kube_config(region, cluster_id)
-Download the kubeconfig for a cluster
+> models::ScalewayPeriodStdPeriodFile get_cluster_kube_config(region, cluster_id, redacted)
+Download the kubeconfig for a Cluster
 
-This method allows to download the Kubernetes cluster config file (AKA kubeconfig) for a specific cluster in order to use it with, for instance, `kubectl`. Tips: add `?dl=1` at the end of the URL to directly get the base64 decoded kubeconfig. If not, the kubeconfig will be base64 encoded. 
+Download the Kubernetes cluster config file (also known as `kubeconfig`) for a specific cluster to use it with `kubectl`. Tip: add `?dl=1` at the end of the URL to directly retrieve the base64 decoded kubeconfig. If you choose not to, the kubeconfig will be base64 encoded.
 
 ### Parameters
 
@@ -123,11 +125,43 @@ This method allows to download the Kubernetes cluster config file (AKA kubeconfi
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster to download the kubeconfig from | [required] |
+**cluster_id** | **String** | Cluster ID for which to download the kubeconfig. | [required] |
+**redacted** | Option<**bool**> | Hide the legacy token from the kubeconfig. |  |
 
 ### Return type
 
-[**crate::models::ScalewayStdFile**](scaleway.std.File.md)
+[**models::ScalewayPeriodStdPeriodFile**](scaleway.std.File.md)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## list_cluster_available_types
+
+> models::ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableTypesResponse list_cluster_available_types(region, cluster_id)
+List available cluster types for a cluster
+
+List the cluster types that a specific Kubernetes cluster is allowed to switch to.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**cluster_id** | **String** | Cluster ID for which the available Kubernetes types will be listed. | [required] |
+
+### Return type
+
+[**models::ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableTypesResponse**](scaleway.k8s.v1.ListClusterAvailableTypesResponse.md)
 
 ### Authorization
 
@@ -143,10 +177,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_cluster_available_versions
 
-> crate::models::ScalewayK8sV1ListClusterAvailableVersionsResponse list_cluster_available_versions(region, cluster_id)
-List available versions for a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableVersionsResponse list_cluster_available_versions(region, cluster_id)
+List available versions for a Cluster
 
-This method allows to list the versions that a specific Kubernetes cluster is allowed to upgrade to. Note that it will be every patch version greater than the actual one as well a one minor version ahead of the actual one. Upgrades skipping a minor version will not work.
+List the versions that a specific Kubernetes cluster is allowed to upgrade to. Results will include every patch version greater than the current patch, as well as one minor version ahead of the current version. Any upgrade skipping a minor version will not work.
 
 ### Parameters
 
@@ -154,11 +188,11 @@ This method allows to list the versions that a specific Kubernetes cluster is al
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster which the available Kuberentes versions will be listed from | [required] |
+**cluster_id** | **String** | Cluster ID for which the available Kubernetes versions will be listed. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1ListClusterAvailableVersionsResponse**](scaleway.k8s.v1.ListClusterAvailableVersionsResponse.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableVersionsResponse**](scaleway.k8s.v1.ListClusterAvailableVersionsResponse.md)
 
 ### Authorization
 
@@ -174,10 +208,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_clusters
 
-> crate::models::ScalewayK8sV1ListClustersResponse list_clusters(region, organization_id, project_id, order_by, page, page_size, name, status, _type)
-List all the clusters
+> models::ScalewayPeriodK8sPeriodV1PeriodListClustersResponse list_clusters(region, organization_id, project_id, order_by, page, page_size, name, status, r#type, private_network_id)
+List Clusters
 
-This method allows to list all the existing Kubernetes clusters in an account.
+List all existing Kubernetes clusters in a specific region.
 
 ### Parameters
 
@@ -185,18 +219,19 @@ This method allows to list all the existing Kubernetes clusters in an account.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**organization_id** | Option<**String**> | The organization ID on which to filter the returned clusters |  |
-**project_id** | Option<**String**> | The project ID on which to filter the returned clusters |  |
-**order_by** | Option<**String**> | The sort order of the returned clusters |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned clusters |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of clusters per page |  |[default to 20]
-**name** | Option<**String**> | The name on which to filter the returned clusters |  |
-**status** | Option<**String**> | The status on which to filter the returned clusters |  |[default to unknown]
-**_type** | Option<**String**> | The type on which to filter the returned clusters |  |
+**organization_id** | Option<**String**> | Organization ID on which to filter the returned clusters. |  |
+**project_id** | Option<**String**> | Project ID on which to filter the returned clusters. |  |
+**order_by** | Option<**String**> | Sort order of returned clusters. |  |[default to created_at_asc]
+**page** | Option<**i32**> | Page number to return for clusters, from the paginated results. |  |
+**page_size** | Option<**i32**> | Maximum number of clusters per page. |  |
+**name** | Option<**String**> | Name to filter on, only clusters containing this substring in their name will be returned. |  |
+**status** | Option<**String**> | Status to filter on, only clusters with this status will be returned. |  |[default to unknown]
+**r#type** | Option<**String**> | Type to filter on, only clusters with this type will be returned. |  |
+**private_network_id** | Option<**String**> | Private Network ID to filter on, only clusters within this Private Network will be returned. |  |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1ListClustersResponse**](scaleway.k8s.v1.ListClustersResponse.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodListClustersResponse**](scaleway.k8s.v1.ListClustersResponse.md)
 
 ### Authorization
 
@@ -213,9 +248,9 @@ Name | Type | Description  | Required | Notes
 ## reset_cluster_admin_token
 
 > reset_cluster_admin_token(region, cluster_id, body)
-Reset the admin token of a cluster
+Reset the admin token of a Cluster
 
-This method allows to reset the admin token for a specific Kubernetes cluster. This will invalidate the old admin token (which will not be usable after) and create a new one. Note that the redownload of the kubeconfig will be necessary to keep interacting with the cluster (if the old admin token was used).
+Reset the admin token for a specific Kubernetes cluster. This will revoke the old admin token (which will not be usable afterwards) and create a new one. Note that you will need to download the kubeconfig again to keep interacting with the cluster.
 
 ### Parameters
 
@@ -223,7 +258,7 @@ This method allows to reset the admin token for a specific Kubernetes cluster. T
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster of which the admin token will be renewed | [required] |
+**cluster_id** | **String** | Cluster ID on which the admin token will be renewed. | [required] |
 **body** | **serde_json::Value** |  | [required] |
 
 ### Return type
@@ -242,12 +277,12 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
-## update_cluster
+## set_cluster_type
 
-> crate::models::ScalewayK8sV1Cluster update_cluster(region, cluster_id, inline_object32)
-Update a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodCluster set_cluster_type(region, cluster_id, set_cluster_type_request)
+Change the Cluster type
 
-This method allows to update a specific Kubernetes cluster. Note that this method is not made to upgrade a Kubernetes cluster.
+Change the type of a specific Kubernetes cluster. To see the possible values you can enter for the `type` field, [list available cluster types](#list-available-cluster-types-for-a-cluster).
 
 ### Parameters
 
@@ -255,12 +290,44 @@ This method allows to update a specific Kubernetes cluster. Note that this metho
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster to update | [required] |
-**inline_object32** | [**InlineObject32**](InlineObject32.md) |  | [required] |
+**cluster_id** | **String** | ID of the cluster to migrate from one type to another. | [required] |
+**set_cluster_type_request** | [**SetClusterTypeRequest**](SetClusterTypeRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## update_cluster
+
+> models::ScalewayPeriodK8sPeriodV1PeriodCluster update_cluster(region, cluster_id, update_cluster_request)
+Update a Cluster
+
+Update information on a specific Kubernetes cluster. You can update details such as its name, description, tags and configuration. To upgrade a cluster, you will need to use the dedicated endpoint.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**cluster_id** | **String** | ID of the cluster to update. | [required] |
+**update_cluster_request** | [**UpdateClusterRequest**](UpdateClusterRequest.md) |  | [required] |
+
+### Return type
+
+[**models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 
@@ -276,10 +343,10 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_cluster
 
-> crate::models::ScalewayK8sV1Cluster upgrade_cluster(region, cluster_id, inline_object34)
-Upgrade a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodCluster upgrade_cluster(region, cluster_id, upgrade_cluster_request)
+Upgrade a Cluster
 
-This method allows to upgrade a specific Kubernetes cluster and/or its associated pools to a specific and supported Kubernetes version.
+Upgrade a specific Kubernetes cluster and possibly its associated pools to a specific and supported Kubernetes version.
 
 ### Parameters
 
@@ -287,12 +354,12 @@ This method allows to upgrade a specific Kubernetes cluster and/or its associate
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster to upgrade | [required] |
-**inline_object34** | [**InlineObject34**](InlineObject34.md) |  | [required] |
+**cluster_id** | **String** | ID of the cluster to upgrade. | [required] |
+**upgrade_cluster_request** | [**UpgradeClusterRequest**](UpgradeClusterRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Cluster**](scaleway.k8s.v1.Cluster.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodCluster**](scaleway.k8s.v1.Cluster.md)
 
 ### Authorization
 

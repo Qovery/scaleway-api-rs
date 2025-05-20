@@ -4,18 +4,20 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_namespace**](NamespacesApi.md#create_namespace) | **POST** /registry/v1/regions/{region}/namespaces | Create a new namespace
-[**delete_namespace**](NamespacesApi.md#delete_namespace) | **DELETE** /registry/v1/regions/{region}/namespaces/{namespace_id} | Delete an existing namespace
+[**create_namespace**](NamespacesApi.md#create_namespace) | **POST** /registry/v1/regions/{region}/namespaces | Create a namespace
+[**delete_namespace**](NamespacesApi.md#delete_namespace) | **DELETE** /registry/v1/regions/{region}/namespaces/{namespace_id} | Delete a namespace
 [**get_namespace**](NamespacesApi.md#get_namespace) | **GET** /registry/v1/regions/{region}/namespaces/{namespace_id} | Get a namespace
-[**list_namespaces**](NamespacesApi.md#list_namespaces) | **GET** /registry/v1/regions/{region}/namespaces | List all your namespaces
-[**update_namespace**](NamespacesApi.md#update_namespace) | **PATCH** /registry/v1/regions/{region}/namespaces/{namespace_id} | Update an existing namespace
+[**list_namespaces**](NamespacesApi.md#list_namespaces) | **GET** /registry/v1/regions/{region}/namespaces | List namespaces
+[**update_namespace**](NamespacesApi.md#update_namespace) | **PATCH** /registry/v1/regions/{region}/namespaces/{namespace_id} | Update a namespace
 
 
 
 ## create_namespace
 
-> crate::models::ScalewayRegistryV1Namespace create_namespace(region, inline_object29)
-Create a new namespace
+> models::ScalewayPeriodRegistryPeriodV1PeriodNamespace create_namespace(region, create_namespace_request)
+Create a namespace
+
+Create a new Container Registry namespace. You must specify the namespace name and region in which you want it to be created. Optionally, you can specify the `project_id` and `is_public` in the request payload.
 
 ### Parameters
 
@@ -23,11 +25,11 @@ Create a new namespace
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object29** | [**InlineObject29**](InlineObject29.md) |  | [required] |
+**create_namespace_request** | [**CreateNamespaceRequest**](CreateNamespaceRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
@@ -43,10 +45,10 @@ Name | Type | Description  | Required | Notes
 
 ## delete_namespace
 
-> crate::models::ScalewayRegistryV1Namespace delete_namespace(region, namespace_id)
-Delete an existing namespace
+> models::ScalewayPeriodRegistryPeriodV1PeriodNamespace delete_namespace(region, namespace_id)
+Delete a namespace
 
-Delete the namespace associated with the given id.
+Delete a given namespace. You must specify, in the endpoint, the `region` and `namespace_id` parameters of the namespace you want to delete.
 
 ### Parameters
 
@@ -54,11 +56,11 @@ Delete the namespace associated with the given id.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**namespace_id** | **String** | The unique ID of the Namespace | [required] |
+**namespace_id** | **String** | UUID of the namespace. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
@@ -74,10 +76,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_namespace
 
-> crate::models::ScalewayRegistryV1Namespace get_namespace(region, namespace_id)
+> models::ScalewayPeriodRegistryPeriodV1PeriodNamespace get_namespace(region, namespace_id)
 Get a namespace
 
-Get the namespace associated with the given id.
+Retrieve information about a given namespace, specified by its `namespace_id` and region. Full details about the namespace, such as `description`, `project_id`, `status`, `endpoint`, `is_public`, `size`, and `image_count` are returned in the response.
 
 ### Parameters
 
@@ -85,11 +87,11 @@ Get the namespace associated with the given id.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**namespace_id** | **String** | The unique ID of the Namespace | [required] |
+**namespace_id** | **String** | UUID of the namespace. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
@@ -105,8 +107,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_namespaces
 
-> crate::models::ScalewayRegistryV1ListNamespacesResponse list_namespaces(region, page, page_size, order_by, organization_id, project_id, name)
-List all your namespaces
+> models::ScalewayPeriodRegistryPeriodV1PeriodListNamespacesResponse list_namespaces(region, page, page_size, order_by, organization_id, project_id, name)
+List namespaces
+
+List all namespaces in a specified region. By default, the namespaces listed are ordered by creation date in ascending order. This can be modified via the order_by field. You can also define additional parameters for your query, such as the `instance_id` and `project_id` parameters.
 
 ### Parameters
 
@@ -114,16 +118,16 @@ List all your namespaces
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**page** | Option<**f32**> | A positive integer to choose the page to display |  |[default to 1]
-**page_size** | Option<**f32**> | A positive integer lower or equal to 100 to select the number of items to display |  |[default to 20]
-**order_by** | Option<**String**> | Field by which to order the display of Images |  |[default to created_at_asc]
-**organization_id** | Option<**String**> | Filter by Organization ID |  |
-**project_id** | Option<**String**> | Filter by Project ID |  |
-**name** | Option<**String**> | Filter by the namespace name (exact match) |  |
+**page** | Option<**i32**> | A positive integer to choose the page to display. |  |
+**page_size** | Option<**i32**> | A positive integer lower or equal to 100 to select the number of items to display. |  |
+**order_by** | Option<**String**> | Criteria to use when ordering namespace listings. Possible values are `created_at_asc`, `created_at_desc`, `name_asc`, `name_desc`, `region`, `status_asc` and `status_desc`. The default value is `created_at_asc`. |  |[default to created_at_asc]
+**organization_id** | Option<**String**> | Filter by Organization ID. |  |
+**project_id** | Option<**String**> | Filter by Project ID. |  |
+**name** | Option<**String**> | Filter by the namespace name (exact match). |  |
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1ListNamespacesResponse**](scaleway.registry.v1.ListNamespacesResponse.md)
+[**models::ScalewayPeriodRegistryPeriodV1PeriodListNamespacesResponse**](scaleway.registry.v1.ListNamespacesResponse.md)
 
 ### Authorization
 
@@ -139,10 +143,10 @@ Name | Type | Description  | Required | Notes
 
 ## update_namespace
 
-> crate::models::ScalewayRegistryV1Namespace update_namespace(region, namespace_id, inline_object30)
-Update an existing namespace
+> models::ScalewayPeriodRegistryPeriodV1PeriodNamespace update_namespace(region, namespace_id, update_namespace_request)
+Update a namespace
 
-Update the namespace associated with the given id.
+Update the parameters of a given namespace, specified by its `namespace_id` and `region`. You can update the `description` and `is_public` parameters.
 
 ### Parameters
 
@@ -150,12 +154,12 @@ Update the namespace associated with the given id.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**namespace_id** | **String** | Namespace ID to update | [required] |
-**inline_object30** | [**InlineObject30**](InlineObject30.md) |  | [required] |
+**namespace_id** | **String** | ID of the namespace to update. | [required] |
+**update_namespace_request** | [**UpdateNamespaceRequest**](UpdateNamespaceRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRegistryV1Namespace**](scaleway.registry.v1.Namespace.md)
+[**models::ScalewayPeriodRegistryPeriodV1PeriodNamespace**](scaleway.registry.v1.Namespace.md)
 
 ### Authorization
 
