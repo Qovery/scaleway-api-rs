@@ -4,21 +4,22 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_pool**](PoolsApi.md#create_pool) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | Create a new pool in a cluster
-[**delete_pool**](PoolsApi.md#delete_pool) | **DELETE** /k8s/v1/regions/{region}/pools/{pool_id} | Delete a pool in a cluster
-[**get_pool**](PoolsApi.md#get_pool) | **GET** /k8s/v1/regions/{region}/pools/{pool_id} | Get a pool in a cluster
-[**list_pools**](PoolsApi.md#list_pools) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | List all the pools in a cluster
-[**update_pool**](PoolsApi.md#update_pool) | **PATCH** /k8s/v1/regions/{region}/pools/{pool_id} | Update a pool in a cluster
-[**upgrade_pool**](PoolsApi.md#upgrade_pool) | **POST** /k8s/v1/regions/{region}/pools/{pool_id}/upgrade | Upgrade a pool in a cluster
+[**create_pool**](PoolsApi.md#create_pool) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | Create a new Pool in a Cluster
+[**delete_pool**](PoolsApi.md#delete_pool) | **DELETE** /k8s/v1/regions/{region}/pools/{pool_id} | Delete a Pool in a Cluster
+[**get_pool**](PoolsApi.md#get_pool) | **GET** /k8s/v1/regions/{region}/pools/{pool_id} | Get a Pool in a Cluster
+[**list_pools**](PoolsApi.md#list_pools) | **GET** /k8s/v1/regions/{region}/clusters/{cluster_id}/pools | List Pools in a Cluster
+[**migrate_pools_to_new_images**](PoolsApi.md#migrate_pools_to_new_images) | **POST** /k8s/v1/regions/{region}/clusters/{cluster_id}/migrate-pools-to-new-images | Migrate specific pools or all pools of a cluster to new images.
+[**update_pool**](PoolsApi.md#update_pool) | **PATCH** /k8s/v1/regions/{region}/pools/{pool_id} | Update a Pool in a Cluster
+[**upgrade_pool**](PoolsApi.md#upgrade_pool) | **POST** /k8s/v1/regions/{region}/pools/{pool_id}/upgrade | Upgrade a Pool in a Cluster
 
 
 
 ## create_pool
 
-> crate::models::ScalewayK8sV1Pool create_pool(region, cluster_id, inline_object33)
-Create a new pool in a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodPool create_pool(region, cluster_id, create_pool_request)
+Create a new Pool in a Cluster
 
-This method allows to create a new pool in a specific Kubernetes cluster.
+Create a new pool in a specific Kubernetes cluster.
 
 ### Parameters
 
@@ -26,12 +27,12 @@ This method allows to create a new pool in a specific Kubernetes cluster.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster in which the pool will be created | [required] |
-**inline_object33** | [**InlineObject33**](InlineObject33.md) |  | [required] |
+**cluster_id** | **String** | Cluster ID to which the pool will be attached. | [required] |
+**create_pool_request** | [**CreatePoolRequest**](CreatePoolRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Pool**](scaleway.k8s.v1.Pool.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodPool**](scaleway.k8s.v1.Pool.md)
 
 ### Authorization
 
@@ -47,10 +48,10 @@ Name | Type | Description  | Required | Notes
 
 ## delete_pool
 
-> crate::models::ScalewayK8sV1Pool delete_pool(region, pool_id)
-Delete a pool in a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodPool delete_pool(region, pool_id)
+Delete a Pool in a Cluster
 
-This method allows to delete a specific pool from a cluster, deleting all the nodes associated with it.
+Delete a specific pool from a cluster. Note that all the pool's nodes will also be deleted.
 
 ### Parameters
 
@@ -58,11 +59,11 @@ This method allows to delete a specific pool from a cluster, deleting all the no
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**pool_id** | **String** | The ID of the pool to delete | [required] |
+**pool_id** | **String** | ID of the pool to delete. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Pool**](scaleway.k8s.v1.Pool.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodPool**](scaleway.k8s.v1.Pool.md)
 
 ### Authorization
 
@@ -78,10 +79,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_pool
 
-> crate::models::ScalewayK8sV1Pool get_pool(region, pool_id)
-Get a pool in a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodPool get_pool(region, pool_id)
+Get a Pool in a Cluster
 
-This method allows to get details about a specific pool.
+Retrieve details about a specific pool in a Kubernetes cluster.
 
 ### Parameters
 
@@ -89,11 +90,11 @@ This method allows to get details about a specific pool.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**pool_id** | **String** | The ID of the requested pool | [required] |
+**pool_id** | **String** | ID of the requested pool. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Pool**](scaleway.k8s.v1.Pool.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodPool**](scaleway.k8s.v1.Pool.md)
 
 ### Authorization
 
@@ -109,10 +110,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_pools
 
-> crate::models::ScalewayK8sV1ListPoolsResponse list_pools(region, cluster_id, order_by, page, page_size, name, status)
-List all the pools in a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodListPoolsResponse list_pools(region, cluster_id, order_by, page, page_size, name, status)
+List Pools in a Cluster
 
-This method allows to list all the existing pools for a specific Kubernetes cluster.
+List all the existing pools for a specific Kubernetes cluster.
 
 ### Parameters
 
@@ -120,16 +121,16 @@ This method allows to list all the existing pools for a specific Kubernetes clus
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**cluster_id** | **String** | The ID of the cluster from which the pools will be listed from | [required] |
-**order_by** | Option<**String**> | The sort order of the returned pools |  |[default to created_at_asc]
-**page** | Option<**f32**> | The page number for the returned pools |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of pools per page |  |[default to 20]
-**name** | Option<**String**> | The name on which to filter the returned pools |  |
-**status** | Option<**String**> | The status on which to filter the returned pools |  |[default to unknown]
+**cluster_id** | **String** | ID of the cluster whose pools will be listed. | [required] |
+**order_by** | Option<**String**> | Sort order of returned pools. |  |[default to created_at_asc]
+**page** | Option<**i32**> | Page number for the returned pools. |  |
+**page_size** | Option<**i32**> | Maximum number of pools per page. |  |
+**name** | Option<**String**> | Name to filter on, only pools containing this substring in their name will be returned. |  |
+**status** | Option<**String**> | Status to filter on, only pools with this status will be returned. |  |[default to unknown]
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1ListPoolsResponse**](scaleway.k8s.v1.ListPoolsResponse.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodListPoolsResponse**](scaleway.k8s.v1.ListPoolsResponse.md)
 
 ### Authorization
 
@@ -143,12 +144,12 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
-## update_pool
+## migrate_pools_to_new_images
 
-> crate::models::ScalewayK8sV1Pool update_pool(region, pool_id, inline_object35)
-Update a pool in a cluster
+> migrate_pools_to_new_images(region, cluster_id, migrate_pools_to_new_images_request)
+Migrate specific pools or all pools of a cluster to new images.
 
-This method allows to update some attributes of a specific pool such as the size, the autoscaling enablement, the tags, ...
+If no pool is specified, all pools of the cluster will be migrated to new images.
 
 ### Parameters
 
@@ -156,12 +157,44 @@ This method allows to update some attributes of a specific pool such as the size
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**pool_id** | **String** | The ID of the pool to update | [required] |
-**inline_object35** | [**InlineObject35**](InlineObject35.md) |  | [required] |
+**cluster_id** | **String** |  | [required] |
+**migrate_pools_to_new_images_request** | [**MigratePoolsToNewImagesRequest**](MigratePoolsToNewImagesRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Pool**](scaleway.k8s.v1.Pool.md)
+ (empty response body)
+
+### Authorization
+
+[scaleway](../README.md#scaleway)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## update_pool
+
+> models::ScalewayPeriodK8sPeriodV1PeriodPool update_pool(region, pool_id, update_pool_request)
+Update a Pool in a Cluster
+
+Update the attributes of a specific pool, such as its desired size, autoscaling settings, and tags. To upgrade a pool, you will need to use the dedicated endpoint.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**region** | **String** | The region you want to target | [required] |
+**pool_id** | **String** | ID of the pool to update. | [required] |
+**update_pool_request** | [**UpdatePoolRequest**](UpdatePoolRequest.md) |  | [required] |
+
+### Return type
+
+[**models::ScalewayPeriodK8sPeriodV1PeriodPool**](scaleway.k8s.v1.Pool.md)
 
 ### Authorization
 
@@ -177,10 +210,10 @@ Name | Type | Description  | Required | Notes
 
 ## upgrade_pool
 
-> crate::models::ScalewayK8sV1Pool upgrade_pool(region, pool_id, inline_object36)
-Upgrade a pool in a cluster
+> models::ScalewayPeriodK8sPeriodV1PeriodPool upgrade_pool(region, pool_id, upgrade_pool_request)
+Upgrade a Pool in a Cluster
 
-This method allows to upgrade the Kubernetes version of a specific pool. Note that this will work when the targeted version is the same than the version of the cluster.
+Upgrade the Kubernetes version of a specific pool. Note that it only works if the targeted version matches the cluster's version. This will drain and replace the nodes in that pool.
 
 ### Parameters
 
@@ -188,12 +221,12 @@ This method allows to upgrade the Kubernetes version of a specific pool. Note th
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**pool_id** | **String** | The ID of the pool to upgrade | [required] |
-**inline_object36** | [**InlineObject36**](InlineObject36.md) |  | [required] |
+**pool_id** | **String** | ID of the pool to upgrade. | [required] |
+**upgrade_pool_request** | [**UpgradePoolRequest**](UpgradePoolRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayK8sV1Pool**](scaleway.k8s.v1.Pool.md)
+[**models::ScalewayPeriodK8sPeriodV1PeriodPool**](scaleway.k8s.v1.Pool.md)
 
 ### Authorization
 

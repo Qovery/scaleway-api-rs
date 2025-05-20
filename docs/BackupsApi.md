@@ -16,8 +16,10 @@ Method | HTTP request | Description
 
 ## create_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup create_database_backup(region, inline_object7)
+> models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup create_database_backup(region, create_database_backup_request)
 Create a database backup
+
+Create a new backup. You must set the `instance_id`, `database_name`, `name` and `expires_at` parameters.
 
 ### Parameters
 
@@ -25,11 +27,11 @@ Create a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**inline_object7** | [**InlineObject7**](InlineObject7.md) |  | [required] |
+**create_database_backup_request** | [**CreateDatabaseBackupRequest**](CreateDatabaseBackupRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -45,8 +47,10 @@ Name | Type | Description  | Required | Notes
 
 ## delete_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup delete_database_backup(region, database_backup_id)
+> models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup delete_database_backup(region, database_backup_id)
 Delete a database backup
+
+Delete a backup, specified by its database backup ID and region. Deleting a backup is permanent, and cannot be undone.
 
 ### Parameters
 
@@ -54,11 +58,11 @@ Delete a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**database_backup_id** | **String** | UUID of the database backup to delete | [required] |
+**database_backup_id** | **String** | UUID of the database backup to delete. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -74,8 +78,10 @@ Name | Type | Description  | Required | Notes
 
 ## export_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup export_database_backup(region, database_backup_id, body)
+> models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup export_database_backup(region, database_backup_id, body)
 Export a database backup
+
+Export a backup, specified by the `database_backup_id` and the `region` parameters. The download URL is returned in the response.
 
 ### Parameters
 
@@ -83,12 +89,12 @@ Export a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**database_backup_id** | **String** | UUID of the database backup you want to export | [required] |
+**database_backup_id** | **String** | UUID of the database backup you want to export. | [required] |
 **body** | **serde_json::Value** |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -104,8 +110,10 @@ Name | Type | Description  | Required | Notes
 
 ## get_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup get_database_backup(region, database_backup_id)
+> models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup get_database_backup(region, database_backup_id)
 Get a database backup
+
+Retrieve information about a given backup, specified by its database backup ID and region. Full details about the backup, like size, URL and expiration date, are returned in the response.
 
 ### Parameters
 
@@ -113,11 +121,11 @@ Get a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**database_backup_id** | **String** | UUID of the database backup | [required] |
+**database_backup_id** | **String** | UUID of the database backup. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -133,8 +141,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_database_backups
 
-> crate::models::ScalewayRdbV1ListDatabaseBackupsResponse list_database_backups(region, name, order_by, instance_id, organization_id, project_id, page, page_size)
+> models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse list_database_backups(region, name, order_by, instance_id, organization_id, project_id, page, page_size)
 List database backups
+
+List all backups in a specified region, for a given Scaleway Organization or Scaleway Project. By default, the backups listed are ordered by creation date in ascending order. This can be modified via the `order_by` field.
 
 ### Parameters
 
@@ -142,17 +152,17 @@ List database backups
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**name** | Option<**String**> | Name of the database backups |  |
-**order_by** | Option<**String**> | Criteria to use when ordering database backups listing |  |[default to created_at_asc]
-**instance_id** | Option<**String**> | UUID of the instance |  |
-**organization_id** | Option<**String**> | Organization ID the database backups belongs to |  |
-**project_id** | Option<**String**> | Project ID the database backups belongs to |  |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Page size |  |[default to 20]
+**name** | Option<**String**> | Name of the database backups. |  |
+**order_by** | Option<**String**> | Criteria to use when ordering database backups listing. |  |[default to created_at_asc]
+**instance_id** | Option<**String**> | UUID of the Database Instance. |  |
+**organization_id** | Option<**String**> | Organization ID of the Organization the database backups belong to. |  |
+**project_id** | Option<**String**> | Project ID of the Project the database backups belong to. |  |
+**page** | Option<**i32**> |  |  |
+**page_size** | Option<**i32**> |  |  |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1ListDatabaseBackupsResponse**](scaleway.rdb.v1.ListDatabaseBackupsResponse.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse**](scaleway.rdb.v1.ListDatabaseBackupsResponse.md)
 
 ### Authorization
 
@@ -168,8 +178,10 @@ Name | Type | Description  | Required | Notes
 
 ## restore_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup restore_database_backup(region, database_backup_id, inline_object9)
+> models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup restore_database_backup(region, database_backup_id, restore_database_backup_request)
 Restore a database backup
+
+Launch the process of restoring database backup. You must specify the `instance_id` of the Database Instance of destination, where the backup will be restored. Note that large database backups can take up to several hours to restore.
 
 ### Parameters
 
@@ -177,12 +189,12 @@ Restore a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**database_backup_id** | **String** | Backup of a logical database | [required] |
-**inline_object9** | [**InlineObject9**](InlineObject9.md) |  | [required] |
+**database_backup_id** | **String** | Backup of a logical database. | [required] |
+**restore_database_backup_request** | [**RestoreDatabaseBackupRequest**](RestoreDatabaseBackupRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 
@@ -198,8 +210,10 @@ Name | Type | Description  | Required | Notes
 
 ## update_database_backup
 
-> crate::models::ScalewayRdbV1DatabaseBackup update_database_backup(region, database_backup_id, inline_object8)
+> models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup update_database_backup(region, database_backup_id, update_database_backup_request)
 Update a database backup
+
+Update the parameters of a backup, including name and expiration date.
 
 ### Parameters
 
@@ -207,12 +221,12 @@ Update a database backup
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
-**database_backup_id** | **String** | UUID of the database backup to update | [required] |
-**inline_object8** | [**InlineObject8**](InlineObject8.md) |  | [required] |
+**database_backup_id** | **String** | UUID of the database backup to update. | [required] |
+**update_database_backup_request** | [**UpdateDatabaseBackupRequest**](UpdateDatabaseBackupRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayRdbV1DatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
+[**models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup**](scaleway.rdb.v1.DatabaseBackup.md)
 
 ### Authorization
 

@@ -11,10 +11,10 @@ Method | HTTP request | Description
 
 ## get_offer
 
-> crate::models::ScalewayBaremetalV1Offer get_offer(zone, offer_id)
+> models::ScalewayPeriodBaremetalPeriodV1PeriodOffer get_offer(zone, offer_id)
 Get offer
 
-Return specific offer for the given ID.
+Get details of an offer identified by its offer ID.
 
 ### Parameters
 
@@ -22,11 +22,11 @@ Return specific offer for the given ID.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**offer_id** | **String** | ID of the researched Offer | [required] |
+**offer_id** | **String** | ID of the researched Offer. | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1Offer**](scaleway.baremetal.v1.Offer.md)
+[**models::ScalewayPeriodBaremetalPeriodV1PeriodOffer**](scaleway.baremetal.v1.Offer.md)
 
 ### Authorization
 
@@ -42,10 +42,10 @@ Name | Type | Description  | Required | Notes
 
 ## list_offers
 
-> crate::models::ScalewayBaremetalV1ListOffersResponse list_offers(zone, page, page_size)
+> models::ScalewayPeriodBaremetalPeriodV1PeriodListOffersResponse list_offers(zone, page, page_size, subscription_period, name)
 List offers
 
-List all available server offers.
+List all available Elastic Metal server configurations.
 
 ### Parameters
 
@@ -53,12 +53,14 @@ List all available server offers.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
-**page** | Option<**f32**> | Page number |  |[default to 1]
-**page_size** | Option<**f32**> | Number of offers per page |  |[default to 20]
+**page** | Option<**i32**> | Page number. |  |
+**page_size** | Option<**i32**> | Number of offers per page. |  |
+**subscription_period** | Option<**String**> | Subscription period type to filter offers by. |  |[default to unknown_subscription_period]
+**name** | Option<**String**> | Offer name to filter offers by. |  |
 
 ### Return type
 
-[**crate::models::ScalewayBaremetalV1ListOffersResponse**](scaleway.baremetal.v1.ListOffersResponse.md)
+[**models::ScalewayPeriodBaremetalPeriodV1PeriodListOffersResponse**](scaleway.baremetal.v1.ListOffersResponse.md)
 
 ### Authorization
 

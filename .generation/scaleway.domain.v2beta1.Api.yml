@@ -1,0 +1,2536 @@
+openapi: 3.0.0
+info:
+  title: Domains and DNS API
+  description: |-
+    The Domains and DNS API documentation allows you to configure and manage your domains' DNS zones and records. You can also use dynamic records to optimize and easily use your infrastructure as code.
+    Read our [reference content documentation](https://www.scaleway.com/en/docs/network/domains-and-dns/reference-content/) for more information about domains.
+
+    Refer to the [Domains and DNS Registrar API documentation](https://www.scaleway.com/en/developers/api/domains-and-dns/registrar-api/) to find out how to buy,transfer and manage your domains and contacts (DNSSEC included).
+
+
+    (switchcolumn)
+    (switchcolumn)
+    ## Concepts
+
+    Refer to our [dedicated concepts page](https://www.scaleway.com/en/docs/network/domains-and-dns/concepts/) to find definitions of the different terms referring to Scaleway Domains and DNS.
+
+    (switchcolumn)
+    (switchcolumn)
+    ## Quickstart
+
+    1. **Configure your environment variables.**
+
+        <Message type="note">
+        This is an optional step that seeks to simplify your usage of the API.
+        </Message>
+
+        ```bash
+        export SCW_ACCESS_KEY="<API access key>"
+        export SCW_SECRET_KEY="<API secret key>"
+        export SCW_PROJECT_ID="<Scaleway Project ID>"
+        ```
+    2. **Register an external domain.**
+
+        Run the following command to register your domain:
+
+        ```bash
+        curl https://api.scaleway.com/domain/v2beta1/external-domains \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "X-Auth-Token: $SCW_SECRET_KEY" \
+          -d '{
+            "domain": "my-external-domain.test",
+            "project_id": "<Scaleway Project ID>"
+        }'
+        ```
+    3. **Set up a TXT record.**
+
+        <Message type="important">
+          After you register your external domain, you must set up a TXT record **within 48 hours**. This step is optional if you have an internal domain.
+        </Message>
+
+        Set up your TXT record as explained in **step 4** of our [documentation on how to add an external domain](https://www.scaleway.com/en/docs/network/domains-and-dns/how-to/add-external-domain/) to confirm you are the owner of the domain registered.
+
+        <Message type="note">
+          You will receive a confirmation email once your domain is validated. Your domain will then be available on the API.
+        </Message>
+    4. **Update your DNS name servers.**
+
+        [Update your DNS name servers](https://www.scaleway.com/en/docs/network/domains-and-dns/how-to/manage-nameservers-internal-domain) to Scaleway's DNS name servers: `ns0.dom.scw.cloud` and `ns1.dom.scw.cloud`.
+
+        - For your domain: update the name servers at your registrar to point your domain to Scaleway's DNS servers
+        - For your subdomain: update the name servers at your parent DNS server to point your subdomain to Scaleway's DNS servers
+    5. **Set up your domain's DNSSEC.**
+
+        You need to set up your domain's DNSSEC on the registry by your registrar and on the DNS server with the same information.
+
+        To set up the DNSSEC:
+        * use the [Registrar API](https://www.scaleway.com/en/developers/api/domains-and-dns/registrar-api/#path-domains-update-domain-dnssec) `EnableDomainDNSSEC` to generate the setup on the DNS servers
+        * if your domain is not registered on Scaleway but on another registrar, use the DS or public key information to configure the DNSSEC on your registrar
+
+        <Message type="tip">
+          You can remove your DNSSEC settings on your registrar before you migrate to our service. You will be able to set it up again afterwards.
+        </Message>
+
+    6. **List your domains.**
+
+        Run the following command to retrieve the list of your domains:
+
+        ```bash
+        curl https://api.scaleway.com/domain/v2beta1/domains \
+          -H "X-Auth-Token: $SCW_SECRET_KEY"
+        ```
+
+        The following output displays:
+
+        ```bash
+        {
+          "total_count": 1,
+          "domains": [
+            {
+              "domain": "domain-external.test",
+              "organization_id": "<Scaleway Organization ID>",
+              "project_id": "<Scaleway Project ID>",
+              "auto_renew_status": "disabled",
+              "dnssec_status": "disabled",
+              "epp_code": [],
+              "expired_at": null,
+              "updated_at": "1970-01-01T00:00:00Z",
+              "registrar": "EXTERNAL",
+              "is_external": true,
+              "status": "active"
+            }
+          ]
+        }
+        ```
+
+    7. **List the zones you can manage.**
+
+        Run the following command to list the DNS zones you can manage:
+
+        ```bash
+        curl https://api.scaleway.com/domain/v2beta1/dns-zones/ \
+          -H "X-Auth-Token: $SCW_SECRET_KEY"
+        ```
+        An output similar to the following displays:
+
+        ```bash
+        {
+          "total_count": 3,
+          "dns_zones": [
+            {
+              "domain": "domain-external.test",
+              "subdomain": "",
+              "ns": [
+                "ns0.dom.scw.cloud",
+                "ns1.dom.scw.cloud"
+              ],
+              "ns_default": [
+                "ns0.dom.scw.cloud",
+                "ns1.dom.scw.cloud"
+              ],
+              "ns_master": [],
+              "status": "active",
+              "message": null,
+              "updated_at": "2022-06-21T01:34:55Z",
+              "project_id": "<Scaleway Project ID>"
+            },
+            {
+              "domain": "domain-external.test",
+              "subdomain": "test-zone",
+              "ns": [
+                "ns0.dom.scw.cloud",
+                "ns1.dom.scw.cloud"
+              ],
+              "ns_default": [
+                "ns0.dom.scw.cloud",
+                "ns1.dom.scw.cloud"
+              ],
+              "ns_master": [],
+              "status": "active",
+              "message": null,
+              "updated_at": "2022-06-21T01:34:55Z",
+              "project_id": "<Scaleway Project ID>"
+            },
+            {
+              "domain": "other-domain-external.test",
+              "subdomain": "",
+              "ns": [
+                "ns0.dom.scw.cloud",
+                "ns1.dom.scw.cloud"
+              ],
+              "ns_default": [
+                "ns0.dom.scw.cloud",
+                "ns1.dom.scw.cloud"
+              ],
+              "ns_master": [],
+              "status": "active",
+              "message": null,
+              "updated_at": "2022-06-21T01:34:55Z",
+              "project_id": "<Scaleway Project ID>"
+            }
+          ]
+        }
+
+        ```
+    8. **Update a zone's record(s).**
+
+        <Message type="important">
+          - The `clear` command clears all your records. You will have to setup your records again
+          - If the zone you want to update does not exist but is included in a managed zone, the API will create the new (sub) zone
+        </Message>
+
+        Run the following command to update a zone's record:
+
+        ```bash
+        curl https://api.scaleway.com/domain/v2beta1/dns-zones/subdomain.domain-external.test/records \
+          -X PATCH \
+          -H "X-Auth-Token: $SCW_SECRET_KEY" \
+          -d '{
+            "changes": [
+              {
+                "clear": {}
+              },
+              {
+                "add": {
+                  "records": [
+                    {
+                      "name": "test1",
+                      "data": "127.0.0.1",
+                      "type": "A",
+                      "ttl": 3600
+                    },
+                    {
+                      "name": "test2",
+                      "data": "127.0.0.1",
+                      "type": "A",
+                      "ttl": 3600
+                    }
+                  ]
+                }
+              },
+              {
+                "set": {
+                  "id_fields": {
+                    "type": "A",
+                    "name": "test2"
+                  },
+                  "records": [
+                    {
+                      "name": "test2",
+                      "data": "127.0.0.2",
+                      "type": "A",
+                      "ttl": 3600
+                    }
+                  ]
+                }
+              },
+              {
+                "add": {
+                  "records": [
+                    {
+                      "name": "test3",
+                      "data": "127.0.0.3",
+                      "type": "A",
+                      "ttl": 3600
+                    },
+                    {
+                      "name": "test3",
+                      "data": "127.0.0.4",
+                      "type": "A",
+                      "ttl": 3600
+                    }
+                  ]
+                }
+              },
+              {
+                "delete": {
+                  "id_fields": {
+                    "name": "test3",
+                    "data": "127.0.0.4",
+                    "type": "A",
+                    "ttl": 3600
+                  }
+                }
+              }
+            ]
+          }'
+        ```
+
+        An output similar to the following displays:
+
+        ```bash
+        {
+          "records": [
+            {
+              "id": "<UUID>",
+              "data": "127.0.0.1",
+              "name": "test1",
+              "priority": 0,
+              "ttl": 3600,
+              "type": "A"
+            },
+            {
+              "id": "<UUID>",
+              "data": "127.0.0.1",
+              "name": "test2",
+              "priority": 0,
+              "ttl": 3600,
+              "type": "A"
+            },
+            {
+              "id": "<UUID>",
+              "data": "127.0.0.2",
+              "name": "test2",
+              "priority": 0,
+              "ttl": 3600,
+              "type": "A"
+            },
+            {
+              "id": "<UUID>",
+              "data": "127.0.0.3",
+              "name": "test3",
+              "priority": 0,
+              "ttl": 3600,
+              "type": "A"
+            }
+          ]
+        }
+        ```
+
+    9. **Enable DNSSEC for external domains.**
+
+        - Run the following command if you have not set up DNSSEC at your registrar:
+
+        ```bash
+        curl https://api.scaleway.com/domain/v2beta1/domains/example.com/enable-dnssec \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "X-Auth-Token: $SCW_SECRET_KEY" \
+          -d '{}'
+        ```
+        An output similar to the following displays:
+
+        ```json
+        {
+          "domain":{
+              "domain":"example.fr",
+              "auto_renew_status":"enabled",
+              "dnssec_status":"disabled",
+              "ds_records":[
+                {
+                    "key_id":49071,
+                    "algorithm":"ecdsap256sha256",
+                    "digest":{
+                      "type":"sha_384",
+                      "digest":"c14421f739e35b62e3383d5972263f93610dea31da48a1990453752cf1b4f4f0314f75ecd0bc9061c51ee41ec7692204"
+                    }
+                }
+              ],
+              "epp":[
+                "clientTransferProhibited"
+              ],
+              "expired_at":"2021-04-04T12:46:29Z",
+              "updated_at":"2020-07-07T13:24:27Z",
+              "registrar":"EXTERNAL",
+              "is_external":true,
+              "status":"active",
+              "......"
+          }
+        ```
+
+        <Message type="important">
+          Set up the information returned under `ds_records` in the output, in your registrar to configure DNSSEC for your external domain.
+        </Message>
+
+        - Run the following command if you have already set up DNSSEC at your registrar:
+
+        ```bash
+        curl https://api.scaleway.com/domain/v2beta1/domains/example.com/enable-dnssec \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "X-Auth-Token: $SCW_SECRET_KEY" \
+          -d '{
+            "ds_record": {
+              "algorithm": "rsamd5",
+              "digest":
+              {
+                "type": "sha_1",
+                "digest": "ABCD"
+              }
+            }
+          }'
+        ```
+    10. **Enable DNSSEC for internal domains.**
+
+        Find out how to enable DNSSEC for your internal domains in our [dedicated documentation](https://www.scaleway.com/en/docs/network/domains-and-dns/how-to/configure-dnssec-internal-domain/).
+
+    (switchcolumn)
+    <Message type="requirement">
+    - You have a [Scaleway account](https://console.scaleway.com/)
+    - You have [created an API key](https://www.scaleway.com/en/docs/identity-and-access-management/iam/how-to/create-api-keys/) and that the API key has sufficient [IAM permissions](https://www.scaleway.com/en/docs/identity-and-access-management/iam/reference-content/permission-sets/) to perform the actions described on this page
+    - You have your [Organization ID](https://console.scaleway.com/organization/settings)
+    - You have [installed `curl`](https://curl.se/download.html)
+    </Message>
+    (switchcolumn)
+
+    ## Technical information
+
+    ### Regional availability
+
+    Scaleway Domains and DNS is currently available globally. Find out about [product availability in our dedicated documentation](https://www.scaleway.com/en/docs/console/my-account/reference-content/products-availability).
+
+    ### Format
+
+    - The format of record names is always in "short" format (i.e."test" instead of the FQDN "test.mydomain.com")
+    - If a data value is not in RFC format, quotes will be added for `TXT`records. If `CNAME`records are not in FQDDN, the zone will be added
+    ## Technical limitations
+
+    - Only the owner of a domain can use and configure it with Domains and DNS
+    - Each zone supports the creation of sub-zones, which inherit the parent's Project ID
+    - We provide the following record types: `A`, `AAAA`, `CNAME`, `CAA`, `DNAME`, `HTTPS`, `MX`, `NAPTR`, `NS`, `SRV`, `SVCB`, `TLSA` and `TXT`
+    - We support the following dynamic records: `http(s)` `health check` and `views`
+
+    ## Going futher
+
+    For more information about Domains and DNS, you can check out the following pages:
+
+    - [Domains and DNS Documentation](https://www.scaleway.com/en/docs/network/domains-and-dns/)
+    - [Scaleway Slack Community](http://slack.scaleway.com) join the #domains channel
+    - [Contact our support team](https://console.scaleway.com/support/tickets)
+
+    ### Test if the service is up
+
+    Run the following command to test if an `http` or `https` service is up on a provided list of IPs:
+
+    ```bash
+    curl https://api.scaleway.com/domain/v2beta1/dns-zones/dom.example.com/records \
+      -X PATCH \
+      -H "Content-Type: application/json" \
+      -H "X-Auth-Token: $SCW_SECRET_KEY" \
+      -d '{
+        "return_all_records": false,
+        "changes": [
+          {
+            "add": {
+              "records": [
+                {
+                  "name": "service-www",
+                  "data": "10.51.2.8",
+                  "type": "A",
+                  "ttl": 600,
+                  "http_service_config": {
+                    "ips": [
+                      "10.51.2.8",
+                      "10.51.3.7",
+                      "10.51.2.9"
+                    ],
+                    "must_contain": "I am fine",
+                    "url": "https://www.domain-test.test"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }'
+    ```
+
+    <Message type="note">
+      An IP is considered healthy if the query response contains the text specified in `must_contain`. The record type can be one of `A` and `AAAA`.
+    </Message>
+
+    ### View
+
+    Run the following command to view responses depending on the requester's or resolver's IP:
+
+    ```bash
+    curl https://api.scaleway.com/domain/v2beta1/dns-zones/dom.example.com/records \
+      -X PATCH \
+      -H "Content-Type: application/json" \
+      -H "X-Auth-Token: $SCW_SECRET_KEY" \
+      -d '{
+        "return_all_records": false,
+        "changes": [
+          {
+            "set": {
+              "id_fields": {
+                "name": "test",
+                "type": "CNAME"
+              },
+              "records": [
+                {
+                  "name": "test",
+                  "data": "default-domain.com.",
+                  "type": "CNAME",
+                  "ttl": 600,
+                  "view_config": {
+                    "views": [
+                      {
+                        "subnet": "10.51.0.0/16",
+                        "data": "filtered-domain.com."
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }'
+    ```
+    <Message type="note">
+      Record types include `A`, `AAAA`, `CNAME` and `TXT`.
+    </Message>
+  version: v2beta1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: DNS Zones
+  description: A DNS zone is a distinct part of the domain namespace and allows granular
+    control of DNS components.
+- name: Records
+  description: A DNS record holds information translating a domain or subdomain to
+    an IP address, mail server or other domain/subdomain.
+- name: Versions
+  description: Manage multiple versions of your DNS zones.
+- name: Imports / Exports
+components:
+  schemas:
+    google.protobuf.Int32Value:
+      type: integer
+      format: int32
+      nullable: true
+    google.protobuf.StringValue:
+      type: string
+      nullable: true
+    google.protobuf.UInt32Value:
+      type: integer
+      format: uint32
+      nullable: true
+    scaleway.domain.v2beta1.ClearDNSZoneRecordsResponse:
+      type: object
+    scaleway.domain.v2beta1.DNSZone:
+      type: object
+      properties:
+        domain:
+          type: string
+        subdomain:
+          type: string
+        ns:
+          type: array
+          items:
+            type: string
+        ns_default:
+          type: array
+          items:
+            type: string
+        ns_master:
+          type: array
+          items:
+            type: string
+        status:
+          $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZone.Status'
+        message:
+          $ref: '#/components/schemas/google.protobuf.StringValue'
+        updated_at:
+          type: string
+          description: (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        project_id:
+          type: string
+        linked_products:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.LinkedProduct'
+      x-properties-order:
+      - domain
+      - subdomain
+      - ns
+      - ns_default
+      - ns_master
+      - status
+      - message
+      - updated_at
+      - project_id
+      - linked_products
+    scaleway.domain.v2beta1.DNSZone.Status:
+      type: string
+      enum:
+      - unknown
+      - active
+      - pending
+      - error
+      - locked
+      x-enum-descriptions:
+        values:
+          unknown: If unspecified, the DNS zone's status is unknown by default
+          active: The DNS zone is active and healthy.
+          pending: The DNS zone is updating.
+          error: An error occurred after updating the DNS zone.
+          locked: The DNS zone is locked and cannot be updated anymore.
+      default: unknown
+    scaleway.domain.v2beta1.DNSZoneVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          description: (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+        created_at:
+          type: string
+          description: (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - id
+      - created_at
+    scaleway.domain.v2beta1.DeleteDNSZoneResponse:
+      type: object
+    scaleway.domain.v2beta1.DeleteSSLCertificateResponse:
+      type: object
+    scaleway.domain.v2beta1.GetDNSZoneTsigKeyResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+        algorithm:
+          type: string
+      x-properties-order:
+      - name
+      - key
+      - algorithm
+    scaleway.domain.v2beta1.GetDNSZoneVersionDiffResponse:
+      type: object
+      properties:
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.RecordChange'
+      x-properties-order:
+      - changes
+    scaleway.domain.v2beta1.ImportProviderDNSZoneResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+      x-properties-order:
+      - records
+    scaleway.domain.v2beta1.ImportRawDNSZoneRequest.TsigKey:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+        algorithm:
+          type: string
+      x-properties-order:
+      - name
+      - key
+      - algorithm
+    scaleway.domain.v2beta1.ImportRawDNSZoneResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+      x-properties-order:
+      - records
+    scaleway.domain.v2beta1.LinkedProduct:
+      type: string
+      enum:
+      - unknown_product
+      - vpc
+      x-enum-descriptions:
+        values:
+          unknown_product: If unspecified, no Scaleway product uses the resources
+          vpc: Resources are used by Scaleway VPC
+      default: unknown_product
+    scaleway.domain.v2beta1.ListDNSZoneNameserversResponse:
+      type: object
+      properties:
+        ns:
+          type: array
+          description: DNS zone name servers returned.
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Nameserver'
+      x-properties-order:
+      - ns
+    scaleway.domain.v2beta1.ListDNSZoneRecordsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total number of DNS zone records.
+          format: uint32
+        records:
+          type: array
+          description: Paginated returned DNS zone records.
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+      x-properties-order:
+      - total_count
+      - records
+    scaleway.domain.v2beta1.ListDNSZoneVersionRecordsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total number of DNS zones versions records.
+          format: uint32
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+      x-properties-order:
+      - total_count
+      - records
+    scaleway.domain.v2beta1.ListDNSZoneVersionsResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total number of DNS zones versions.
+          format: uint32
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZoneVersion'
+      x-properties-order:
+      - total_count
+      - versions
+    scaleway.domain.v2beta1.ListDNSZonesResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          description: Total number of DNS zones matching the requested criteria.
+          format: uint32
+        dns_zones:
+          type: array
+          description: Paginated returned DNS zones.
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZone'
+      x-properties-order:
+      - total_count
+      - dns_zones
+    scaleway.domain.v2beta1.ListSSLCertificatesResponse:
+      type: object
+      properties:
+        total_count:
+          type: integer
+          format: uint32
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.SSLCertificate'
+      x-properties-order:
+      - total_count
+      - certificates
+    scaleway.domain.v2beta1.Nameserver:
+      type: object
+      properties:
+        name:
+          type: string
+        ip:
+          type: array
+          items:
+            type: string
+      x-properties-order:
+      - name
+      - ip
+    scaleway.domain.v2beta1.RawFormat:
+      type: string
+      enum:
+      - unknown_raw_format
+      - bind
+      x-enum-descriptions:
+        values:
+          unknown_raw_format: If unspecified, the format is unknown by default.
+          bind: Export the DNS zone in text bind format
+      default: unknown_raw_format
+    scaleway.domain.v2beta1.Record:
+      type: object
+      properties:
+        data:
+          type: string
+        name:
+          type: string
+        priority:
+          type: integer
+          format: uint32
+        ttl:
+          type: integer
+          format: uint32
+        type:
+          $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.Type'
+        comment:
+          $ref: '#/components/schemas/google.protobuf.StringValue'
+        geo_ip_config:
+          type: object
+          properties:
+            matches:
+              type: array
+              items:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.GeoIPConfig.Match'
+            default:
+              type: string
+          nullable: true
+          x-properties-order:
+          - matches
+          - default
+          x-one-of: dynamic_data
+        http_service_config:
+          type: object
+          properties:
+            ips:
+              type: array
+              description: (IP address)
+              example:
+              - 1.2.3.4
+              items:
+                type: string
+            must_contain:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+            url:
+              type: string
+            user_agent:
+              $ref: '#/components/schemas/google.protobuf.StringValue'
+            strategy:
+              $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.HTTPServiceConfig.Strategy'
+          nullable: true
+          x-properties-order:
+          - ips
+          - must_contain
+          - url
+          - user_agent
+          - strategy
+          x-one-of: dynamic_data
+        weighted_config:
+          type: object
+          properties:
+            weighted_ips:
+              type: array
+              items:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.WeightedConfig.WeightedIP'
+          nullable: true
+          x-properties-order:
+          - weighted_ips
+          x-one-of: dynamic_data
+        view_config:
+          type: object
+          properties:
+            views:
+              type: array
+              items:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.ViewConfig.View'
+          nullable: true
+          x-properties-order:
+          - views
+          x-one-of: dynamic_data
+        id:
+          type: string
+      x-properties-order:
+      - data
+      - name
+      - priority
+      - ttl
+      - type
+      - comment
+      - geo_ip_config
+      - http_service_config
+      - weighted_config
+      - view_config
+      - id
+    scaleway.domain.v2beta1.Record.GeoIPConfig.Match:
+      type: object
+      properties:
+        countries:
+          type: array
+          items:
+            type: string
+        continents:
+          type: array
+          items:
+            type: string
+        data:
+          type: string
+      x-properties-order:
+      - countries
+      - continents
+      - data
+    scaleway.domain.v2beta1.Record.HTTPServiceConfig.Strategy:
+      type: string
+      enum:
+      - random
+      - hashed
+      - all
+      x-enum-descriptions:
+        values:
+          random: Returns a random IP based of the list of IPs available.
+          hashed: Based on the hash of bestwho, returns a random functioning IP out
+            of the best IPs available.
+          all: Return all functioning IPs available.
+      default: random
+    scaleway.domain.v2beta1.Record.Type:
+      type: string
+      enum:
+      - unknown
+      - A
+      - AAAA
+      - CNAME
+      - TXT
+      - SRV
+      - TLSA
+      - MX
+      - NS
+      - PTR
+      - CAA
+      - ALIAS
+      - LOC
+      - SSHFP
+      - HINFO
+      - RP
+      - URI
+      - DS
+      - NAPTR
+      - DNAME
+      - SVCB
+      - HTTPS
+      x-enum-descriptions:
+        values:
+          unknown: If unspecified, the record's type is unknown by default.
+          A: 'An A record contains an IP address. Example: ''203.0.113.210''.'
+          AAAA: 'An AAAA record contains an IPv6 address. Example: ''2001:DB8:2000:bf0::1''.'
+          CNAME: A CNAME record specifies the canonical name of a record. Example
+            'webserver-01.yourcompany.com'.
+          TXT: A TXT record can be used to attach textual data to a domain. Example
+            'v=spf1 include:_spf.tem.scw.cloud -all'.
+          SRV: 'SRV records can be used to encode the location and port of services
+            on a domain name. Example : ''20 443 sipdir.scaleway.example.com''.'
+          TLSA: TLSA records are used to bind SSL/TLS certificates to named hosts
+            and ports.
+          MX: An MX record specifies a mail exchanger host for a domain. Example '10
+            mx.example.net.'.
+          NS: 'Specifies nameservers for a domain. Example: ''ns1.yourcompany.com''.'
+          PTR: 'A reverse pointer is used to specify the hostname that belongs to
+            an IP or an IPv6 address. Example: ''www.yourcompany.com.''.'
+          CAA: 'A ''Certification Authority Authorization'' record is used to specify
+            certificate authorities that may issue certificates for a domain. Example:
+            ''0 issue ca.yourcompany.com''.'
+          ALIAS: The ALIAS pseudo-record type is supported to provide CNAME-like mechanisms
+            on a zone's apex.
+          LOC: 'A LOC record is a way of expressing geographic location information
+            for a domain name. It contains WGS84 latitude, longitude and altitude.
+            Example: ''51 56 0.123 N 5 54 0.000 E 4.00m 1.00m 10000.00m 10.00m''.'
+          SSHFP: 'An SSHFP record type is used for storing Secure Shell (SSH) fingerprints.
+            Example: ''2 1 123456789abcdef67890123456789abcdef67890''.'
+          HINFO: 'A Hardware Info record is used to specify the CPU and operating
+            system you are using. Example: ''i386 Linux''.'
+          RP: 'A Responsible Person record stores the mailbox name and the more-information
+            pointer. Example: ''michel.yourcompany.com michel.people.yourcompany.com'',
+            to indicate that michel@yourcompany.com is responsible and that more information
+            about Michel is available by querying the `TXT` record of ''michel.people.yourcompany.com''.'
+          URI: 'A URI record, is used to publish mappings from hostnames to URIs.
+            Example: ''10 1 ''ftp://ftp.yourcompany.com/public''.'
+          DS: 'DS records (Delegation Signer) are used to secure delegations (DNSSEC).
+            Example: ''2371 13 2 1F987CC6583E92DF0890718C42''.'
+          NAPTR: 'A Naming Authority Pointer record is used to set rules for how websites
+            process requests. Example: ''100 50 "s" "z3950+I2L+I2C" "" _z3950._tcp.yourcompany.com''.'
+          DNAME: 'A DNAME record provides redirection from one part of the DNS name
+            tree to another part of the DNS name tree. DNAME and CNAME records both
+            cause a lookup to (potentially) return data corresponding to a different
+            domain name from the queried domain name. Example: ''yourcompany.com''.'
+          SVCB: A SVCB (Service Binding) record provides information about a service
+            endpoint associated with a domain name.
+          HTTPS: An HTTPS record is a special type of SVCB record for HTTPS service
+            endpoints.
+      default: unknown
+    scaleway.domain.v2beta1.Record.ViewConfig.View:
+      type: object
+      properties:
+        subnet:
+          type: string
+        data:
+          type: string
+      x-properties-order:
+      - subnet
+      - data
+    scaleway.domain.v2beta1.Record.WeightedConfig.WeightedIP:
+      type: object
+      properties:
+        ip:
+          type: string
+          description: (IP address)
+          example: 1.2.3.4
+        weight:
+          type: integer
+          format: uint32
+      x-properties-order:
+      - ip
+      - weight
+    scaleway.domain.v2beta1.RecordChange:
+      type: object
+      properties:
+        add:
+          type: object
+          properties:
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+          nullable: true
+          x-properties-order:
+          - records
+          x-one-of: change
+        set:
+          type: object
+          properties:
+            id:
+              type: string
+              description: (UUID format)
+              example: 6170692e-7363-616c-6577-61792e636f6d
+              nullable: true
+              x-one-of: identifier
+            id_fields:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.Type'
+                data:
+                  $ref: '#/components/schemas/google.protobuf.StringValue'
+                ttl:
+                  $ref: '#/components/schemas/google.protobuf.UInt32Value'
+              nullable: true
+              x-properties-order:
+              - name
+              - type
+              - data
+              - ttl
+              x-one-of: identifier
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+          nullable: true
+          x-properties-order:
+          - id
+          - id_fields
+          - records
+          x-one-of: change
+        delete:
+          type: object
+          properties:
+            id:
+              type: string
+              description: (UUID format)
+              example: 6170692e-7363-616c-6577-61792e636f6d
+              nullable: true
+              x-one-of: identifier
+            id_fields:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  $ref: '#/components/schemas/scaleway.domain.v2beta1.Record.Type'
+                data:
+                  $ref: '#/components/schemas/google.protobuf.StringValue'
+                ttl:
+                  $ref: '#/components/schemas/google.protobuf.UInt32Value'
+              nullable: true
+              x-properties-order:
+              - name
+              - type
+              - data
+              - ttl
+              x-one-of: identifier
+          nullable: true
+          x-properties-order:
+          - id
+          - id_fields
+          x-one-of: change
+        clear:
+          type: object
+          nullable: true
+          x-one-of: change
+      x-properties-order:
+      - add
+      - set
+      - delete
+      - clear
+    scaleway.domain.v2beta1.RefreshDNSZoneResponse:
+      type: object
+      properties:
+        dns_zones:
+          type: array
+          description: DNS zones returned.
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZone'
+      x-properties-order:
+      - dns_zones
+    scaleway.domain.v2beta1.RestoreDNSZoneVersionResponse:
+      type: object
+    scaleway.domain.v2beta1.SSLCertificate:
+      type: object
+      properties:
+        dns_zone:
+          type: string
+        alternative_dns_zones:
+          type: array
+          items:
+            type: string
+        status:
+          $ref: '#/components/schemas/scaleway.domain.v2beta1.SSLCertificate.Status'
+        private_key:
+          type: string
+        certificate_chain:
+          type: string
+        created_at:
+          type: string
+          description: (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        expired_at:
+          type: string
+          description: (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+      x-properties-order:
+      - dns_zone
+      - alternative_dns_zones
+      - status
+      - private_key
+      - certificate_chain
+      - created_at
+      - expired_at
+    scaleway.domain.v2beta1.SSLCertificate.Status:
+      type: string
+      enum:
+      - unknown
+      - new
+      - pending
+      - success
+      - error
+      x-enum-descriptions:
+        values:
+          unknown: If unspecified, the SSL certificate's status is unknown by default.
+          new: The SSL certificate has been created but it has not been processed
+            yet.
+          pending: The SSL certificate's status is pending.
+          success: The SSL certificate has been created and processed.
+          error: An error occurred during the SSL certificate's creation.
+      default: unknown
+    scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse:
+      type: object
+      properties:
+        ns:
+          type: array
+          description: DNS zone name servers returned.
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Nameserver'
+      x-properties-order:
+      - ns
+    scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse:
+      type: object
+      properties:
+        records:
+          type: array
+          description: DNS zone records returned.
+          items:
+            $ref: '#/components/schemas/scaleway.domain.v2beta1.Record'
+      x-properties-order:
+      - records
+    scaleway.std.File:
+      type: object
+      properties:
+        name:
+          type: string
+        content_type:
+          type: string
+        content:
+          type: string
+      x-properties-order:
+      - name
+      - content_type
+      - content
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /domain/v2beta1/dns-zones:
+    get:
+      tags:
+      - DNS Zones
+      operationId: ListDNSZones
+      summary: List DNS zones
+      description: Retrieve the list of DNS zones you can manage and filter DNS zones
+        associated with specific domain names.
+      parameters:
+      - in: query
+        name: organization_id
+        description: Organization ID on which to filter the returned DNS zones.
+        schema:
+          type: string
+          description: Organization ID on which to filter the returned DNS zones.
+      - in: query
+        name: project_id
+        description: Project ID on which to filter the returned DNS zones.
+        schema:
+          type: string
+          description: Project ID on which to filter the returned DNS zones.
+      - in: query
+        name: order_by
+        description: Sort order of the returned DNS zones.
+        schema:
+          type: string
+          description: Sort order of the returned DNS zones.
+          enum:
+          - domain_asc
+          - domain_desc
+          - subdomain_asc
+          - subdomain_desc
+          - created_at_asc
+          - created_at_desc
+          - updated_at_asc
+          - updated_at_desc
+          x-enum-descriptions:
+            values:
+              domain_asc: Order by domain name (ascending).
+              domain_desc: Order by domain name (descending).
+              subdomain_asc: Order by subdomain name (ascending).
+              subdomain_desc: Order by subdomain name (descending).
+              created_at_asc: Order by created date (ascending).
+              created_at_desc: Order by created date (descending).
+              updated_at_asc: Order by updated date (ascending).
+              updated_at_desc: Order by updated date (descending).
+          default: domain_asc
+      - in: query
+        name: page
+        description: Page number to return, from the paginated results.
+        schema:
+          type: integer
+          description: Page number to return, from the paginated results.
+          format: int32
+      - in: query
+        name: page_size
+        description: Maximum number of DNS zones to return per page.
+        schema:
+          type: integer
+          description: Maximum number of DNS zones to return per page.
+          format: uint32
+      - in: query
+        name: domain
+        description: Domain on which to filter the returned DNS zones.
+        required: true
+        schema:
+          type: string
+          description: Domain on which to filter the returned DNS zones.
+      - in: query
+        name: dns_zone
+        description: DNS zone on which to filter the returned DNS zones.
+        schema:
+          type: string
+          description: DNS zone on which to filter the returned DNS zones.
+          deprecated: true
+      - in: query
+        name: dns_zones
+        description: DNS zones on which to filter the returned DNS zones.
+        schema:
+          type: array
+          description: DNS zones on which to filter the returned DNS zones.
+          items:
+            type: string
+      - in: query
+        name: created_after
+        description: Only list DNS zones created after this date. (RFC 3339 format)
+        schema:
+          type: string
+          description: Only list DNS zones created after this date. (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+      - in: query
+        name: created_before
+        description: Only list DNS zones created before this date. (RFC 3339 format)
+        schema:
+          type: string
+          description: Only list DNS zones created before this date. (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+      - in: query
+        name: updated_after
+        description: Only list DNS zones updated after this date. (RFC 3339 format)
+        schema:
+          type: string
+          description: Only list DNS zones updated after this date. (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+      - in: query
+        name: updated_before
+        description: Only list DNS zones updated before this date. (RFC 3339 format)
+        schema:
+          type: string
+          description: Only list DNS zones updated before this date. (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ListDNSZonesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones?domain=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            domain==string
+    post:
+      tags:
+      - DNS Zones
+      operationId: CreateDNSZone
+      summary: Create a DNS zone
+      description: Create a new DNS zone specified by the domain name, the subdomain
+        and the Project ID.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZone'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  type: string
+                  description: Domain in which to crreate the DNS zone.
+                subdomain:
+                  type: string
+                  description: Subdomain of the DNS zone to create.
+                project_id:
+                  type: string
+                  description: Project ID in which to create the DNS zone.
+              required:
+              - domain
+              - subdomain
+              - project_id
+              x-properties-order:
+              - domain
+              - subdomain
+              - project_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "domain": "string",
+              "project_id": "string",
+              "subdomain": "string"
+            }' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/dns-zones" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            domain="string" \
+            project_id="string" \
+            subdomain="string"
+  /domain/v2beta1/dns-zones/{dns_zone}:
+    patch:
+      tags:
+      - DNS Zones
+      operationId: UpdateDNSZone
+      summary: Update a DNS zone
+      description: Update the name and/or the Organizations for a DNS zone.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to update.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to update.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZone'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_dns_zone:
+                  type: string
+                  description: Name of the new DNS zone to create.
+                  nullable: true
+                project_id:
+                  type: string
+                  description: Project ID in which to create the new DNS zone.
+              required:
+              - new_dns_zone
+              - project_id
+              x-properties-order:
+              - new_dns_zone
+              - project_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"new_dns_zone":"string","project_id":"string"}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            new_dns_zone="string" \
+            project_id="string"
+    delete:
+      tags:
+      - DNS Zones
+      operationId: DeleteDNSZone
+      summary: Delete a DNS zone
+      description: Delete a DNS zone and all its records.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to delete.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to delete.
+      - in: query
+        name: project_id
+        description: Project ID of the DNS zone to delete.
+        required: true
+        schema:
+          type: string
+          description: Project ID of the DNS zone to delete.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.DeleteDNSZoneResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}?project_id=string"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            project_id==string
+  /domain/v2beta1/dns-zones/{dns_zone}/clone:
+    post:
+      tags:
+      - DNS Zones
+      operationId: CloneDNSZone
+      summary: Clone a DNS zone
+      description: Clone an existing DNS zone with all its records into a new DNS
+        zone.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to clone.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to clone.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.DNSZone'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dest_dns_zone:
+                  type: string
+                  description: Destination DNS zone in which to clone the chosen DNS
+                    zone.
+                overwrite:
+                  type: boolean
+                  description: Specifies whether or not the destination DNS zone will
+                    be overwritten.
+                project_id:
+                  type: string
+                  description: Project ID of the destination DNS zone.
+                  nullable: true
+              required:
+              - dest_dns_zone
+              x-properties-order:
+              - dest_dns_zone
+              - overwrite
+              - project_id
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"dest_dns_zone":"string","overwrite":false}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/clone"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/clone" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            dest_dns_zone="string" \
+            overwrite:=false
+  /domain/v2beta1/dns-zones/{dns_zone}/import-provider:
+    post:
+      tags:
+      - Imports / Exports
+      operationId: ImportProviderDNSZone
+      summary: Import a DNS zone from another provider
+      description: Import and replace the format of records from a given provider,
+        with default name servers.
+      parameters:
+      - in: path
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ImportProviderDNSZoneResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                online_v1:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                  nullable: true
+                  x-properties-order:
+                  - token
+                  x-one-of: provider
+              x-properties-order:
+              - online_v1
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/import-provider"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/import-provider" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/dns-zones/{dns_zone}/nameservers:
+    get:
+      tags:
+      - Records
+      operationId: ListDNSZoneNameservers
+      summary: List name servers within a DNS zone
+      description: Retrieve a list of name servers within a DNS zone and their optional
+        glue records.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone on which to filter the returned DNS zone name servers.
+        required: true
+        schema:
+          type: string
+          description: DNS zone on which to filter the returned DNS zone name servers.
+      - in: query
+        name: project_id
+        description: Project ID on which to filter the returned DNS zone name servers.
+        schema:
+          type: string
+          description: Project ID on which to filter the returned DNS zone name servers.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneNameserversResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/nameservers"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/nameservers" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    put:
+      tags:
+      - Records
+      operationId: UpdateDNSZoneNameservers
+      summary: Update name servers within a DNS zone
+      description: Update name servers within a DNS zone and set optional glue records.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone in which to update the DNS zone name servers.
+        required: true
+        schema:
+          type: string
+          description: DNS zone in which to update the DNS zone name servers.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ns:
+                  type: array
+                  description: New DNS zone name servers.
+                  items:
+                    $ref: '#/components/schemas/scaleway.domain.v2beta1.Nameserver'
+              required:
+              - ns
+              x-properties-order:
+              - ns
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PUT \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"ns":[""]}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/nameservers"
+      - lang: HTTPie
+        source: |-
+          http PUT "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/nameservers" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            ns:='[""]'
+  /domain/v2beta1/dns-zones/{dns_zone}/raw:
+    get:
+      tags:
+      - Imports / Exports
+      operationId: ExportRawDNSZone
+      summary: Export a raw DNS zone
+      description: Export a DNS zone with default name servers, in a specific format.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to export.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to export.
+      - in: query
+        name: format
+        description: DNS zone format.
+        schema:
+          type: string
+          description: DNS zone format.
+          enum:
+          - unknown_raw_format
+          - bind
+          x-enum-descriptions:
+            values:
+              unknown_raw_format: If unspecified, the format is unknown by default.
+              bind: Export the DNS zone in text bind format
+          default: bind
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.std.File'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/raw"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/raw" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - Imports / Exports
+      operationId: ImportRawDNSZone
+      summary: Import a raw DNS zone
+      description: Import and replace the format of records from a given provider,
+        with default name servers.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to import.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to import.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ImportRawDNSZoneResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  deprecated: true
+                project_id:
+                  type: string
+                format:
+                  deprecated: true
+                  $ref: '#/components/schemas/scaleway.domain.v2beta1.RawFormat'
+                bind_source:
+                  type: object
+                  description: Import a bind file format.
+                  properties:
+                    content:
+                      type: string
+                  nullable: true
+                  x-properties-order:
+                  - content
+                  x-one-of: source
+                axfr_source:
+                  type: object
+                  description: Import from the name server given with TSIG, to use
+                    or not.
+                  properties:
+                    name_server:
+                      type: string
+                    tsig_key:
+                      $ref: '#/components/schemas/scaleway.domain.v2beta1.ImportRawDNSZoneRequest.TsigKey'
+                  nullable: true
+                  x-properties-order:
+                  - name_server
+                  - tsig_key
+                  x-one-of: source
+              x-properties-order:
+              - content
+              - project_id
+              - format
+              - bind_source
+              - axfr_source
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"project_id":"string"}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/raw"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/raw" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            project_id="string"
+  /domain/v2beta1/dns-zones/{dns_zone}/records:
+    get:
+      tags:
+      - Records
+      operationId: ListDNSZoneRecords
+      summary: List records within a DNS zone
+      description: |-
+        Retrieve a list of DNS records within a DNS zone that has default name servers.
+        You can filter records by type and name.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone on which to filter the returned DNS zone records.
+        required: true
+        schema:
+          type: string
+          description: DNS zone on which to filter the returned DNS zone records.
+      - in: query
+        name: project_id
+        description: Project ID on which to filter the returned DNS zone records.
+        schema:
+          type: string
+          description: Project ID on which to filter the returned DNS zone records.
+      - in: query
+        name: order_by
+        description: Sort order of the returned DNS zone records.
+        schema:
+          type: string
+          description: Sort order of the returned DNS zone records.
+          enum:
+          - name_asc
+          - name_desc
+          x-enum-descriptions:
+            values:
+              name_asc: Order by record name (ascending).
+              name_desc: Order by record name (descending).
+          default: name_asc
+      - in: query
+        name: page
+        description: Page number to return, from the paginated results.
+        schema:
+          type: integer
+          description: Page number to return, from the paginated results.
+          format: int32
+      - in: query
+        name: page_size
+        description: Maximum number of DNS zone records per page.
+        schema:
+          type: integer
+          description: Maximum number of DNS zone records per page.
+          format: uint32
+      - in: query
+        name: name
+        description: Name on which to filter the returned DNS zone records.
+        required: true
+        schema:
+          type: string
+          description: Name on which to filter the returned DNS zone records.
+      - in: query
+        name: type
+        description: Record type on which to filter the returned DNS zone records.
+        schema:
+          type: string
+          description: Record type on which to filter the returned DNS zone records.
+          enum:
+          - unknown
+          - A
+          - AAAA
+          - CNAME
+          - TXT
+          - SRV
+          - TLSA
+          - MX
+          - NS
+          - PTR
+          - CAA
+          - ALIAS
+          - LOC
+          - SSHFP
+          - HINFO
+          - RP
+          - URI
+          - DS
+          - NAPTR
+          - DNAME
+          - SVCB
+          - HTTPS
+          x-enum-descriptions:
+            values:
+              unknown: If unspecified, the record's type is unknown by default.
+              A: 'An A record contains an IP address. Example: ''203.0.113.210''.'
+              AAAA: 'An AAAA record contains an IPv6 address. Example: ''2001:DB8:2000:bf0::1''.'
+              CNAME: A CNAME record specifies the canonical name of a record. Example
+                'webserver-01.yourcompany.com'.
+              TXT: A TXT record can be used to attach textual data to a domain. Example
+                'v=spf1 include:_spf.tem.scw.cloud -all'.
+              SRV: 'SRV records can be used to encode the location and port of services
+                on a domain name. Example : ''20 443 sipdir.scaleway.example.com''.'
+              TLSA: TLSA records are used to bind SSL/TLS certificates to named hosts
+                and ports.
+              MX: An MX record specifies a mail exchanger host for a domain. Example
+                '10 mx.example.net.'.
+              NS: 'Specifies nameservers for a domain. Example: ''ns1.yourcompany.com''.'
+              PTR: 'A reverse pointer is used to specify the hostname that belongs
+                to an IP or an IPv6 address. Example: ''www.yourcompany.com.''.'
+              CAA: 'A ''Certification Authority Authorization'' record is used to
+                specify certificate authorities that may issue certificates for a
+                domain. Example: ''0 issue ca.yourcompany.com''.'
+              ALIAS: The ALIAS pseudo-record type is supported to provide CNAME-like
+                mechanisms on a zone's apex.
+              LOC: 'A LOC record is a way of expressing geographic location information
+                for a domain name. It contains WGS84 latitude, longitude and altitude.
+                Example: ''51 56 0.123 N 5 54 0.000 E 4.00m 1.00m 10000.00m 10.00m''.'
+              SSHFP: 'An SSHFP record type is used for storing Secure Shell (SSH)
+                fingerprints. Example: ''2 1 123456789abcdef67890123456789abcdef67890''.'
+              HINFO: 'A Hardware Info record is used to specify the CPU and operating
+                system you are using. Example: ''i386 Linux''.'
+              RP: 'A Responsible Person record stores the mailbox name and the more-information
+                pointer. Example: ''michel.yourcompany.com michel.people.yourcompany.com'',
+                to indicate that michel@yourcompany.com is responsible and that more
+                information about Michel is available by querying the `TXT` record
+                of ''michel.people.yourcompany.com''.'
+              URI: 'A URI record, is used to publish mappings from hostnames to URIs.
+                Example: ''10 1 ''ftp://ftp.yourcompany.com/public''.'
+              DS: 'DS records (Delegation Signer) are used to secure delegations (DNSSEC).
+                Example: ''2371 13 2 1F987CC6583E92DF0890718C42''.'
+              NAPTR: 'A Naming Authority Pointer record is used to set rules for how
+                websites process requests. Example: ''100 50 "s" "z3950+I2L+I2C" ""
+                _z3950._tcp.yourcompany.com''.'
+              DNAME: 'A DNAME record provides redirection from one part of the DNS
+                name tree to another part of the DNS name tree. DNAME and CNAME records
+                both cause a lookup to (potentially) return data corresponding to
+                a different domain name from the queried domain name. Example: ''yourcompany.com''.'
+              SVCB: A SVCB (Service Binding) record provides information about a service
+                endpoint associated with a domain name.
+              HTTPS: An HTTPS record is a special type of SVCB record for HTTPS service
+                endpoints.
+          default: unknown
+      - in: query
+        name: id
+        description: Record ID on which to filter the returned DNS zone records.
+        schema:
+          type: string
+          description: Record ID on which to filter the returned DNS zone records.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneRecordsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/records?name=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/records" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name==string
+    patch:
+      tags:
+      - Records
+      operationId: UpdateDNSZoneRecords
+      summary: Update records within a DNS zone
+      description: |-
+        Update records within a DNS zone that has default name servers and perform several actions on your records.
+
+        Actions include:
+         - add: allows you to add a new record or add a new IP to an existing A record, for example
+         - set: allows you to edit a record or edit an IP from an existing A record, for example
+         - delete: allows you to delete a record or delete an IP from an existing A record, for example
+         - clear: allows you to delete all records from a DNS zone
+
+        All edits will be versioned.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone in which to update the DNS zone records.
+        required: true
+        schema:
+          type: string
+          description: DNS zone in which to update the DNS zone records.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                changes:
+                  type: array
+                  description: Changes made to the records.
+                  items:
+                    $ref: '#/components/schemas/scaleway.domain.v2beta1.RecordChange'
+                return_all_records:
+                  type: boolean
+                  description: Specifies whether or not to return all the records.
+                  nullable: true
+                disallow_new_zone_creation:
+                  type: boolean
+                  description: Disable the creation of the target zone if it does
+                    not exist. Target zone creation is disabled by default.
+                serial:
+                  type: integer
+                  description: Use the provided serial (0) instead of the auto-increment
+                    serial.
+                  format: uint64
+                  nullable: true
+              required:
+              - changes
+              x-properties-order:
+              - changes
+              - return_all_records
+              - disallow_new_zone_creation
+              - serial
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"changes":[""],"disallow_new_zone_creation":false}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/records"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/records" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            changes:='[""]' \
+            disallow_new_zone_creation:=false
+    delete:
+      tags:
+      - Records
+      operationId: ClearDNSZoneRecords
+      summary: Clear records within a DNS zone
+      description: |-
+        Delete all records within a DNS zone that has default name servers.<br/>
+        All edits will be versioned.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to clear.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to clear.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ClearDNSZoneRecordsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/records"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/records" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/dns-zones/{dns_zone}/refresh:
+    post:
+      tags:
+      - DNS Zones
+      operationId: RefreshDNSZone
+      summary: Refresh a DNS zone
+      description: |-
+        Refresh an SOA DNS zone to reload the records in the DNS zone and update the SOA serial.
+        You can recreate the given DNS zone and its sub DNS zone if needed.
+      parameters:
+      - in: path
+        name: dns_zone
+        description: DNS zone to refresh.
+        required: true
+        schema:
+          type: string
+          description: DNS zone to refresh.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.RefreshDNSZoneResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recreate_dns_zone:
+                  type: boolean
+                  description: Specifies whether or not to recreate the DNS zone.
+                recreate_sub_dns_zone:
+                  type: boolean
+                  description: Specifies whether or not to recreate the sub DNS zone.
+              x-properties-order:
+              - recreate_dns_zone
+              - recreate_sub_dns_zone
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"recreate_dns_zone":false,"recreate_sub_dns_zone":false}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/refresh"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/refresh" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            recreate_dns_zone:=false \
+            recreate_sub_dns_zone:=false
+  /domain/v2beta1/dns-zones/{dns_zone}/tsig-key:
+    get:
+      tags:
+      - DNS Zones
+      operationId: GetDNSZoneTsigKey
+      summary: Get the DNS zone's TSIG key
+      description: Retrieve information about the TSIG key of a given DNS zone to
+        allow AXFR requests.
+      parameters:
+      - in: path
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.GetDNSZoneTsigKeyResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/tsig-key"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/tsig-key" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - DNS Zones
+      operationId: DeleteDNSZoneTsigKey
+      summary: Delete the DNS zone's TSIG key
+      description: Delete an existing TSIG key specified by its DNS zone. Deleting
+        a TSIG key is permanent and cannot be undone.
+      parameters:
+      - in: path
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/tsig-key"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/tsig-key" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/dns-zones/{dns_zone}/versions:
+    get:
+      tags:
+      - Versions
+      operationId: ListDNSZoneVersions
+      summary: List versions of a DNS zone
+      description: |-
+        Retrieve a list of a DNS zone's versions.<br/>
+        The maximum version count is 100. If the count reaches this limit, the oldest version will be deleted after each new modification.
+      parameters:
+      - in: path
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        description: Page number to return, from the paginated results.
+        schema:
+          type: integer
+          description: Page number to return, from the paginated results.
+          format: int32
+      - in: query
+        name: page_size
+        description: Maximum number of DNS zones versions per page.
+        schema:
+          type: integer
+          description: Maximum number of DNS zones versions per page.
+          format: uint32
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneVersionsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/versions"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/{dns_zone}/versions" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/dns-zones/version/{dns_zone_version_id}:
+    get:
+      tags:
+      - Versions
+      operationId: ListDNSZoneVersionRecords
+      summary: List records from a given version of a specific DNS zone
+      description: Retrieve a list of records from a specific DNS zone version.
+      parameters:
+      - in: path
+        name: dns_zone_version_id
+        description: (UUID format)
+        required: true
+        schema:
+          type: string
+          description: (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      - in: query
+        name: page
+        description: Page number to return, from the paginated results.
+        schema:
+          type: integer
+          description: Page number to return, from the paginated results.
+          format: int32
+      - in: query
+        name: page_size
+        description: Maximum number of DNS zones versions records per page.
+        schema:
+          type: integer
+          description: Maximum number of DNS zones versions records per page.
+          format: uint32
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ListDNSZoneVersionRecordsResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/version/{dns_zone_version_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/version/{dns_zone_version_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff:
+    get:
+      tags:
+      - Versions
+      operationId: GetDNSZoneVersionDiff
+      summary: Access differences from a specific DNS zone version
+      description: Access a previous DNS zone version to see the differences from
+        another specific version.
+      parameters:
+      - in: path
+        name: dns_zone_version_id
+        description: (UUID format)
+        required: true
+        schema:
+          type: string
+          description: (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.GetDNSZoneVersionDiffResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/dns-zones/version/{dns_zone_version_id}/diff" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/dns-zones/version/{dns_zone_version_id}/restore:
+    post:
+      tags:
+      - Versions
+      operationId: RestoreDNSZoneVersion
+      summary: Restore a DNS zone version
+      description: Restore and activate a version of a specific DNS zone.
+      parameters:
+      - in: path
+        name: dns_zone_version_id
+        description: (UUID format)
+        required: true
+        schema:
+          type: string
+          description: (UUID format)
+          example: 6170692e-7363-616c-6577-61792e636f6d
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.RestoreDNSZoneVersionResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/domain/v2beta1/dns-zones/version/{dns_zone_version_id}/restore"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/dns-zones/version/{dns_zone_version_id}/restore" \
+            X-Auth-Token:$SCW_SECRET_KEY
+  /domain/v2beta1/ssl-certificates:
+    get:
+      tags:
+      - DNS Zones
+      operationId: ListSSLCertificates
+      summary: List a user's TLS certificates
+      description: List all the TLS certificates a user has created, specified by
+        the user's Project ID and the DNS zone.
+      parameters:
+      - in: query
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          $ref: '#/components/schemas/google.protobuf.Int32Value'
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          format: uint32
+      - in: query
+        name: project_id
+        schema:
+          $ref: '#/components/schemas/google.protobuf.StringValue'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.ListSSLCertificatesResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/ssl-certificates?dns_zone=string"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/ssl-certificates" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            dns_zone==string
+    post:
+      tags:
+      - DNS Zones
+      operationId: CreateSSLCertificate
+      summary: Create or get the DNS zone's TLS certificate
+      description: Create a new TLS certificate or retrieve information about an existing
+        TLS certificate.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.SSLCertificate'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dns_zone:
+                  type: string
+                alternative_dns_zones:
+                  type: array
+                  items:
+                    type: string
+              x-properties-order:
+              - dns_zone
+              - alternative_dns_zones
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"dns_zone":"string"}' \
+            "https://api.scaleway.com/domain/v2beta1/ssl-certificates"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/domain/v2beta1/ssl-certificates" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            dns_zone="string"
+  /domain/v2beta1/ssl-certificates/{dns_zone}:
+    get:
+      tags:
+      - DNS Zones
+      operationId: GetSSLCertificate
+      summary: Get a DNS zone's TLS certificate
+      description: Get the DNS zone's TLS certificate. If you do not have a certificate,
+        the ouptut returns `no certificate found`.
+      parameters:
+      - in: path
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.SSLCertificate'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/ssl-certificates/{dns_zone}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/domain/v2beta1/ssl-certificates/{dns_zone}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - DNS Zones
+      operationId: DeleteSSLCertificate
+      summary: Delete a TLS certificate
+      description: Delete an existing TLS certificate specified by its DNS zone. Deleting
+        a TLS certificate is permanent and cannot be undone.
+      parameters:
+      - in: path
+        name: dns_zone
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.domain.v2beta1.DeleteSSLCertificateResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/domain/v2beta1/ssl-certificates/{dns_zone}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/domain/v2beta1/ssl-certificates/{dns_zone}" \
+            X-Auth-Token:$SCW_SECRET_KEY

@@ -4,27 +4,27 @@ All URIs are relative to *https://api.scaleway.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**clear_dns_zone_records**](RecordsApi.md#clear_dns_zone_records) | **DELETE** /domain/v2beta1/dns-zones/{dns_zone}/records | Clear DNS zone records
-[**list_dns_zone_nameservers**](RecordsApi.md#list_dns_zone_nameservers) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | List DNS zone nameservers
-[**list_dns_zone_records**](RecordsApi.md#list_dns_zone_records) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/records | List DNS zone records
-[**update_dns_zone_nameservers**](RecordsApi.md#update_dns_zone_nameservers) | **PUT** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | Update DNS zone nameservers
-[**update_dns_zone_records**](RecordsApi.md#update_dns_zone_records) | **PATCH** /domain/v2beta1/dns-zones/{dns_zone}/records | Update DNS zone records
+[**clear_dns_zone_records**](RecordsApi.md#clear_dns_zone_records) | **DELETE** /domain/v2beta1/dns-zones/{dns_zone}/records | Clear records within a DNS zone
+[**list_dns_zone_nameservers**](RecordsApi.md#list_dns_zone_nameservers) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | List name servers within a DNS zone
+[**list_dns_zone_records**](RecordsApi.md#list_dns_zone_records) | **GET** /domain/v2beta1/dns-zones/{dns_zone}/records | List records within a DNS zone
+[**update_dns_zone_nameservers**](RecordsApi.md#update_dns_zone_nameservers) | **PUT** /domain/v2beta1/dns-zones/{dns_zone}/nameservers | Update name servers within a DNS zone
+[**update_dns_zone_records**](RecordsApi.md#update_dns_zone_records) | **PATCH** /domain/v2beta1/dns-zones/{dns_zone}/records | Update records within a DNS zone
 
 
 
 ## clear_dns_zone_records
 
 > serde_json::Value clear_dns_zone_records(dns_zone)
-Clear DNS zone records
+Clear records within a DNS zone
 
-Only available with default NS.<br/> Delete all the records from a DNS zone. All edits will be versioned. 
+Delete all records within a DNS zone that has default name servers.<br/> All edits will be versioned.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**dns_zone** | **String** | The DNS zone to clear | [required] |
+**dns_zone** | **String** | DNS zone to clear. | [required] |
 
 ### Return type
 
@@ -44,22 +44,22 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneNameserversResponse list_dns_zone_nameservers(dns_zone, project_id)
-List DNS zone nameservers
+> models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneNameserversResponse list_dns_zone_nameservers(dns_zone, project_id)
+List name servers within a DNS zone
 
-Returns a list of Nameservers and their optional glue records for a DNS zone.
+Retrieve a list of name servers within a DNS zone and their optional glue records.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**dns_zone** | **String** | The DNS zone on which to filter the returned DNS zone nameservers | [required] |
-**project_id** | Option<**String**> | The project ID on which to filter the returned DNS zone nameservers |  |
+**dns_zone** | **String** | DNS zone on which to filter the returned DNS zone name servers. | [required] |
+**project_id** | Option<**String**> | Project ID on which to filter the returned DNS zone name servers. |  |
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ListDnsZoneNameserversResponse**](scaleway.domain.v2beta1.ListDNSZoneNameserversResponse.md)
+[**models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneNameserversResponse**](scaleway.domain.v2beta1.ListDNSZoneNameserversResponse.md)
 
 ### Authorization
 
@@ -75,27 +75,28 @@ Name | Type | Description  | Required | Notes
 
 ## list_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1ListDnsZoneRecordsResponse list_dns_zone_records(dns_zone, project_id, order_by, page, page_size, name, _type)
-List DNS zone records
+> models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneRecordsResponse list_dns_zone_records(dns_zone, name, project_id, order_by, page, page_size, r#type, id)
+List records within a DNS zone
 
-Returns a list of DNS records of a DNS zone with default NS. You can filter the records by type and name. 
+Retrieve a list of DNS records within a DNS zone that has default name servers. You can filter records by type and name.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**dns_zone** | **String** | The DNS zone on which to filter the returned DNS zone records | [required] |
-**project_id** | Option<**String**> | The project ID on which to filter the returned DNS zone records |  |
-**order_by** | Option<**String**> | The sort order of the returned DNS zone records |  |[default to name_asc]
-**page** | Option<**f32**> | The page number for the returned DNS zone records |  |[default to 1]
-**page_size** | Option<**f32**> | The maximum number of DNS zone records per page |  |[default to 20]
-**name** | Option<**String**> | The name on which to filter the returned DNS zone records |  |
-**_type** | Option<**String**> | The record type on which to filter the returned DNS zone records |  |[default to unknown]
+**dns_zone** | **String** | DNS zone on which to filter the returned DNS zone records. | [required] |
+**name** | **String** | Name on which to filter the returned DNS zone records. | [required] |
+**project_id** | Option<**String**> | Project ID on which to filter the returned DNS zone records. |  |
+**order_by** | Option<**String**> | Sort order of the returned DNS zone records. |  |[default to name_asc]
+**page** | Option<**i32**> | Page number to return, from the paginated results. |  |
+**page_size** | Option<**i32**> | Maximum number of DNS zone records per page. |  |
+**r#type** | Option<**String**> | Record type on which to filter the returned DNS zone records. |  |[default to unknown]
+**id** | Option<**String**> | Record ID on which to filter the returned DNS zone records. |  |
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1ListDnsZoneRecordsResponse**](scaleway.domain.v2beta1.ListDNSZoneRecordsResponse.md)
+[**models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneRecordsResponse**](scaleway.domain.v2beta1.ListDNSZoneRecordsResponse.md)
 
 ### Authorization
 
@@ -111,22 +112,22 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_nameservers
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, inline_object50)
-Update DNS zone nameservers
+> models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneNameserversResponse update_dns_zone_nameservers(dns_zone, update_dns_zone_nameservers_request)
+Update name servers within a DNS zone
 
-Update DNS zone nameservers and set optional glue records.
+Update name servers within a DNS zone and set optional glue records.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**dns_zone** | **String** | The DNS zone where the DNS zone nameservers will be updated | [required] |
-**inline_object50** | [**InlineObject50**](InlineObject50.md) |  | [required] |
+**dns_zone** | **String** | DNS zone in which to update the DNS zone name servers. | [required] |
+**update_dns_zone_nameservers_request** | [**UpdateDnsZoneNameserversRequest**](UpdateDnsZoneNameserversRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1UpdateDnsZoneNameserversResponse**](scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse.md)
+[**models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneNameserversResponse**](scaleway.domain.v2beta1.UpdateDNSZoneNameserversResponse.md)
 
 ### Authorization
 
@@ -142,22 +143,22 @@ Name | Type | Description  | Required | Notes
 
 ## update_dns_zone_records
 
-> crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, inline_object52)
-Update DNS zone records
+> models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneRecordsResponse update_dns_zone_records(dns_zone, update_dns_zone_records_request)
+Update records within a DNS zone
 
-Only available with default NS.<br/> Send a list of actions and records.  Action can be:  - add:   - Add new record   - Can be more specific and add a new IP to an existing A record for example  - set:   - Edit a record   - Can be more specific and edit an IP from an existing A record for example  - delete:   - Delete a record   - Can be more specific and delete an IP from an existing A record for example  - clear:   - Delete all records from a DNS zone  All edits will be versioned. 
+Update records within a DNS zone that has default name servers and perform several actions on your records.  Actions include:  - add: allows you to add a new record or add a new IP to an existing A record, for example  - set: allows you to edit a record or edit an IP from an existing A record, for example  - delete: allows you to delete a record or delete an IP from an existing A record, for example  - clear: allows you to delete all records from a DNS zone  All edits will be versioned.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**dns_zone** | **String** | The DNS zone where the DNS zone records will be updated | [required] |
-**inline_object52** | [**InlineObject52**](InlineObject52.md) |  | [required] |
+**dns_zone** | **String** | DNS zone in which to update the DNS zone records. | [required] |
+**update_dns_zone_records_request** | [**UpdateDnsZoneRecordsRequest**](UpdateDnsZoneRecordsRequest.md) |  | [required] |
 
 ### Return type
 
-[**crate::models::ScalewayDomainV2beta1UpdateDnsZoneRecordsResponse**](scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse.md)
+[**models::ScalewayPeriodDomainPeriodV2beta1PeriodUpdateDnsZoneRecordsResponse**](scaleway.domain.v2beta1.UpdateDNSZoneRecordsResponse.md)
 
 ### Authorization
 

@@ -1,0 +1,566 @@
+openapi: 3.0.0
+info:
+  title: VPC API
+  description: "This API concerns the zoned Private Networks service. Private Networks
+    allows Scaleway resources (Instances, Load Balancers, Managed Databases etc.)
+    within a single Availability Zone to be interconnected through a dedicated, private,
+    and flexible [L2 network](https://en.wikipedia.org/wiki/Data_link_layer).\n\nYou
+    can add as many resources to your networks as you want, and add up to eight (8)
+    different networks\nper resource. This allows you to run services isolated from
+    the public internet and expose them to the rest of your infrastructure without
+    worrying about public network filtering.\n\n(switchcolumn)\n(switchcolumn)\n\n##
+    Concepts\n\nRefer to the [Public Gateway concepts page](https://www.scaleway.com/en/docs/network/public-gateways/concepts/)
+    to find definitions of concepts and terminology related to Private Networks.\n\n(switchcolumn)\n(switchcolumn)\n\n##
+    Quickstart\n\n1. **Configure your environment variables**\n\n    <Message type=\"note\">\n
+    \   This is an optional step that seeks to simplify your usage of the API. See
+    [Availability Zones](#technical-information) below for help choosing an Availability
+    Zone. You can find your Project ID in the [Scaleway console](https://console.scaleway.com/project/settings).\n
+    \   </Message>\n\n    ```bash\n    export SCW_SECRET_KEY=\"<API secret key>\"\n
+    \   export SCW_DEFAULT_ZONE=\"<Scaleway Availability Zone>\"\n    export SCW_PROJECT_ID=\"<Scaleway
+    Project ID>\"\n    ```\n\n2. **Create a Private Network**. Run the following command
+    to create a Private Network. You can customize the details in the payload (name,
+    tags etc.) to your needs.\n\n    ```bash\n    curl -X POST \\\n      -H \"X-Auth-Token:
+    $SCW_SECRET_KEY\" \\\n      -H \"Content-Type: application/json\" \\\n      \"https://api.scaleway.com/vpc/v1/zones/$SCW_DEFAULT_ZONE/private-networks\"
+    \\\n      -d '{\n        \"name\": \"My new Private Network\",\n        \"project_id\":
+    \"'\"$SCW_PROJECT_ID\"'\", \n        \"tags\": [\"test\", \"dev\"]\n      }'\n
+    \   ```\n\n    <Message type=\"tip\">\n    Keep the `id` field of the response:
+    it is your Private Network ID, and is useable across all Scaleway products that
+    support Private Networks. It may be useful to you to export the Private Network
+    ID as a new environment variable `export PN_ID=\"<Your Private Network ID>`\n
+    \   </Message>\n\n3. **Attach a resource to your Private Network**. Each Scaleway
+    product has its own API to interact with Private Networks. To attach an Instance,
+    Managed Database, Elastic Metal server, Load Balancer or Public Gateway to your
+    Private Network, see instructions in the documentation of the relevant product
+    API. Here, we take the example of an Instance.\n\n    Use the following call to
+    attach an Instance to your Private Network. Ensure you replace `<Instance ID>`
+    with the ID of your Instance, and `<Private Network ID>` with the ID of your Private
+    Network. \n\n    ```bash\n    curl -X POST \\\n      -H \"X-Auth-Token: $SCW_SECRET_KEY\"
+    \\\n      -H \"Content-Type: application/json\" \\\n      \"https://api.scaleway.com/instance/v1/zones/$SCW_DEFAULT_ZONE/servers/<Instance
+    ID>/private_nics\" \\\n      -d '{\"private_network_id\": \"<Private Network ID>\"}'\n
+    \   ```\n\n    <Message type=\"tip\">\n    Keep the `id` field of the response:
+    it is your Private NIC ID. It may be useful to you to export\n    the Private
+    NIC ID as a new environment variable `export NIC_ID=\"<Your Private NIC ID>`.\n
+    \   </Message>\n\n    <Message type=\"tip\">\n    Keep the `mac_address` field
+    of the response, as it will allow you to identify the Private NIC inside your
+    Instance. If successful, a new network interface will appear inside your Instance,
+    ready to be configured to transmit traffic to other Instances of the same network,
+    with the MAC address returned by the API call.\n    </Message>\n\n4. **Confirm
+    that the network interface has been plugged in**. To do this, connect to your
+    Instance and run `dmseg`. You should see an output similar to the following:\n\n
+    \   ```bash\n    [1579004.592869] pci 0000:00:05.0: [1af4:1000] type 00 class
+    0x020000\n    [1579004.594835] pci 0000:00:05.0: reg 0x10: [io  0x0000-0x003f]\n
+    \   [1579004.596715] pci 0000:00:05.0: reg 0x14: [mem 0x00000000-0x00000fff]\n
+    \   [1579004.598732] pci 0000:00:05.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit
+    pref]\n    [1579004.600765] pci 0000:00:05.0: reg 0x30: [mem 0x00000000-0x0007ffff
+    pref]\n    [1579004.603819] pci 0000:00:05.0: BAR 6: assigned [mem 0xc0100000-0xc017ffff
+    pref]\n    [1579004.604582] pci 0000:00:05.0: BAR 4: assigned [mem 0x100000c000-0x100000ffff
+    64bit pref]\n    [1579004.605555] pci 0000:00:05.0: BAR 1: assigned [mem 0xc0003000-0xc0003fff]\n
+    \   [1579004.606383] pci 0000:00:05.0: BAR 0: assigned [io  0x1000-0x103f]\n    [1579004.607212]
+    virtio-pci 0000:00:05.0: enabling device (0000 -> 0003)\n    [1579004.625149]
+    PCI Interrupt Link [LNKA] enabled at IRQ 11\n    [1579004.644930] virtio_net virtio3
+    ens5: renamed from eth0\n    ```\n\n5. **Confirm the presence of the network interface,
+    and confirm its name if several networks are plugged into your Instance**. To
+    do this, run `ip -br link`. You should see an output similar to the following:\n\n
+    \   ```bash\n    lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>\n
+    \   ens2             UP             de:1c:94:44:d0:04 <BROADCAST,MULTICAST,UP,LOWER_UP>\n
+    \   ens5             DOWN           02:00:00:00:00:31 <BROADCAST,MULTICAST>\n
+    \   ens6             DOWN           02:00:00:00:01:5b <BROADCAST,MULTICAST>\n
+    \   ens7             DOWN           02:00:00:00:01:5e <BROADCAST,MULTICAST>\n
+    \   ```\n\n6. **Configure the network interface on your Instance**. Refer to our
+    [dedicated documentation](https://www.scaleway.com/en/docs/compute/instances/how-to/use-private-networks/#how-to-configure-the-private-network-interface-on-your-instances)
+    for help with this step. Alternatively, use a [Public Gateway](https://www.scaleway.com/en/docs/network/public-gateways/quickstart/)
+    to facilitate configuration of your resources on your Private Network.\n\n7. **Delete
+    your Private NIC**, which equates to unplugging your Instance from the Private
+    Network. Use the following call. Ensure you replace `<Instance ID>` with the ID
+    of your Instance, `<Private Network ID>` with the ID of your Private Network,
+    and `<NIC ID>` with the ID of your Private NIC.\n\n    ```bash\n    curl -X DELETE
+    \\\n      -H \"X-Auth-Token: $SCW_SECRET_KEY\" \\\n      -H \"Content-Type: application/json\"
+    \\\n      \"https://api.scaleway.com/instance/v1/zones/$SCW_DEFAULT_ZONE/servers/<Instance
+    ID>/private_nics/<NIC ID>\"\n    ```\n\n    The network interface disappears from
+    your Instance.\n\n8. **Delete your Private Network**. Use the following call.
+    Ensure you replace `<Private Network ID>` with the ID of your Private Network.\n\n
+    \   ```bash\n    curl -X DELETE \\\n      -H \"X-Auth-Token: $SCW_SECRET_KEY\"
+    \\\n      -H \"Content-Type: application/json\" \\\n      \"https://api.scaleway.com/vpc/v1/zones/$SCW_DEFAULT_ZONE/private-networks/<Private
+    Network ID>\"\n\n    ```\n\n    <Message type=\"note\">\n    Private Networks
+    must be empty to be deleted. Ensure you have detached all resources from your
+    network prior to deletion.\n    </Message>\n\n(switchcolumn)\n<Message type=\"requirement\">\n-
+    You have a [Scaleway account](https://console.scaleway.com/)\n- You have created
+    an [API key](https://www.scaleway.com/en/docs/identity-and-access-management/iam/how-to/create-api-keys/)
+    and that the API key has sufficient [IAM permissions](https://www.scaleway.com/en/docs/identity-and-access-management/iam/reference-content/permission-sets/)
+    to perform the actions described on this page\n- You have [installed `curl`](https://curl.se/download.html)\n</Message>\n(switchcolumn)\n\n##
+    Technical information\n\n### Availability Zones\n\nScaleway Private Networks is
+    a zoned product. It is available in the following Availability Zones:\n\n\n| Name
+    \     | API ID                |\n|-----------|-----------------------|\n| Paris
+    \    | `fr-par-1` `fr-par-2` `fr-par-3` |\n| Amsterdam | `nl-ams-1` `nl-ams-2`
+    |\n| Warsaw    | `pl-waw-1` `pl-waw-2` |\n\n## Technical limitations\n\nThe following
+    limitations apply to Scaleway Private Networks:\n\n- A maximum of eight (8) Private
+    Networks can be plugged to any single Instance\n- The MAC address of an Instance
+    in a Private Network cannot be changed\n- Broadcast and multicast traffic, while
+    supported, are heavily rate-limited\n\n## Going further\n\nFor more help using
+    Scaleway Private Networks, check out the following resources:\n- Our [main documentation](https://www.scaleway.com/en/docs/network/public-gateways/how-to/use-private-networks/)\n-
+    The #private-networks channel on our [Slack Community](https://www.scaleway.com/en/docs/tutorials/scaleway-slack-community/)\n-
+    Our [support ticketing system](https://www.scaleway.com/en/docs/console/my-account/how-to/open-a-support-ticket/)."
+  version: v1
+servers:
+- url: https://api.scaleway.com
+tags:
+- name: Private Networks
+  description: |
+    A Private Network allows you to interconnect your Scaleway resources in an
+    isolated and private network. Network reachability is limited
+    to resources that are on the same Private Network. Note that a resource can
+    be part of multiple Private Networks.
+components:
+  schemas:
+    scaleway.vpc.v1.ListPrivateNetworksResponse:
+      type: object
+      properties:
+        private_networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/scaleway.vpc.v1.PrivateNetwork'
+        total_count:
+          type: integer
+          format: uint32
+      x-properties-order:
+      - private_networks
+      - total_count
+    scaleway.vpc.v1.PrivateNetwork:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Private Network ID.
+        name:
+          type: string
+          description: Private Network name.
+        organization_id:
+          type: string
+          description: Scaleway Organization the Private Network belongs to.
+        project_id:
+          type: string
+          description: Scaleway Project the Private Network belongs to.
+        zone:
+          type: string
+          description: Availability Zone in which the Private Network is available.
+        tags:
+          type: array
+          description: Tags of the Private Network.
+          items:
+            type: string
+        created_at:
+          type: string
+          description: Date the Private Network was created. (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        updated_at:
+          type: string
+          description: Date the Private Network was last modified. (RFC 3339 format)
+          format: date-time
+          example: "2022-03-22T12:34:56.123456Z"
+          nullable: true
+        subnets:
+          type: array
+          description: Private Network subnets CIDR. (IP network)
+          example:
+          - 1.2.3.4/32
+          items:
+            type: string
+      x-properties-order:
+      - id
+      - name
+      - organization_id
+      - project_id
+      - zone
+      - tags
+      - created_at
+      - updated_at
+      - subnets
+  securitySchemes:
+    scaleway:
+      in: header
+      name: X-Auth-Token
+      type: apiKey
+paths:
+  /vpc/v1/zones/{zone}/private-networks:
+    get:
+      tags:
+      - Private Networks
+      operationId: ListPrivateNetworks
+      summary: List Private Networks
+      description: List existing Private Networks in a specified Availability Zone.
+        By default, the Private Networks returned in the list are ordered by creation
+        date in ascending order, though this can be modified via the order_by field.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - fr-par-3
+          - nl-ams-1
+          - nl-ams-2
+          - nl-ams-3
+          - pl-waw-1
+          - pl-waw-2
+      - in: query
+        name: order_by
+        description: Sort order of the returned Private Networks.
+        schema:
+          type: string
+          description: Sort order of the returned Private Networks.
+          enum:
+          - created_at_asc
+          - created_at_desc
+          - name_asc
+          - name_desc
+          default: created_at_asc
+      - in: query
+        name: page
+        description: Page number to return, from the paginated results.
+        schema:
+          type: integer
+          description: Page number to return, from the paginated results.
+          format: int32
+      - in: query
+        name: page_size
+        description: Maximum number of Private Networks to return per page.
+        schema:
+          type: integer
+          description: Maximum number of Private Networks to return per page.
+          format: uint32
+      - in: query
+        name: name
+        description: Name to filter for. Only Private Networks with names containing
+          this string will be returned.
+        schema:
+          type: string
+          description: Name to filter for. Only Private Networks with names containing
+            this string will be returned.
+      - in: query
+        name: tags
+        description: Tags to filter for. Only Private Networks with one or more matching
+          tags will be returned.
+        schema:
+          type: array
+          description: Tags to filter for. Only Private Networks with one or more
+            matching tags will be returned.
+          items:
+            type: string
+      - in: query
+        name: organization_id
+        description: Organization ID to filter for. Only Private Networks belonging
+          to this Organization will be returned.
+        schema:
+          type: string
+          description: Organization ID to filter for. Only Private Networks belonging
+            to this Organization will be returned.
+      - in: query
+        name: project_id
+        description: Project ID to filter for. Only Private Networks belonging to
+          this Project will be returned.
+        schema:
+          type: string
+          description: Project ID to filter for. Only Private Networks belonging to
+            this Project will be returned.
+      - in: query
+        name: private_network_ids
+        description: Private Network IDs to filter for. Only Private Networks with
+          one of these IDs will be returned. (UUID format)
+        schema:
+          type: array
+          description: Private Network IDs to filter for. Only Private Networks with
+            one of these IDs will be returned. (UUID format)
+          example:
+          - 6170692e-7363-616c-6577-61792e636f6d
+          items:
+            type: string
+      - in: query
+        name: include_regional
+        description: Defines whether to include regional Private Networks in the response.
+        schema:
+          type: boolean
+          description: Defines whether to include regional Private Networks in the
+            response.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.vpc.v1.ListPrivateNetworksResponse'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    post:
+      tags:
+      - Private Networks
+      operationId: CreatePrivateNetwork
+      summary: Create a Private Network
+      description: Create a new Private Network. Once created, you can attach Scaleway
+        resources in the same Availability Zone.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - fr-par-3
+          - nl-ams-1
+          - nl-ams-2
+          - nl-ams-3
+          - pl-waw-1
+          - pl-waw-2
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.vpc.v1.PrivateNetwork'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name for the Private Network.
+                project_id:
+                  type: string
+                  description: Scaleway Project in which to create the Private Network.
+                tags:
+                  type: array
+                  description: Tags for the Private Network.
+                  items:
+                    type: string
+                subnets:
+                  type: array
+                  description: Private Network subnets CIDR. (IP network)
+                  example:
+                  - 1.2.3.4/32
+                  items:
+                    type: string
+              required:
+              - name
+              - project_id
+              x-properties-order:
+              - name
+              - project_id
+              - tags
+              - subnets
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X POST \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"name":"string","project_id":"string"}' \
+            "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks"
+      - lang: HTTPie
+        source: |-
+          http POST "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks" \
+            X-Auth-Token:$SCW_SECRET_KEY \
+            name="string" \
+            project_id="string"
+  /vpc/v1/zones/{zone}/private-networks/{private_network_id}:
+    get:
+      tags:
+      - Private Networks
+      operationId: GetPrivateNetwork
+      summary: Get a Private Network
+      description: Retrieve information about an existing Private Network, specified
+        by its Private Network ID. Its full details are returned in the response object.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - fr-par-3
+          - nl-ams-1
+          - nl-ams-2
+          - nl-ams-3
+          - pl-waw-1
+          - pl-waw-2
+      - in: path
+        name: private_network_id
+        description: Private Network ID.
+        required: true
+        schema:
+          type: string
+          description: Private Network ID.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.vpc.v1.PrivateNetwork'
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X GET \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks/{private_network_id}"
+      - lang: HTTPie
+        source: |-
+          http GET "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks/{private_network_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    patch:
+      tags:
+      - Private Networks
+      operationId: UpdatePrivateNetwork
+      summary: Update Private Network
+      description: Update parameters (such as name or tags) of an existing Private
+        Network, specified by its Private Network ID.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - fr-par-3
+          - nl-ams-1
+          - nl-ams-2
+          - nl-ams-3
+          - pl-waw-1
+          - pl-waw-2
+      - in: path
+        name: private_network_id
+        description: Private Network ID.
+        required: true
+        schema:
+          type: string
+          description: Private Network ID.
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/scaleway.vpc.v1.PrivateNetwork'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the private network.
+                  nullable: true
+                tags:
+                  type: array
+                  description: Tags for the Private Network.
+                  nullable: true
+                  items:
+                    type: string
+                subnets:
+                  type: array
+                  description: Private Network subnets CIDR (deprecated).
+                  deprecated: true
+                  nullable: true
+                  items:
+                    type: string
+              x-properties-order:
+              - name
+              - tags
+              - subnets
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X PATCH \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks/{private_network_id}"
+      - lang: HTTPie
+        source: |-
+          http PATCH "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks/{private_network_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
+    delete:
+      tags:
+      - Private Networks
+      operationId: DeletePrivateNetwork
+      summary: Delete a Private Network
+      description: Delete an existing Private Network. Note that you must first detach
+        all resources from the network, in order to delete it.
+      parameters:
+      - in: path
+        name: zone
+        description: The zone you want to target
+        required: true
+        schema:
+          type: string
+          description: The zone you want to target
+          enum:
+          - fr-par-1
+          - fr-par-2
+          - fr-par-3
+          - nl-ams-1
+          - nl-ams-2
+          - nl-ams-3
+          - pl-waw-1
+          - pl-waw-2
+      - in: path
+        name: private_network_id
+        description: Private Network ID.
+        required: true
+        schema:
+          type: string
+          description: Private Network ID.
+      responses:
+        "204":
+          description: ""
+      security:
+      - scaleway: []
+      x-codeSamples:
+      - lang: cURL
+        source: |-
+          curl -X DELETE \
+            -H "X-Auth-Token: $SCW_SECRET_KEY" \
+            "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks/{private_network_id}"
+      - lang: HTTPie
+        source: |-
+          http DELETE "https://api.scaleway.com/vpc/v1/zones/{zone}/private-networks/{private_network_id}" \
+            X-Auth-Token:$SCW_SECRET_KEY
