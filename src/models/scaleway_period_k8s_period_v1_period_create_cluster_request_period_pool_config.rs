@@ -76,7 +76,7 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodCreateClusterRequestPeriodPoolConfig {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub root_volume_size: Option<Option<i32>>,
+    pub root_volume_size: Option<Option<u64>>,
     /// Defines if the public IP should be removed from Nodes. To use this feature, your Cluster must have an attached Private Network set up with a Public Gateway.
     #[serde(rename = "public_ip_disabled", skip_serializing_if = "Option::is_none")]
     pub public_ip_disabled: Option<bool>,
