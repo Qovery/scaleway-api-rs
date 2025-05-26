@@ -27,7 +27,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodNodeType {
     pub vcpus: Option<i32>,
     /// Quantity of RAM. (in bytes)
     #[serde(rename = "memory", skip_serializing_if = "Option::is_none")]
-    pub memory: Option<i32>,
+    pub memory: Option<u64>,
     #[serde(rename = "volume_constraint", skip_serializing_if = "Option::is_none")]
     pub volume_constraint: Option<Box<models::ScalewayRdbV1NodeTypeVolumeConstraint>>,
     /// The Node Type is compliant with Block Storage.

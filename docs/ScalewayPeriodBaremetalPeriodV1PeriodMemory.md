@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**capacity** | Option<**i32**> | Capacity of the memory in bytes. (in bytes) | [optional]
+**capacity** | Option<**u64**> | Capacity of the memory in bytes. (in bytes) | [optional]
 **r#type** | Option<**String**> | Type of the memory. | [optional]
 **frequency** | Option<**i32**> | Frequency of the memory in MHz. | [optional]
 **is_ecc** | Option<**bool**> | True if the memory is an error-correcting code memory. | [optional]

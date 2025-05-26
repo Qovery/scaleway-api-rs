@@ -24,7 +24,7 @@ Name | Type | Description | Notes
 **upgrade_policy** | Option<[**models::ScalewayK8sV1PoolUpgradePolicy**](scaleway_k8s_v1_Pool_upgrade_policy.md)> |  | [optional]
 **zone** | Option<**String**> | Zone in which the pool's nodes will be spawned. | [optional]
 **root_volume_type** | Option<**String**> | Defines the system volume disk type. Several types of volume (`volume_type`) are provided:. * `l_ssd` is a local block storage which means your system is stored locally on your node's hypervisor. This type is not available for all node types * `sbs-5k` is a remote block storage which means your system is stored on a centralized and resilient cluster with 5k IOPS limits * `sbs-15k` is a faster remote block storage which means your system is stored on a centralized and resilient cluster with 15k IOPS limits * `b_ssd` is the legacy remote block storage which means your system is stored on a centralized and resilient cluster. Consider using `sbs-5k` or `sbs-15k` instead. | [optional][default to DefaultVolumeType]
-**root_volume_size** | Option<**i32**> | System volume disk size. (in bytes) | [optional]
+**root_volume_size** | Option<**u64**> | System volume disk size. (in bytes) | [optional]
 **public_ip_disabled** | Option<**bool**> | Defines if the public IP should be removed from Nodes. To use this feature, your Cluster must have an attached Private Network set up with a Public Gateway. | [optional]
 **new_images_enabled** | Option<**bool**> | Defines whether the pool is migrated to new images. | [optional]
 **region** | Option<**String**> | Cluster region of the pool. | [optional]

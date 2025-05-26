@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodBaremetalPeriodV1PeriodDisk {
     /// Capacity of the disk in bytes. (in bytes)
     #[serde(rename = "capacity", skip_serializing_if = "Option::is_none")]
-    pub capacity: Option<i32>,
+    pub capacity: Option<u64>,
     /// Type of the disk.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,

@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **status_message** | Option<**String**> | Namespace status details. | [optional]
 **endpoint** | Option<**String**> | Endpoint reachable by docker. | [optional]
 **is_public** | Option<**bool**> | Defines whether or not namespace is public. | [optional]
-**size** | Option<**i32**> | Total size of the namespace, calculated as the sum of the size of all images in the namespace. (in bytes) | [optional]
+**size** | Option<**u64**> | Total size of the namespace, calculated as the sum of the size of all images in the namespace. (in bytes) | [optional]
 **created_at** | Option<**String**> | Date and time of creation. (RFC 3339 format) | [optional]
 **updated_at** | Option<**String**> | Date and time of last update. (RFC 3339 format) | [optional]
 **image_count** | Option<**i32**> | Number of images in the namespace. | [optional]

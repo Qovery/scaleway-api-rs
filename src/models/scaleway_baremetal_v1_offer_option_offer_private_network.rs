@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScalewayBaremetalV1OfferOptionOfferPrivateNetwork {
     #[serde(rename = "bandwidth_in_bps", skip_serializing_if = "Option::is_none")]
-    pub bandwidth_in_bps: Option<i32>,
+    pub bandwidth_in_bps: Option<u64>,
 }
 
 impl ScalewayBaremetalV1OfferOptionOfferPrivateNetwork {

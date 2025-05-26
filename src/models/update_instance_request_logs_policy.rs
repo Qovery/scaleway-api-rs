@@ -29,7 +29,7 @@ pub struct UpdateInstanceRequestLogsPolicy {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub total_disk_retention: Option<Option<i32>>,
+    pub total_disk_retention: Option<Option<u64>>,
 }
 
 impl UpdateInstanceRequestLogsPolicy {

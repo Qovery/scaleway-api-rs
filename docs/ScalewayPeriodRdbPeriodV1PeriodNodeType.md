@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **stock_status** | Option<**String**> | Current stock status for the Node Type. | [optional][default to Unknown]
 **description** | Option<**String**> | Current specs of the offer. | [optional]
 **vcpus** | Option<**i32**> | Number of virtual CPUs. | [optional]
-**memory** | Option<**i32**> | Quantity of RAM. (in bytes) | [optional]
+**memory** | Option<**u64**> | Quantity of RAM. (in bytes) | [optional]
 **volume_constraint** | Option<[**models::ScalewayRdbV1NodeTypeVolumeConstraint**](scaleway_rdb_v1_NodeType_volume_constraint.md)> |  | [optional]
 **is_bssd_compatible** | Option<**bool**> | The Node Type is compliant with Block Storage. | [optional]
 **disabled** | Option<**bool**> | The Node Type is currently disabled. | [optional]

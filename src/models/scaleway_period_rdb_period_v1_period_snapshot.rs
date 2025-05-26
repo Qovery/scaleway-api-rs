@@ -32,7 +32,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodSnapshot {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub size: Option<Option<i32>>,
+    pub size: Option<Option<u64>>,
     /// Expiration date (must follow the ISO 8601 format). (RFC 3339 format)
     #[serde(
         rename = "expires_at",

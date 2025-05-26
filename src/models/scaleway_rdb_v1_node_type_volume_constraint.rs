@@ -16,10 +16,10 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayRdbV1NodeTypeVolumeConstraint {
     /// [deprecated] Minimum size required for the Volume. (in bytes)
     #[serde(rename = "min_size", skip_serializing_if = "Option::is_none")]
-    pub min_size: Option<i32>,
+    pub min_size: Option<u64>,
     /// [deprecated] Maximum size required for the Volume. (in bytes)
     #[serde(rename = "max_size", skip_serializing_if = "Option::is_none")]
-    pub max_size: Option<i32>,
+    pub max_size: Option<u64>,
 }
 
 impl ScalewayRdbV1NodeTypeVolumeConstraint {

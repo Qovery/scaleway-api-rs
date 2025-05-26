@@ -18,7 +18,7 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableTypesResponse {
     pub cluster_types: Option<Vec<models::ScalewayPeriodK8sPeriodV1PeriodClusterType>>,
     /// Total number of types.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodK8sPeriodV1PeriodListClusterAvailableTypesResponse {
