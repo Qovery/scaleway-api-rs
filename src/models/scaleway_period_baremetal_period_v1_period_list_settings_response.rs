@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodBaremetalPeriodV1PeriodListSettingsResponse {
     /// Total count of matching settings.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Settings that match filters.
     #[serde(rename = "settings", skip_serializing_if = "Option::is_none")]
     pub settings: Option<Vec<models::ScalewayPeriodBaremetalPeriodV1PeriodSetting>>,

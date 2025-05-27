@@ -81,7 +81,7 @@ pub struct CreateClusterRequestAutoscalerConfig {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_graceful_termination_sec: Option<Option<i32>>,
+    pub max_graceful_termination_sec: Option<Option<u64>>,
 }
 
 impl CreateClusterRequestAutoscalerConfig {

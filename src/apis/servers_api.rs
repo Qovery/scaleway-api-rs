@@ -541,7 +541,7 @@ pub async fn list_server_events(
     zone: &str,
     server_id: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     order_by: Option<&str>,
 ) -> Result<
     models::ScalewayPeriodBaremetalPeriodV1PeriodListServerEventsResponse,
@@ -617,7 +617,7 @@ pub async fn list_servers(
     configuration: &configuration::Configuration,
     zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     order_by: Option<&str>,
     tags: Option<Vec<String>>,
     status: Option<Vec<String>>,

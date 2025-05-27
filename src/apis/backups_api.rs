@@ -320,7 +320,7 @@ pub async fn list_database_backups(
     organization_id: Option<&str>,
     project_id: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse,
     Error<ListDatabaseBackupsError>,

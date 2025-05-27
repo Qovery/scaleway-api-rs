@@ -87,7 +87,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **page** | Option<**i32**> | A positive integer to choose the page to display. |  |
-**page_size** | Option<**i32**> | A positive integer lower or equal to 100 to select the number of items to display. |  |
+**page_size** | Option<**u64**> | A positive integer lower or equal to 100 to select the number of items to display. |  |
 **order_by** | Option<**String**> | Criteria to use when ordering image listings. Possible values are `created_at_asc`, `created_at_desc`, `name_asc`, `name_desc`, `region`, `status_asc` and `status_desc`. The default value is `created_at_asc`. |  |[default to created_at_asc]
 **namespace_id** | Option<**String**> | Filter by the namespace ID. |  |
 **name** | Option<**String**> | Filter by the image name (exact match). |  |

@@ -26,7 +26,7 @@ pub async fn list_node_types(
     region: &str,
     include_disabled_types: bool,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<models::ScalewayPeriodRdbPeriodV1PeriodListNodeTypesResponse, Error<ListNodeTypesError>>
 {
     // add a prefix to parameters to efficiently prevent name collisions

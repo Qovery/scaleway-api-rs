@@ -255,7 +255,7 @@ Name | Type | Description  | Required | Notes
 **zone** | **String** | The zone you want to target | [required] |
 **server_id** | **String** | ID of the server events searched. | [required] |
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Number of server events per page. |  |
+**page_size** | Option<**u64**> | Number of server events per page. |  |
 **order_by** | Option<**String**> | Order of the server events. |  |[default to created_at_asc]
 
 ### Return type
@@ -288,7 +288,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Number of servers per page. |  |
+**page_size** | Option<**u64**> | Number of servers per page. |  |
 **order_by** | Option<**String**> | Order of the servers. |  |[default to created_at_asc]
 **tags** | Option<[**Vec<String>**](String.md)> | Tags to filter for. |  |
 **status** | Option<[**Vec<String>**](String.md)> | Status to filter for. |  |

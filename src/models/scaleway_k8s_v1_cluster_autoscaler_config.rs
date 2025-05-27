@@ -67,7 +67,7 @@ pub struct ScalewayK8sV1ClusterAutoscalerConfig {
         rename = "max_graceful_termination_sec",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_graceful_termination_sec: Option<i32>,
+    pub max_graceful_termination_sec: Option<u64>,
 }
 
 impl ScalewayK8sV1ClusterAutoscalerConfig {

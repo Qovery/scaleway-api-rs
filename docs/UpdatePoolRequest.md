@@ -5,9 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **autoscaling** | Option<**bool**> | New value for the pool autoscaling enablement. | [optional]
-**size** | Option<**i32**> | New desired pool size. | [optional]
-**min_size** | Option<**i32**> | New minimum size for the pool. | [optional]
-**max_size** | Option<**i32**> | New maximum size for the pool. | [optional]
+**size** | Option<**u64**> | New desired pool size. | [optional]
+**min_size** | Option<**u64**> | New minimum size for the pool. | [optional]
+**max_size** | Option<**u64**> | New maximum size for the pool. | [optional]
 **autohealing** | Option<**bool**> | New value for the pool autohealing enablement. | [optional]
 **tags** | Option<**Vec<String>**> | New tags associated with the pool. | [optional]
 **kubelet_args** | Option<[**models::UpdatePoolRequestKubeletArgs**](UpdatePool_request_kubelet_args.md)> |  | [optional]

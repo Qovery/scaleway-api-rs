@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListDatabaseEnginesResponse {
     pub engines: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodDatabaseEngine>>,
     /// Total count of database engines available.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListDatabaseEnginesResponse {

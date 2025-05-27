@@ -32,7 +32,7 @@ pub struct CreatePoolRequest {
     pub autoscaling: Option<bool>,
     /// Size (number of nodes) of the pool.
     #[serde(rename = "size")]
-    pub size: i32,
+    pub size: u64,
     /// Defines the minimum size of the pool. Note that this field is only used when autoscaling is enabled on the pool.
     #[serde(
         rename = "min_size",
@@ -40,7 +40,7 @@ pub struct CreatePoolRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub min_size: Option<Option<i32>>,
+    pub min_size: Option<Option<u64>>,
     /// Defines the maximum size of the pool. Note that this field is only used when autoscaling is enabled on the pool.
     #[serde(
         rename = "max_size",
@@ -48,7 +48,7 @@ pub struct CreatePoolRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_size: Option<Option<i32>>,
+    pub max_size: Option<Option<u64>>,
     /// Customization of the container runtime is available for each pool.
     #[serde(rename = "container_runtime", skip_serializing_if = "Option::is_none")]
     pub container_runtime: Option<ContainerRuntime>,
@@ -82,7 +82,7 @@ pub struct CreatePoolRequest {
 }
 
 impl CreatePoolRequest {
-    pub fn new(name: String, node_type: String, size: i32) -> CreatePoolRequest {
+    pub fn new(name: String, node_type: String, size: u64) -> CreatePoolRequest {
         CreatePoolRequest {
             name,
             node_type,

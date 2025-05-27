@@ -16,10 +16,10 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayRdbV1InstanceBackupSchedule {
     /// Frequency of the backup schedule (in hours).
     #[serde(rename = "frequency", skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<i32>,
+    pub frequency: Option<u64>,
     /// Default retention period of backups (in days).
     #[serde(rename = "retention", skip_serializing_if = "Option::is_none")]
-    pub retention: Option<i32>,
+    pub retention: Option<u64>,
     /// Defines whether the backup schedule feature is disabled.
     #[serde(rename = "disabled", skip_serializing_if = "Option::is_none")]
     pub disabled: Option<bool>,

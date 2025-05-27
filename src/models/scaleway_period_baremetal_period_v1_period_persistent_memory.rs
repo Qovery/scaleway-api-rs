@@ -15,13 +15,13 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodBaremetalPeriodV1PeriodPersistentMemory {
     /// Capacity of the memory in bytes. (in bytes)
     #[serde(rename = "capacity", skip_serializing_if = "Option::is_none")]
-    pub capacity: Option<i32>,
+    pub capacity: Option<u64>,
     /// Type of the memory.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
     /// Frequency of the memory in MHz.
     #[serde(rename = "frequency", skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<i32>,
+    pub frequency: Option<u64>,
 }
 
 impl ScalewayPeriodBaremetalPeriodV1PeriodPersistentMemory {

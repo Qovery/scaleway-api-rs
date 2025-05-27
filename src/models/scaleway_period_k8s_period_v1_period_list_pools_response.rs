@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodK8sPeriodV1PeriodListPoolsResponse {
     /// Total number of pools that exists for the cluster.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Paginated returned pools.
     #[serde(rename = "pools", skip_serializing_if = "Option::is_none")]
     pub pools: Option<Vec<models::ScalewayPeriodK8sPeriodV1PeriodPool>>,

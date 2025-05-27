@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionRecordsResponse {
     /// Total number of DNS zones versions records.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     #[serde(rename = "records", skip_serializing_if = "Option::is_none")]
     pub records: Option<Vec<models::ScalewayPeriodDomainPeriodV2beta1PeriodRecord>>,
 }

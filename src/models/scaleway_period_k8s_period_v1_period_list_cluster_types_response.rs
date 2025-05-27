@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodK8sPeriodV1PeriodListClusterTypesResponse {
     /// Total number of cluster-types.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Paginated returned cluster-types.
     #[serde(rename = "cluster_types", skip_serializing_if = "Option::is_none")]
     pub cluster_types: Option<Vec<models::ScalewayPeriodK8sPeriodV1PeriodClusterType>>,

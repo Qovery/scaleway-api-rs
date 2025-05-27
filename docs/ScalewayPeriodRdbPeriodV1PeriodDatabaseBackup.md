@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **database_name** | Option<**String**> | Name of backed up database. | [optional]
 **name** | Option<**String**> | Name of the backup. | [optional]
 **status** | Option<**String**> | Status of the backup. | [optional][default to Unknown]
-**size** | Option<**i32**> | Size of the database backup. (in bytes) | [optional]
+**size** | Option<**u64**> | Size of the database backup. (in bytes) | [optional]
 **expires_at** | Option<**String**> | Expiration date (must follow the ISO 8601 format). (RFC 3339 format) | [optional]
 **created_at** | Option<**String**> | Creation date (must follow the ISO 8601 format). (RFC 3339 format) | [optional]
 **updated_at** | Option<**String**> | Updated date (must follow the ISO 8601 format). (RFC 3339 format) | [optional]

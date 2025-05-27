@@ -54,7 +54,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Number of offers per page. |  |
+**page_size** | Option<**u64**> | Number of offers per page. |  |
 **subscription_period** | Option<**String**> | Subscription period type to filter offers by. |  |[default to unknown_subscription_period]
 **name** | Option<**String**> | Offer name to filter offers by. |  |
 

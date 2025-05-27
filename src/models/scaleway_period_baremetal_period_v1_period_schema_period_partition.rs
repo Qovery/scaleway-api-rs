@@ -17,10 +17,10 @@ pub struct ScalewayPeriodBaremetalPeriodV1PeriodSchemaPeriodPartition {
     pub label:
         Option<models::ScalewayPeriodBaremetalPeriodV1PeriodSchemaPeriodPartitionPeriodLabel>,
     #[serde(rename = "number", skip_serializing_if = "Option::is_none")]
-    pub number: Option<i32>,
+    pub number: Option<u64>,
     /// (in bytes)
     #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
     #[serde(
         rename = "use_all_available_space",
         skip_serializing_if = "Option::is_none"

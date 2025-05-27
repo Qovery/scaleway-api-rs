@@ -17,7 +17,7 @@ pub struct ScalewayPeriodDomainPeriodV2beta1PeriodRecordPeriodWeightedConfigPeri
     #[serde(rename = "ip", skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
     #[serde(rename = "weight", skip_serializing_if = "Option::is_none")]
-    pub weight: Option<i32>,
+    pub weight: Option<u64>,
 }
 
 impl ScalewayPeriodDomainPeriodV2beta1PeriodRecordPeriodWeightedConfigPeriodWeightedIp {

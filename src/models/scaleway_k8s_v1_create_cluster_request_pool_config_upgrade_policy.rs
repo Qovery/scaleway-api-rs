@@ -21,7 +21,7 @@ pub struct ScalewayK8sV1CreateClusterRequestPoolConfigUpgradePolicy {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_unavailable: Option<Option<i32>>,
+    pub max_unavailable: Option<Option<u64>>,
     /// The maximum number of nodes to be created during the upgrade.
     #[serde(
         rename = "max_surge",
@@ -29,7 +29,7 @@ pub struct ScalewayK8sV1CreateClusterRequestPoolConfigUpgradePolicy {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_surge: Option<Option<i32>>,
+    pub max_surge: Option<Option<u64>>,
 }
 
 impl ScalewayK8sV1CreateClusterRequestPoolConfigUpgradePolicy {

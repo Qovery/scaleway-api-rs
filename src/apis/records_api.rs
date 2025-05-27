@@ -178,7 +178,7 @@ pub async fn list_dns_zone_records(
     project_id: Option<&str>,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     r#type: Option<&str>,
     id: Option<&str>,
 ) -> Result<

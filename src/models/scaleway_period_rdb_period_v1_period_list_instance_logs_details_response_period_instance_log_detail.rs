@@ -16,7 +16,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListInstanceLogsDetailsResponsePeriodI
     #[serde(rename = "log_name", skip_serializing_if = "Option::is_none")]
     pub log_name: Option<String>,
     #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListInstanceLogsDetailsResponsePeriodInstanceLogDetail {

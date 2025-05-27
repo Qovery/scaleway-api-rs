@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListInstancesResponse {
     pub instances: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodInstance>>,
     /// Total count of Database Instances available in a Organization or Project.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListInstancesResponse {

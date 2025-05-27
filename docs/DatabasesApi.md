@@ -93,7 +93,7 @@ Name | Type | Description  | Required | Notes
 **owner** | Option<**String**> | User that owns this database. |  |
 **order_by** | Option<**String**> | Criteria to use when ordering database listing. |  |[default to name_asc]
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

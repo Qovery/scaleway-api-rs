@@ -582,7 +582,7 @@ pub async fn list_flexible_ips(
     zone: &str,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     tags: Option<Vec<String>>,
     status: Option<Vec<models::ScalewayPeriodFlexibleIpPeriodV1alpha1PeriodFlexibleIpPeriodStatus>>,
     server_ids: Option<Vec<String>>,

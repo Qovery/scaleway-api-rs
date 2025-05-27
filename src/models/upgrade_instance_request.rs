@@ -36,7 +36,7 @@ pub struct UpgradeInstanceRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub volume_size: Option<Option<i32>>,
+    pub volume_size: Option<Option<u64>>,
     /// Change your Database Instance storage type.
     #[serde(
         rename = "volume_type",

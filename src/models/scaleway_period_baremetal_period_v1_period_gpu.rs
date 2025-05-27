@@ -18,7 +18,7 @@ pub struct ScalewayPeriodBaremetalPeriodV1PeriodGpu {
     pub name: Option<String>,
     /// Capacity of the vram in bytes.
     #[serde(rename = "vram", skip_serializing_if = "Option::is_none")]
-    pub vram: Option<i32>,
+    pub vram: Option<u64>,
 }
 
 impl ScalewayPeriodBaremetalPeriodV1PeriodGpu {

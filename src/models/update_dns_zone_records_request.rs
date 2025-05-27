@@ -37,7 +37,7 @@ pub struct UpdateDnsZoneRecordsRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub serial: Option<Option<i32>>,
+    pub serial: Option<Option<u64>>,
 }
 
 impl UpdateDnsZoneRecordsRequest {

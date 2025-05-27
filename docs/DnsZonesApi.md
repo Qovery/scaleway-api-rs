@@ -278,7 +278,7 @@ Name | Type | Description  | Required | Notes
 **project_id** | Option<**String**> | Project ID on which to filter the returned DNS zones. |  |
 **order_by** | Option<**String**> | Sort order of the returned DNS zones. |  |[default to domain_asc]
 **page** | Option<**i32**> | Page number to return, from the paginated results. |  |
-**page_size** | Option<**i32**> | Maximum number of DNS zones to return per page. |  |
+**page_size** | Option<**u64**> | Maximum number of DNS zones to return per page. |  |
 **dns_zone** | Option<**String**> | DNS zone on which to filter the returned DNS zones. |  |
 **dns_zones** | Option<[**Vec<String>**](String.md)> | DNS zones on which to filter the returned DNS zones. |  |
 **created_after** | Option<**String**> | Only list DNS zones created after this date. (RFC 3339 format) |  |
@@ -316,7 +316,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** |  | [required] |
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 **project_id** | Option<**String**> |  |  |
 
 ### Return type

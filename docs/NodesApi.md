@@ -125,7 +125,7 @@ Name | Type | Description  | Required | Notes
 **pool_id** | Option<**String**> | Pool ID on which to filter the returned nodes. |  |
 **order_by** | Option<**String**> | Sort order of the returned nodes. |  |[default to created_at_asc]
 **page** | Option<**i32**> | Page number for the returned nodes. |  |
-**page_size** | Option<**i32**> | Maximum number of nodes per page. |  |
+**page_size** | Option<**u64**> | Maximum number of nodes per page. |  |
 **name** | Option<**String**> | Name to filter on, only nodes containing this substring in their name will be returned. |  |
 **status** | Option<**String**> | Status to filter on, only nodes with this status will be returned. |  |[default to unknown]
 

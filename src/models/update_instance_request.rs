@@ -20,7 +20,7 @@ pub struct UpdateInstanceRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub backup_schedule_frequency: Option<Option<i32>>,
+    pub backup_schedule_frequency: Option<Option<u64>>,
     /// In days.
     #[serde(
         rename = "backup_schedule_retention",
@@ -28,7 +28,7 @@ pub struct UpdateInstanceRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub backup_schedule_retention: Option<Option<i32>>,
+    pub backup_schedule_retention: Option<Option<u64>>,
     /// Defines whether or not the backup schedule is disabled.
     #[serde(
         rename = "is_backup_schedule_disabled",
@@ -70,7 +70,7 @@ pub struct UpdateInstanceRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub backup_schedule_start_hour: Option<Option<i32>>,
+    pub backup_schedule_start_hour: Option<Option<u64>>,
 }
 
 impl UpdateInstanceRequest {

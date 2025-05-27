@@ -24,10 +24,10 @@ pub struct ScalewayPeriodBaremetalPeriodV1PeriodOffer {
     pub stock: Option<Stock>,
     /// Public bandwidth available (in bits/s) with the offer.
     #[serde(rename = "bandwidth", skip_serializing_if = "Option::is_none")]
-    pub bandwidth: Option<i32>,
+    pub bandwidth: Option<u64>,
     /// Maximum public bandwidth available (in bits/s) depending on available options.
     #[serde(rename = "max_bandwidth", skip_serializing_if = "Option::is_none")]
-    pub max_bandwidth: Option<i32>,
+    pub max_bandwidth: Option<u64>,
     /// Commercial range of the offer.
     #[serde(rename = "commercial_range", skip_serializing_if = "Option::is_none")]
     pub commercial_range: Option<String>,
@@ -82,7 +82,7 @@ pub struct ScalewayPeriodBaremetalPeriodV1PeriodOffer {
     pub options: Option<Vec<models::ScalewayPeriodBaremetalPeriodV1PeriodOfferPeriodOptionOffer>>,
     /// Private bandwidth available in bits/s with the offer.
     #[serde(rename = "private_bandwidth", skip_serializing_if = "Option::is_none")]
-    pub private_bandwidth: Option<i32>,
+    pub private_bandwidth: Option<u64>,
     /// Defines whether the offer's bandwidth is shared or not.
     #[serde(rename = "shared_bandwidth", skip_serializing_if = "Option::is_none")]
     pub shared_bandwidth: Option<bool>,

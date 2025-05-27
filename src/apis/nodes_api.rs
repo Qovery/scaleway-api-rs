@@ -246,7 +246,7 @@ pub async fn list_nodes(
     pool_id: Option<&str>,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     name: Option<&str>,
     status: Option<&str>,
 ) -> Result<models::ScalewayPeriodK8sPeriodV1PeriodListNodesResponse, Error<ListNodesError>> {

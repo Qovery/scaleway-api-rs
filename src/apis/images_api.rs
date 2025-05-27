@@ -166,7 +166,7 @@ pub async fn list_images(
     configuration: &configuration::Configuration,
     region: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     order_by: Option<&str>,
     namespace_id: Option<&str>,
     name: Option<&str>,

@@ -15,9 +15,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScalewayK8sV1PoolUpgradePolicy {
     #[serde(rename = "max_unavailable", skip_serializing_if = "Option::is_none")]
-    pub max_unavailable: Option<i32>,
+    pub max_unavailable: Option<u64>,
     #[serde(rename = "max_surge", skip_serializing_if = "Option::is_none")]
-    pub max_surge: Option<i32>,
+    pub max_surge: Option<u64>,
 }
 
 impl ScalewayK8sV1PoolUpgradePolicy {

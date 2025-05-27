@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRegistryPeriodV1PeriodListTagsResponse {
     pub tags: Option<Vec<models::ScalewayPeriodRegistryPeriodV1PeriodTag>>,
     /// Total number of tags that match the selected filters.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRegistryPeriodV1PeriodListTagsResponse {

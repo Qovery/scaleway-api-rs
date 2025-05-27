@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListPrivilegesResponse {
     pub privileges: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodPrivilege>>,
     /// Total count of privileges present on a database.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListPrivilegesResponse {

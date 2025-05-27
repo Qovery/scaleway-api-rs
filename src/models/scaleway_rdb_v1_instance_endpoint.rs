@@ -27,7 +27,7 @@ pub struct ScalewayRdbV1InstanceEndpoint {
     pub ip: Option<Option<String>>,
     /// TCP port of the endpoint.
     #[serde(rename = "port", skip_serializing_if = "Option::is_none")]
-    pub port: Option<i32>,
+    pub port: Option<u64>,
     /// Name of the endpoint.
     #[serde(
         rename = "name",

@@ -18,7 +18,7 @@ pub struct ScalewayRdbV1InstanceVolume {
     pub r#type: Option<models::ScalewayPeriodRdbPeriodV1PeriodVolumePeriodType>,
     /// (in bytes)
     #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
     #[serde(rename = "class", skip_serializing_if = "Option::is_none")]
     pub class: Option<models::ScalewayPeriodRdbPeriodV1PeriodStorageClass>,
 }

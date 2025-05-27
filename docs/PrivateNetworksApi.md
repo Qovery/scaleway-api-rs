@@ -120,7 +120,7 @@ Name | Type | Description  | Required | Notes
 **zone** | **String** | The zone you want to target | [required] |
 **order_by** | Option<**String**> | Sort order of the returned Private Networks. |  |[default to created_at_asc]
 **page** | Option<**i32**> | Page number to return, from the paginated results. |  |
-**page_size** | Option<**i32**> | Maximum number of Private Networks to return per page. |  |
+**page_size** | Option<**u64**> | Maximum number of Private Networks to return per page. |  |
 **name** | Option<**String**> | Name to filter for. Only Private Networks with names containing this string will be returned. |  |
 **tags** | Option<[**Vec<String>**](String.md)> | Tags to filter for. Only Private Networks with one or more matching tags will be returned. |  |
 **organization_id** | Option<**String**> | Organization ID to filter for. Only Private Networks belonging to this Organization will be returned. |  |

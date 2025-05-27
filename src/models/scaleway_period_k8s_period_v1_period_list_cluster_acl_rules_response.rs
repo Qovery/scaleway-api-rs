@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodK8sPeriodV1PeriodListClusterAclRulesResponse {
     /// Total number of ACLs that exist for the cluster.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Paginated returned ACLs.
     #[serde(rename = "rules", skip_serializing_if = "Option::is_none")]
     pub rules: Option<Vec<models::ScalewayPeriodK8sPeriodV1PeriodAclRule>>,

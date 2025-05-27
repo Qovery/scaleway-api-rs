@@ -21,13 +21,13 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodNodeTypePeriodVolumeType {
     pub description: Option<String>,
     /// Minimum size required for the Volume. (in bytes)
     #[serde(rename = "min_size", skip_serializing_if = "Option::is_none")]
-    pub min_size: Option<i32>,
+    pub min_size: Option<u64>,
     /// Maximum size required for the Volume. (in bytes)
     #[serde(rename = "max_size", skip_serializing_if = "Option::is_none")]
-    pub max_size: Option<i32>,
+    pub max_size: Option<u64>,
     /// Minimum increment level for a Block Storage volume size. (in bytes)
     #[serde(rename = "chunk_size", skip_serializing_if = "Option::is_none")]
-    pub chunk_size: Option<i32>,
+    pub chunk_size: Option<u64>,
     /// The storage class of the volume.
     #[serde(rename = "class", skip_serializing_if = "Option::is_none")]
     pub class: Option<Class>,

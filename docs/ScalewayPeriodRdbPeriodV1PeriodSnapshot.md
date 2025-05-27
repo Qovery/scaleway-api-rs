@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **instance_id** | Option<**String**> | UUID of the Database Instance. | [optional]
 **name** | Option<**String**> | Name of the snapshot. | [optional]
 **status** | Option<**String**> | Status of the snapshot. | [optional][default to Unknown]
-**size** | Option<**i32**> | Size of the snapshot. (in bytes) | [optional]
+**size** | Option<**u64**> | Size of the snapshot. (in bytes) | [optional]
 **expires_at** | Option<**String**> | Expiration date (must follow the ISO 8601 format). (RFC 3339 format) | [optional]
 **created_at** | Option<**String**> | Creation date (must follow the ISO 8601 format). (RFC 3339 format) | [optional]
 **updated_at** | Option<**String**> | Updated date (must follow the ISO 8601 format). (RFC 3339 format) | [optional]

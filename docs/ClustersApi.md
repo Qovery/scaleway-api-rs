@@ -223,7 +223,7 @@ Name | Type | Description  | Required | Notes
 **project_id** | Option<**String**> | Project ID on which to filter the returned clusters. |  |
 **order_by** | Option<**String**> | Sort order of returned clusters. |  |[default to created_at_asc]
 **page** | Option<**i32**> | Page number to return for clusters, from the paginated results. |  |
-**page_size** | Option<**i32**> | Maximum number of clusters per page. |  |
+**page_size** | Option<**u64**> | Maximum number of clusters per page. |  |
 **name** | Option<**String**> | Name to filter on, only clusters containing this substring in their name will be returned. |  |
 **status** | Option<**String**> | Status to filter on, only clusters with this status will be returned. |  |[default to unknown]
 **r#type** | Option<**String**> | Type to filter on, only clusters with this type will be returned. |  |

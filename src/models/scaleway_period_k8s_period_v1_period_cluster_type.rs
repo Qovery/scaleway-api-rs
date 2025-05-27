@@ -21,7 +21,7 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodClusterType {
     pub availability: Option<Availability>,
     /// Maximum number of nodes supported by the offer.
     #[serde(rename = "max_nodes", skip_serializing_if = "Option::is_none")]
-    pub max_nodes: Option<i32>,
+    pub max_nodes: Option<u64>,
     /// Time period during which you can no longer switch to a lower offer. (in seconds)
     #[serde(
         rename = "commitment_delay",
@@ -38,7 +38,7 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodClusterType {
     pub resiliency: Option<Resiliency>,
     /// Max RAM allowed for the control plane. (in bytes)
     #[serde(rename = "memory", skip_serializing_if = "Option::is_none")]
-    pub memory: Option<i32>,
+    pub memory: Option<u64>,
     /// Returns information if this offer uses dedicated resources.
     #[serde(rename = "dedicated", skip_serializing_if = "Option::is_none")]
     pub dedicated: Option<bool>,

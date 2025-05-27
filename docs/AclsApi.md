@@ -90,7 +90,7 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **instance_id** | **String** | UUID of the Database Instance. | [required] |
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

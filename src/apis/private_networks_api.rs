@@ -225,7 +225,7 @@ pub async fn list_private_networks(
     zone: &str,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     name: Option<&str>,
     tags: Option<Vec<String>>,
     organization_id: Option<&str>,

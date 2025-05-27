@@ -165,7 +165,7 @@ pub async fn list_tags(
     region: &str,
     image_id: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     order_by: Option<&str>,
     name: Option<&str>,
 ) -> Result<models::ScalewayPeriodRegistryPeriodV1PeriodListTagsResponse, Error<ListTagsError>> {

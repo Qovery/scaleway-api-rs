@@ -38,7 +38,7 @@ pub struct ScalewayPeriodRegistryPeriodV1PeriodImage {
     pub visibility: Option<Visibility>,
     /// Image size in bytes, calculated from the size of image layers. Image size in bytes, calculated from the size of image layers. One layer used in two tags of the same image is counted once but one layer used in two images is counted twice. (in bytes)
     #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
     /// Date and time of image creation. (RFC 3339 format)
     #[serde(
         rename = "created_at",

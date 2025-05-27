@@ -44,7 +44,9 @@ yq -i --yaml-output 'walk(if type == "object" and has("x-enum-descriptions") the
 openapi-generator-cli generate -g rust \
  -i .generation/consolidated-specs.yml \
  -o . \
- -c openapi-generator-config.yml
+ -c openapi-generator-config.yml \
+ --type-mappings=integer+uint64=u64 \
+ --type-mappings=integer+uint32=u64
 
 # adding README elements
 cat templates/README.prepend.md README.md > README.consolidated.md

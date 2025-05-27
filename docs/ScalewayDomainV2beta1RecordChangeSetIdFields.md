@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **name** | Option<**String**> |  | [optional]
 **r#type** | Option<[**models::ScalewayPeriodDomainPeriodV2beta1PeriodRecordPeriodType**](scaleway.domain.v2beta1.Record.Type.md)> |  | [optional]
 **data** | Option<**String**> |  | [optional]
-**ttl** | Option<**i32**> |  | [optional]
+**ttl** | Option<**u64**> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

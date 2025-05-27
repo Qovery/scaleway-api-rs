@@ -88,7 +88,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone_version_id** | **String** | (UUID format) | [required] |
 **page** | Option<**i32**> | Page number to return, from the paginated results. |  |
-**page_size** | Option<**i32**> | Maximum number of DNS zones versions records per page. |  |
+**page_size** | Option<**u64**> | Maximum number of DNS zones versions records per page. |  |
 
 ### Return type
 
@@ -120,7 +120,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **dns_zone** | **String** |  | [required] |
 **page** | Option<**i32**> | Page number to return, from the paginated results. |  |
-**page_size** | Option<**i32**> | Maximum number of DNS zones versions per page. |  |
+**page_size** | Option<**u64**> | Maximum number of DNS zones versions per page. |  |
 
 ### Return type
 

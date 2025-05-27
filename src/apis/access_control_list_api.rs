@@ -163,7 +163,7 @@ pub async fn list_cluster_acl_rules(
     region: &str,
     cluster_id: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodK8sPeriodV1PeriodListClusterAclRulesResponse,
     Error<ListClusterAclRulesError>,

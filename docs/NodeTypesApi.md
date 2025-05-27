@@ -23,7 +23,7 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **include_disabled_types** | **bool** | Defines whether or not to include disabled types. | [required] |
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

@@ -42,7 +42,7 @@ pub struct ScalewayPeriodRegistryPeriodV1PeriodNamespace {
     pub is_public: Option<bool>,
     /// Total size of the namespace, calculated as the sum of the size of all images in the namespace. (in bytes)
     #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
     /// Date and time of creation. (RFC 3339 format)
     #[serde(
         rename = "created_at",
@@ -61,7 +61,7 @@ pub struct ScalewayPeriodRegistryPeriodV1PeriodNamespace {
     pub updated_at: Option<Option<String>>,
     /// Number of images in the namespace.
     #[serde(rename = "image_count", skip_serializing_if = "Option::is_none")]
-    pub image_count: Option<i32>,
+    pub image_count: Option<u64>,
     /// Region the namespace belongs to.
     #[serde(rename = "region", skip_serializing_if = "Option::is_none")]
     pub region: Option<String>,

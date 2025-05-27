@@ -166,7 +166,7 @@ pub async fn list_users(
     name: Option<&str>,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<models::ScalewayPeriodRdbPeriodV1PeriodListUsersResponse, Error<ListUsersError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_region = region;

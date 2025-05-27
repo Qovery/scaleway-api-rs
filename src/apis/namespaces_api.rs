@@ -234,7 +234,7 @@ pub async fn list_namespaces(
     configuration: &configuration::Configuration,
     region: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     order_by: Option<&str>,
     organization_id: Option<&str>,
     project_id: Option<&str>,

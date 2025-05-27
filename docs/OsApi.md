@@ -54,7 +54,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Number of OS per page. |  |
+**page_size** | Option<**u64**> | Number of OS per page. |  |
 **offer_id** | Option<**String**> | Offer IDs to filter OSes for. |  |
 
 ### Return type

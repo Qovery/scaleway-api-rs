@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodBaremetalPeriodV1PeriodListOsResponse {
     /// Total count of matching OS.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// OS that match filters.
     #[serde(rename = "os", skip_serializing_if = "Option::is_none")]
     pub os: Option<Vec<models::ScalewayPeriodBaremetalPeriodV1PeriodOs>>,

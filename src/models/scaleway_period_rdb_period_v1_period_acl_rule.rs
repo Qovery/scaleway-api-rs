@@ -17,7 +17,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodAclRule {
     #[serde(rename = "ip", skip_serializing_if = "Option::is_none")]
     pub ip: Option<String>,
     #[serde(rename = "port", skip_serializing_if = "Option::is_none")]
-    pub port: Option<i32>,
+    pub port: Option<u64>,
     #[serde(rename = "protocol", skip_serializing_if = "Option::is_none")]
     pub protocol: Option<models::ScalewayPeriodRdbPeriodV1PeriodAclRulePeriodProtocol>,
     #[serde(rename = "direction", skip_serializing_if = "Option::is_none")]

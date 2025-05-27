@@ -20,14 +20,14 @@ pub struct CreatePoolRequestUpgradePolicy {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_unavailable: Option<Option<i32>>,
+    pub max_unavailable: Option<Option<u64>>,
     #[serde(
         rename = "max_surge",
         default,
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_surge: Option<Option<i32>>,
+    pub max_surge: Option<Option<u64>>,
 }
 
 impl CreatePoolRequestUpgradePolicy {

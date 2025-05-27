@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodK8sPeriodV1PeriodListNodesResponse {
     /// Total number of nodes.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Paginated returned nodes.
     #[serde(rename = "nodes", skip_serializing_if = "Option::is_none")]
     pub nodes: Option<Vec<models::ScalewayPeriodK8sPeriodV1PeriodNode>>,

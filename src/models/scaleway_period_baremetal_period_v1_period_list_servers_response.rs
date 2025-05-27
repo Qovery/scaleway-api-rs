@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodBaremetalPeriodV1PeriodListServersResponse {
     /// Total count of matching servers.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Array of Elastic Metal server objects matching the filters in the request.
     #[serde(rename = "servers", skip_serializing_if = "Option::is_none")]
     pub servers: Option<Vec<models::ScalewayPeriodBaremetalPeriodV1PeriodServer>>,

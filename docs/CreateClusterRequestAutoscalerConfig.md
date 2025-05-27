@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **expendable_pods_priority_cutoff** | Option<**i32**> | Pods with priority below cutoff will be expendable. They can be killed without any consideration during scale down and they won't cause scale up. Pods with null priority (PodPriority disabled) are non expendable. | [optional]
 **scale_down_unneeded_time** | Option<**String**> | How long a node should be unneeded before it is eligible to be scaled down. | [optional]
 **scale_down_utilization_threshold** | Option<[**models::CreateClusterRequestAutoscalerConfigScaleDownUtilizationThreshold**](CreateCluster_request_autoscaler_config_scale_down_utilization_threshold.md)> |  | [optional]
-**max_graceful_termination_sec** | Option<**i32**> | Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node. | [optional]
+**max_graceful_termination_sec** | Option<**u64**> | Maximum number of seconds the cluster autoscaler waits for pod termination when trying to scale down a node. | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -61,7 +61,7 @@ pub struct CreateInstanceRequest {
     pub volume_type: Option<VolumeType>,
     /// Volume size when volume_type is not lssd. (in bytes)
     #[serde(rename = "volume_size", skip_serializing_if = "Option::is_none")]
-    pub volume_size: Option<i32>,
+    pub volume_size: Option<u64>,
     /// One or multiple EndpointSpec used to expose your Database Instance. A load_balancer public endpoint is systematically created.
     #[serde(rename = "init_endpoints", skip_serializing_if = "Option::is_none")]
     pub init_endpoints: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodEndpointSpec>>,
