@@ -34,7 +34,7 @@ pub async fn list_privileges(
     instance_id: &str,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     database_name: Option<&str>,
     user_name: Option<&str>,
 ) -> Result<models::ScalewayPeriodRdbPeriodV1PeriodListPrivilegesResponse, Error<ListPrivilegesError>>

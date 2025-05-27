@@ -6,8 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **data** | Option<**String**> |  | [optional]
 **name** | Option<**String**> |  | [optional]
-**priority** | Option<**i32**> |  | [optional]
-**ttl** | Option<**i32**> |  | [optional]
+**priority** | Option<**u64**> |  | [optional]
+**ttl** | Option<**u64**> |  | [optional]
 **r#type** | Option<[**models::ScalewayPeriodDomainPeriodV2beta1PeriodRecordPeriodType**](scaleway.domain.v2beta1.Record.Type.md)> |  | [optional]
 **comment** | Option<**String**> |  | [optional]
 **geo_ip_config** | Option<[**models::ScalewayDomainV2beta1RecordGeoIpConfig**](scaleway_domain_v2beta1_Record_geo_ip_config.md)> |  | [optional]

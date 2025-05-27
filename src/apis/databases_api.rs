@@ -161,7 +161,7 @@ pub async fn list_databases(
     owner: Option<&str>,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<models::ScalewayPeriodRdbPeriodV1PeriodListDatabasesResponse, Error<ListDatabasesError>>
 {
     // add a prefix to parameters to efficiently prevent name collisions

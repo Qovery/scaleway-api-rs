@@ -22,7 +22,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **region** | **String** | The region you want to target | [required] |
 **page** | Option<**i32**> | Page number, from the paginated results, to return for cluster-types. |  |
-**page_size** | Option<**i32**> | Maximum number of clusters per page. |  |
+**page_size** | Option<**u64**> | Maximum number of clusters per page. |  |
 
 ### Return type
 

@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | Option<**String**> | UUID of the endpoint. (UUID format) | [optional]
 **ip** | Option<**String**> | IPv4 address of the endpoint. (IP address) | [optional]
-**port** | Option<**i32**> | TCP port of the endpoint. | [optional]
+**port** | Option<**u64**> | TCP port of the endpoint. | [optional]
 **name** | Option<**String**> | Name of the endpoint. | [optional]
 **private_network** | Option<[**models::ScalewayRdbV1EndpointPrivateNetwork**](scaleway_rdb_v1_Endpoint_private_network.md)> |  | [optional]
 **load_balancer** | Option<[**serde_json::Value**](.md)> | Load balancer details. Public endpoint for Database Instance which is systematically present. One per Database Instance. | [optional]

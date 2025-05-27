@@ -18,13 +18,13 @@ pub struct ScalewayPeriodBaremetalPeriodV1PeriodCpu {
     pub name: Option<String>,
     /// Number of CPU cores.
     #[serde(rename = "core_count", skip_serializing_if = "Option::is_none")]
-    pub core_count: Option<i32>,
+    pub core_count: Option<u64>,
     /// Number CPU threads.
     #[serde(rename = "thread_count", skip_serializing_if = "Option::is_none")]
-    pub thread_count: Option<i32>,
+    pub thread_count: Option<u64>,
     /// Frequency of the CPU in MHz.
     #[serde(rename = "frequency", skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<i32>,
+    pub frequency: Option<u64>,
     /// Benchmark of the CPU.
     #[serde(rename = "benchmark", skip_serializing_if = "Option::is_none")]
     pub benchmark: Option<String>,

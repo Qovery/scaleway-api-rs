@@ -283,7 +283,7 @@ Name | Type | Description  | Required | Notes
 **zone** | **String** | The zone you want to target | [required] |
 **order_by** | Option<**String**> | Sort order of the returned flexible IPs. |  |[default to created_at_asc]
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Maximum number of flexible IPs per page. |  |
+**page_size** | Option<**u64**> | Maximum number of flexible IPs per page. |  |
 **tags** | Option<[**Vec<String>**](String.md)> | Filter by tag, only flexible IPs with one or more matching tags will be returned. |  |
 **status** | Option<[**Vec<models::ScalewayPeriodFlexibleIpPeriodV1alpha1PeriodFlexibleIpPeriodStatus>**](models::ScalewayPeriodFlexibleIpPeriodV1alpha1PeriodFlexibleIpPeriodStatus.md)> | Filter by status, only flexible IPs with this status will be returned. |  |
 **server_ids** | Option<[**Vec<String>**](String.md)> | Filter by server IDs, only flexible IPs with these server IDs will be returned. |  |

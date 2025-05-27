@@ -56,7 +56,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Number of options per page. |  |
+**page_size** | Option<**u64**> | Number of options per page. |  |
 **offer_id** | Option<**String**> | Offer ID to filter options for. |  |
 **name** | Option<**String**> | Name to filter options for. |  |
 
@@ -90,7 +90,7 @@ Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **zone** | **String** | The zone you want to target | [required] |
 **page** | Option<**i32**> | Page number. |  |
-**page_size** | Option<**i32**> | Set the maximum list size. |  |
+**page_size** | Option<**u64**> | Set the maximum list size. |  |
 **order_by** | Option<**String**> | Sort order for items in the response. |  |[default to created_at_asc]
 **project_id** | Option<**String**> | ID of the Project. (UUID format) |  |
 

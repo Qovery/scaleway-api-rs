@@ -90,7 +90,7 @@ Name | Type | Description  | Required | Notes
 **project_id** | Option<**String**> | Project ID on which to filter the returned DNS zone records. |  |
 **order_by** | Option<**String**> | Sort order of the returned DNS zone records. |  |[default to name_asc]
 **page** | Option<**i32**> | Page number to return, from the paginated results. |  |
-**page_size** | Option<**i32**> | Maximum number of DNS zone records per page. |  |
+**page_size** | Option<**u64**> | Maximum number of DNS zone records per page. |  |
 **r#type** | Option<**String**> | Record type on which to filter the returned DNS zone records. |  |[default to unknown]
 **id** | Option<**String**> | Record ID on which to filter the returned DNS zone records. |  |
 

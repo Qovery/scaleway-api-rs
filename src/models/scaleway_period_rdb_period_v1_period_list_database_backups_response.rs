@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse {
     pub database_backups: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodDatabaseBackup>>,
     /// Total count of database backups available.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListDatabaseBackupsResponse {

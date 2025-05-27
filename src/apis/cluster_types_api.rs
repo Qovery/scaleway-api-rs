@@ -25,7 +25,7 @@ pub async fn list_cluster_types(
     configuration: &configuration::Configuration,
     region: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodK8sPeriodV1PeriodListClusterTypesResponse,
     Error<ListClusterTypesError>,

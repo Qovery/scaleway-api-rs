@@ -87,7 +87,7 @@ Name | Type | Description  | Required | Notes
 **region** | **String** | The region you want to target | [required] |
 **cluster_id** | **String** | ID of the cluster whose ACLs will be listed. | [required] |
 **page** | Option<**i32**> | Page number for the returned ACLs. |  |
-**page_size** | Option<**i32**> | Maximum number of ACLs per page. |  |
+**page_size** | Option<**u64**> | Maximum number of ACLs per page. |  |
 
 ### Return type
 

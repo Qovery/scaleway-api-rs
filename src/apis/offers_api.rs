@@ -91,7 +91,7 @@ pub async fn list_offers(
     configuration: &configuration::Configuration,
     zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     subscription_period: Option<&str>,
     name: Option<&str>,
 ) -> Result<models::ScalewayPeriodBaremetalPeriodV1PeriodListOffersResponse, Error<ListOffersError>>

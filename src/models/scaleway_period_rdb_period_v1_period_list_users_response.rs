@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListUsersResponse {
     pub users: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodUser>>,
     /// Total count of users present on a Database Instance.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListUsersResponse {

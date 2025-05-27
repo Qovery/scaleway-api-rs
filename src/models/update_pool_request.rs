@@ -28,7 +28,7 @@ pub struct UpdatePoolRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub size: Option<Option<i32>>,
+    pub size: Option<Option<u64>>,
     /// New minimum size for the pool.
     #[serde(
         rename = "min_size",
@@ -36,7 +36,7 @@ pub struct UpdatePoolRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub min_size: Option<Option<i32>>,
+    pub min_size: Option<Option<u64>>,
     /// New maximum size for the pool.
     #[serde(
         rename = "max_size",
@@ -44,7 +44,7 @@ pub struct UpdatePoolRequest {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_size: Option<Option<i32>>,
+    pub max_size: Option<Option<u64>>,
     /// New value for the pool autohealing enablement.
     #[serde(
         rename = "autohealing",

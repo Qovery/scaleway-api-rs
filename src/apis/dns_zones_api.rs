@@ -566,7 +566,7 @@ pub async fn list_dns_zones(
     project_id: Option<&str>,
     order_by: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     dns_zone: Option<&str>,
     dns_zones: Option<Vec<String>>,
     created_after: Option<String>,
@@ -690,7 +690,7 @@ pub async fn list_ssl_certificates(
     configuration: &configuration::Configuration,
     dns_zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     project_id: Option<&str>,
 ) -> Result<
     models::ScalewayPeriodDomainPeriodV2beta1PeriodListSslCertificatesResponse,

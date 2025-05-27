@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListInstanceAclRulesResponse {
     pub rules: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodAclRule>>,
     /// Total count of ACL rules present on a Database Instance.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListInstanceAclRulesResponse {

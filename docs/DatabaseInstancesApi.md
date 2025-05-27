@@ -359,7 +359,7 @@ Name | Type | Description  | Required | Notes
 **organization_id** | Option<**String**> | Please use project_id instead. |  |
 **project_id** | Option<**String**> | Project ID to list the Database Instance of. |  |
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

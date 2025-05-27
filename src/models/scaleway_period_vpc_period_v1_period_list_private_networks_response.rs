@@ -16,7 +16,7 @@ pub struct ScalewayPeriodVpcPeriodV1PeriodListPrivateNetworksResponse {
     #[serde(rename = "private_networks", skip_serializing_if = "Option::is_none")]
     pub private_networks: Option<Vec<models::ScalewayPeriodVpcPeriodV1PeriodPrivateNetwork>>,
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodVpcPeriodV1PeriodListPrivateNetworksResponse {

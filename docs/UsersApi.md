@@ -92,7 +92,7 @@ Name | Type | Description  | Required | Notes
 **name** | Option<**String**> | Name of the user. |  |
 **order_by** | Option<**String**> | Criteria to use when requesting user listing. |  |[default to name_asc]
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodBaremetalPeriodV1PeriodListServerEventsResponse {
     /// Total count of matching events.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// Server events that match filters.
     #[serde(rename = "events", skip_serializing_if = "Option::is_none")]
     pub events: Option<Vec<models::ScalewayPeriodBaremetalPeriodV1PeriodServerEvent>>,

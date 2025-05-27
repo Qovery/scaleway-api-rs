@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **label** | Option<[**models::ScalewayPeriodBaremetalPeriodV1PeriodSchemaPeriodPartitionPeriodLabel**](scaleway.baremetal.v1.Schema.Partition.Label.md)> |  | [optional]
-**number** | Option<**i32**> |  | [optional]
+**number** | Option<**u64**> |  | [optional]
 **size** | Option<**u64**> | (in bytes) | [optional]
 **use_all_available_space** | Option<**bool**> |  | [optional]
 

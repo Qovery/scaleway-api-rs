@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 pub struct CreateClusterRequestAutoUpgradeMaintenanceWindow {
     /// Start time of the two-hour maintenance window.
     #[serde(rename = "start_hour", skip_serializing_if = "Option::is_none")]
-    pub start_hour: Option<i32>,
+    pub start_hour: Option<u64>,
     /// Day of the week for the maintenance window.
     #[serde(rename = "day", skip_serializing_if = "Option::is_none")]
     pub day: Option<Day>,

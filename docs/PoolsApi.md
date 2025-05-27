@@ -124,7 +124,7 @@ Name | Type | Description  | Required | Notes
 **cluster_id** | **String** | ID of the cluster whose pools will be listed. | [required] |
 **order_by** | Option<**String**> | Sort order of returned pools. |  |[default to created_at_asc]
 **page** | Option<**i32**> | Page number for the returned pools. |  |
-**page_size** | Option<**i32**> | Maximum number of pools per page. |  |
+**page_size** | Option<**u64**> | Maximum number of pools per page. |  |
 **name** | Option<**String**> | Name to filter on, only pools containing this substring in their name will be returned. |  |
 **status** | Option<**String**> | Status to filter on, only pools with this status will be returned. |  |[default to unknown]
 

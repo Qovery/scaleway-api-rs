@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **size** | Option<**u64**> | Total size of the namespace, calculated as the sum of the size of all images in the namespace. (in bytes) | [optional]
 **created_at** | Option<**String**> | Date and time of creation. (RFC 3339 format) | [optional]
 **updated_at** | Option<**String**> | Date and time of last update. (RFC 3339 format) | [optional]
-**image_count** | Option<**i32**> | Number of images in the namespace. | [optional]
+**image_count** | Option<**u64**> | Number of images in the namespace. | [optional]
 **region** | Option<**String**> | Region the namespace belongs to. | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

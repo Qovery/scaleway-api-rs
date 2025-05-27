@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 **version** | Option<**String**> | Pool version. | [optional]
 **node_type** | **String** | Node type is the type of Scaleway Instance wanted for the pool. Nodes with insufficient memory are not eligible (DEV1-S, PLAY2-PICO, STARDUST). 'external' is a special node type used to provision instances from other cloud providers in a Kosmos Cluster. | 
 **autoscaling** | Option<**bool**> | Defines whether the autoscaling feature is enabled for the pool. | [optional]
-**size** | **i32** | Size (number of nodes) of the pool. | 
-**min_size** | Option<**i32**> | Defines the minimum size of the pool. Note that this field is only used when autoscaling is enabled on the pool. | [optional]
-**max_size** | Option<**i32**> | Defines the maximum size of the pool. Note that this field is only used when autoscaling is enabled on the pool. | [optional]
+**size** | **u64** | Size (number of nodes) of the pool. | 
+**min_size** | Option<**u64**> | Defines the minimum size of the pool. Note that this field is only used when autoscaling is enabled on the pool. | [optional]
+**max_size** | Option<**u64**> | Defines the maximum size of the pool. Note that this field is only used when autoscaling is enabled on the pool. | [optional]
 **container_runtime** | Option<**String**> | Customization of the container runtime is available for each pool. | [optional][default to UnknownRuntime]
 **autohealing** | Option<**bool**> | Defines whether the autohealing feature is enabled for the pool. | [optional]
 **tags** | Option<**Vec<String>**> | Tags associated with the pool, see [managing tags](https://www.scaleway.com/en/docs/containers/kubernetes/api-cli/managing-tags). | [optional]

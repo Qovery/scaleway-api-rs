@@ -178,7 +178,7 @@ pub async fn list_dns_zone_version_records(
     configuration: &configuration::Configuration,
     dns_zone_version_id: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionRecordsResponse,
     Error<ListDnsZoneVersionRecordsError>,
@@ -247,7 +247,7 @@ pub async fn list_dns_zone_versions(
     configuration: &configuration::Configuration,
     dns_zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodDomainPeriodV2beta1PeriodListDnsZoneVersionsResponse,
     Error<ListDnsZoneVersionsError>,

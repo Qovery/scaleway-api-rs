@@ -21,7 +21,7 @@ pub struct ScalewayPeriodBaremetalPeriodV1PeriodPersistentMemory {
     pub r#type: Option<String>,
     /// Frequency of the memory in MHz.
     #[serde(rename = "frequency", skip_serializing_if = "Option::is_none")]
-    pub frequency: Option<i32>,
+    pub frequency: Option<u64>,
 }
 
 impl ScalewayPeriodBaremetalPeriodV1PeriodPersistentMemory {

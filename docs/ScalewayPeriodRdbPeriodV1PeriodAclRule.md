@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ip** | Option<**String**> | (IP network) | [optional]
-**port** | Option<**i32**> |  | [optional]
+**port** | Option<**u64**> |  | [optional]
 **protocol** | Option<[**models::ScalewayPeriodRdbPeriodV1PeriodAclRulePeriodProtocol**](scaleway.rdb.v1.ACLRule.Protocol.md)> |  | [optional]
 **direction** | Option<[**models::ScalewayPeriodRdbPeriodV1PeriodAclRulePeriodDirection**](scaleway.rdb.v1.ACLRule.Direction.md)> |  | [optional]
 **action** | Option<[**models::ScalewayPeriodRdbPeriodV1PeriodAclRulePeriodAction**](scaleway.rdb.v1.ACLRule.Action.md)> |  | [optional]

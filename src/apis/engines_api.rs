@@ -27,7 +27,7 @@ pub async fn list_database_engines(
     name: Option<&str>,
     version: Option<&str>,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodRdbPeriodV1PeriodListDatabaseEnginesResponse,
     Error<ListDatabaseEnginesError>,

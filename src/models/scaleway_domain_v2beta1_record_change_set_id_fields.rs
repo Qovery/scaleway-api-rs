@@ -30,7 +30,7 @@ pub struct ScalewayDomainV2beta1RecordChangeSetIdFields {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub ttl: Option<Option<i32>>,
+    pub ttl: Option<Option<u64>>,
 }
 
 impl ScalewayDomainV2beta1RecordChangeSetIdFields {

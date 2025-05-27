@@ -181,7 +181,7 @@ pub async fn list_instance_acl_rules(
     region: &str,
     instance_id: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
 ) -> Result<
     models::ScalewayPeriodRdbPeriodV1PeriodListInstanceAclRulesResponse,
     Error<ListInstanceAclRulesError>,

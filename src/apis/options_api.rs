@@ -105,7 +105,7 @@ pub async fn list_options(
     configuration: &configuration::Configuration,
     zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     offer_id: Option<&str>,
     name: Option<&str>,
 ) -> Result<models::ScalewayPeriodBaremetalPeriodV1PeriodListOptionsResponse, Error<ListOptionsError>>
@@ -182,7 +182,7 @@ pub async fn list_settings(
     configuration: &configuration::Configuration,
     zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     order_by: Option<&str>,
     project_id: Option<&str>,
 ) -> Result<

@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListNodeTypesResponse {
     pub node_types: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodNodeType>>,
     /// Total count of node-types available.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListNodeTypesResponse {

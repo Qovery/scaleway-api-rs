@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRegistryPeriodV1PeriodListNamespacesResponse {
     pub namespaces: Option<Vec<models::ScalewayPeriodRegistryPeriodV1PeriodNamespace>>,
     /// Total number of namespaces that match the selected filters.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRegistryPeriodV1PeriodListNamespacesResponse {

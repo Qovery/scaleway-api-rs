@@ -21,7 +21,7 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodClusterType {
     pub availability: Option<Availability>,
     /// Maximum number of nodes supported by the offer.
     #[serde(rename = "max_nodes", skip_serializing_if = "Option::is_none")]
-    pub max_nodes: Option<i32>,
+    pub max_nodes: Option<u64>,
     /// Time period during which you can no longer switch to a lower offer. (in seconds)
     #[serde(
         rename = "commitment_delay",

@@ -52,13 +52,13 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodPool {
     pub autoscaling: Option<bool>,
     /// Size (number of nodes) of the pool.
     #[serde(rename = "size")]
-    pub size: i32,
+    pub size: u64,
     /// Defines the minimum size of the pool. Note that this field is only used when autoscaling is enabled on the pool.
     #[serde(rename = "min_size", skip_serializing_if = "Option::is_none")]
-    pub min_size: Option<i32>,
+    pub min_size: Option<u64>,
     /// Defines the maximum size of the pool. Note that this field is only used when autoscaling is enabled on the pool.
     #[serde(rename = "max_size", skip_serializing_if = "Option::is_none")]
-    pub max_size: Option<i32>,
+    pub max_size: Option<u64>,
     /// Customization of the container runtime is available for each pool.
     #[serde(rename = "container_runtime", skip_serializing_if = "Option::is_none")]
     pub container_runtime: Option<ContainerRuntime>,
@@ -106,7 +106,7 @@ pub struct ScalewayPeriodK8sPeriodV1PeriodPool {
 }
 
 impl ScalewayPeriodK8sPeriodV1PeriodPool {
-    pub fn new(node_type: String, size: i32) -> ScalewayPeriodK8sPeriodV1PeriodPool {
+    pub fn new(node_type: String, size: u64) -> ScalewayPeriodK8sPeriodV1PeriodPool {
         ScalewayPeriodK8sPeriodV1PeriodPool {
             id: None,
             cluster_id: None,

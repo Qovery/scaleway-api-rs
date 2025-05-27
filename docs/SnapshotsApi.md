@@ -158,7 +158,7 @@ Name | Type | Description  | Required | Notes
 **organization_id** | Option<**String**> | Organization ID the snapshots belongs to. |  |
 **project_id** | Option<**String**> | Project ID the snapshots belongs to. |  |
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

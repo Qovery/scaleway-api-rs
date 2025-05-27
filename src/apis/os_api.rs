@@ -91,7 +91,7 @@ pub async fn list_os(
     configuration: &configuration::Configuration,
     zone: &str,
     page: Option<i32>,
-    page_size: Option<i32>,
+    page_size: Option<u64>,
     offer_id: Option<&str>,
 ) -> Result<models::ScalewayPeriodBaremetalPeriodV1PeriodListOsResponse, Error<ListOsError>> {
     // add a prefix to parameters to efficiently prevent name collisions

@@ -25,7 +25,7 @@ Name | Type | Description  | Required | Notes
 **instance_id** | **String** | UUID of the Database Instance. | [required] |
 **order_by** | Option<**String**> | Criteria to use when ordering privileges listing. |  |[default to user_name_asc]
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 **database_name** | Option<**String**> | Name of the database. |  |
 **user_name** | Option<**String**> | Name of the user. |  |
 

@@ -18,7 +18,7 @@ pub struct ScalewayPeriodRdbPeriodV1PeriodListSnapshotsResponse {
     pub snapshots: Option<Vec<models::ScalewayPeriodRdbPeriodV1PeriodSnapshot>>,
     /// Total count of snapshots available.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
 }
 
 impl ScalewayPeriodRdbPeriodV1PeriodListSnapshotsResponse {

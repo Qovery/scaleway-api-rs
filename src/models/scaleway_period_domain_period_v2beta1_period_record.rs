@@ -18,9 +18,9 @@ pub struct ScalewayPeriodDomainPeriodV2beta1PeriodRecord {
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(rename = "priority", skip_serializing_if = "Option::is_none")]
-    pub priority: Option<i32>,
+    pub priority: Option<u64>,
     #[serde(rename = "ttl", skip_serializing_if = "Option::is_none")]
-    pub ttl: Option<i32>,
+    pub ttl: Option<u64>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub r#type: Option<models::ScalewayPeriodDomainPeriodV2beta1PeriodRecordPeriodType>,
     #[serde(

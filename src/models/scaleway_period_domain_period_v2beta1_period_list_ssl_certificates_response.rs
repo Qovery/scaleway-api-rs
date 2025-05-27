@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ScalewayPeriodDomainPeriodV2beta1PeriodListSslCertificatesResponse {
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     #[serde(rename = "certificates", skip_serializing_if = "Option::is_none")]
     pub certificates: Option<Vec<models::ScalewayPeriodDomainPeriodV2beta1PeriodSslCertificate>>,
 }

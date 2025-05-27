@@ -21,7 +21,7 @@ pub struct UpdateInstanceRequestLogsPolicy {
         with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub max_age_retention: Option<Option<i32>>,
+    pub max_age_retention: Option<Option<u64>>,
     /// Max disk size of remote logs to keep on the Database Instance. (in bytes)
     #[serde(
         rename = "total_disk_retention",

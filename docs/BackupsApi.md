@@ -158,7 +158,7 @@ Name | Type | Description  | Required | Notes
 **organization_id** | Option<**String**> | Organization ID of the Organization the database backups belong to. |  |
 **project_id** | Option<**String**> | Project ID of the Project the database backups belong to. |  |
 **page** | Option<**i32**> |  |  |
-**page_size** | Option<**i32**> |  |  |
+**page_size** | Option<**u64**> |  |  |
 
 ### Return type
 

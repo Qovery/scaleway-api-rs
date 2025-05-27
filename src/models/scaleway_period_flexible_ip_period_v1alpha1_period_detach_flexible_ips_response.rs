@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 pub struct ScalewayPeriodFlexibleIpPeriodV1alpha1PeriodDetachFlexibleIpsResponse {
     /// Total count of flexible IPs that are being detached.
     #[serde(rename = "total_count", skip_serializing_if = "Option::is_none")]
-    pub total_count: Option<i32>,
+    pub total_count: Option<u64>,
     /// List of flexible IPs in a detaching state.
     #[serde(rename = "flexible_ips", skip_serializing_if = "Option::is_none")]
     pub flexible_ips: Option<Vec<models::ScalewayPeriodFlexibleIpPeriodV1alpha1PeriodFlexibleIp>>,

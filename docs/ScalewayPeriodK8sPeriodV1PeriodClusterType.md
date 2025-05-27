@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | Option<**String**> | Cluster type name. | [optional]
 **availability** | Option<**String**> | Cluster type availability. | [optional][default to Available]
-**max_nodes** | Option<**i32**> | Maximum number of nodes supported by the offer. | [optional]
+**max_nodes** | Option<**u64**> | Maximum number of nodes supported by the offer. | [optional]
 **commitment_delay** | Option<**String**> | Time period during which you can no longer switch to a lower offer. (in seconds) | [optional]
 **sla** | Option<**f32**> | Value of the Service Level Agreement of the offer. | [optional]
 **resiliency** | Option<**String**> | Resiliency offered by the offer. | [optional][default to UnknownResiliency]
